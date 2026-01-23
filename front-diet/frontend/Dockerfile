@@ -1,9 +1,10 @@
 # Stage 1: Build Angular app
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package*.json ./
+# ✅ Use full paths from repo root
+COPY ./front-diet/frontend/package*.json ./
 RUN npm install
-COPY . .
+COPY ./front-diet/frontend/ .
 RUN npm run build --configuration=production
 
 # Stage 2: Serve with Nginx
