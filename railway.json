@@ -3,7 +3,8 @@
     "frontend": {
       "build": {
         "builder": "dockerfile",
-        "dockerfilePath": "front-diet/frontend/Dockerfile"
+        "dockerfilePath": "Dockerfile",
+        "context": "front-diet/frontend"
       },
       "deploy": {
         "restartPolicyType": "on_failure",
@@ -14,10 +15,6 @@
       "build": {
         "builder": "dockerfile",
         "dockerfilePath": "back-diet/backend/demo/Dockerfile"
-      },
-      "deploy": {
-        "restartPolicyType": "on_failure",
-        "restartPolicyMaxRetries": 3
       }
     }
   }
