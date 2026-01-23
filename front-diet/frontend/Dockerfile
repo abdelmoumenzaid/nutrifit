@@ -3,26 +3,25 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 # Copier package.json + package-lock.json
-COPY package*.json ./
+COPY frontend/package*.json ./
 
 # Installer dépendances
 RUN npm install
 
-# Copier tout
-COPY . .
+# Copier tout le frontend
+COPY frontend/ ./
 
 # Build Angular
 RUN npm run build --configuration=production
 
 # ---------- RUNTIME Nginx ----------
 FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
 
 # Copier la config nginx
-COPY config/nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/config/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copier les fichiers compilés Angular
-COPY --from=build /app/dist/app-diet/browser .
+COPY --from=build /app/dist/app-diet/browser /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

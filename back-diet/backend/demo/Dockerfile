@@ -1,8 +1,8 @@
-FROM maven:3.9-eclipse-temurin-21-alpine AS build
+FROM maven:3.9-eclipse-temurin-21-alpine as build
 WORKDIR /app
-COPY ./back-diet/backend/demo/pom.xml .
+COPY pom.xml .
 RUN mvn dependency:go-offline
-COPY ./back-diet/backend/demo/ .
+COPY . .
 RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
