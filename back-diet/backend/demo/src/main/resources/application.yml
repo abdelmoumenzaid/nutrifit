@@ -5,7 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_URL}
+    url: jdbc:postgresql://postgres.railway.internal:5432/railway
+    username: postgres
+    password: nozXcxuaFafFXvTHkcKYEyMbgZXxrGRe  # Le mot de passe de vos screenshots!
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
