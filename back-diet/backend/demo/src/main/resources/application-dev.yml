@@ -1,35 +1,41 @@
 server:
-  port: 8081
+  port: 8080
+  servlet:
+    context-path: /api
 
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/recipe_db
-    username: recipe_user
-    password: secret123
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        jdbc:
+          batch_size: 20
 
   jackson:
     serialization:
-      indent_output: true
+      indent_output: false
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/master
-          jwk-set-uri: http://localhost:8082/realms/master/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8888/realms/master
+          jwk-set-uri: http://localhost:8888/realms/master/protocol/openid-connect/certs
 
 keycloak:
-  server-url: http://localhost:8082
+  server-url: http://localhost:8888
   admin-username: admin
   admin-password: admin123
   admin-client-id: admin-cli
@@ -40,11 +46,11 @@ ai:
 
 calorieninjas:
   api:
-    key: So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84
+    key: test-key
 
 web:
   cors:
-    allowed-origins: http://localhost:4200,http://localhost:4201
+    allowed-origins: http://localhost:4200
     allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
     allowed-headers: '*'
     allow-credentials: true
@@ -53,117 +59,13 @@ web:
 logging:
   level:
     org.springframework.security: DEBUG
-    org.springframework.web: DEBUG
     root: INFO
 
-
-
-
-
-
-
-
-
-
-
-# server:
-#   port: 8081  # ✅ Votre port (évite conflit Keycloak 8080)
-
-# spring:
-#   datasource:
-#     url: jdbc:postgresql://localhost:5432/recipe_db
-#     username: recipe_user
-#     password: secret123
-#     driver-class-name: org.postgresql.Driver
-
-#   jpa:
-#     hibernate:
-#       ddl-auto: update
-#     show-sql: true
-#     properties:
-#       hibernate:
-#         format_sql: true
-#         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-#   jackson:
-#     serialization:
-#       INDENT_OUTPUT: true
-
-#   # 🔥 NOUVEAU: KEYCLOAK OAUTH2
-#   security:
-#     oauth2:
-#       resourceserver:
-#         jwt:
-#           # ✅ Keycloak sur port 8080
-#           issuer-uri: http://localhost:8082/realms/nutrifit
-#           jwk-set-uri: http://localhost:8082/realms/nutrifit/protocol/openid-connect/certs
-#           jws-algorithm: RS256
-
-#   ai:
-#     agent:
-#       url: http://127.0.0.1:8000
-
-# # 🔥 Vos clés externes (inchangées)
-# calorieninjas:
-#   api:
-#     key: So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84
-
-# # 🔥 Logs de sécurité (DEBUG temporaire)
-# logging:
-#   level:
-#     org.springframework.security: DEBUG
-#     org.springframework.security.oauth2: DEBUG
-#     root: INFO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# server:
-#   port: 8081
-
-# spring:
-#   datasource:
-#     url: jdbc:postgresql://localhost:5432/recipe_db
-#     username: recipe_user
-#     password: secret123
-#     driver-class-name: org.postgresql.Driver
-
-#   jpa:
-#     hibernate:
-#       ddl-auto: update   # create-drop | update | validate | none
-#     show-sql: true
-#     properties:
-#       hibernate:
-#         format_sql: true
-#         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-#   jackson:
-#     serialization:
-#       INDENT_OUTPUT: true
-
-#   ai:
-#     agent:
-#       url: http://127.0.0.1:8000
-
-# # 🔥 Clé CalorieNinjas à la RACINE, pas sous spring
-# calorieninjas:
-#   api:
-#     key: So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
