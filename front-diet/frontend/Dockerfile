@@ -2,25 +2,25 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copier package.json + package-lock.json
-COPY frontend/package*.json ./
+# 1) Copier les package.json du FRONT depuis la racine du repo (app-diet)
+COPY front-diet/frontend/package*.json ./
 
-# Installer dépendances
+# 2) Installer les dépendances
 RUN npm install
 
-# Copier tout le frontend
-COPY frontend/ ./
+# 3) Copier TOUT le code frontend (Angular)
+COPY front-diet/frontend/ ./
 
-# Build Angular
+# 4) Build Angular en production
 RUN npm run build --configuration=production
 
 # ---------- RUNTIME Nginx ----------
 FROM nginx:alpine
 
-# Copier la config nginx
-COPY frontend/config/nginx.conf /etc/nginx/conf.d/default.conf
+# 5) Copier la config NGINX du FRONT
+COPY front-diet/frontend/config/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copier les fichiers compilés Angular
+# 6) Copier les fichiers Angular compilés vers le dossier servi par NGINX
 COPY --from=build /app/dist/app-diet/browser /usr/share/nginx/html
 
 EXPOSE 80
