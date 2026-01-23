@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres.railway.internal:5432/railway
-    username: postgres
-    password: nozXcxuaFafFXvTHkcKYEyMbgZXxrGRe  # Le mot de passe de vos screenshots!
+    url: jdbc:postgresql://${RAILWAY_PRIVATE_DOMAIN}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -35,9 +35,6 @@ spring:
           issuer-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master
           jwk-set-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master/protocol/openid-connect/certs
 
-# =========================================
-# 🔥 CUSTOM PROPERTIES
-# =========================================
 keycloak:
   server-url: https://nutrifit-production-c4b6.up.railway.app
   admin-username: ${KEYCLOAK_ADMIN:admin}
