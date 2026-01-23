@@ -4,30 +4,38 @@ import { environment } from '../../../environments/environment';
 let keycloakInstance: Keycloak | null = null;
 
 export function initializeKeycloak(): Promise<boolean> {
-  keycloakInstance = new Keycloak({
-    url: environment.keycloak.url,           // ✅ Utilise l'environment
-    realm: environment.keycloak.realm,       // ✅ Utilise l'environment
-    clientId: environment.keycloak.clientId  // ✅ Utilise l'environment
-  });
+  return new Promise((resolve) => {
+    if (keycloakInstance?.authenticated) {
+      resolve(true);
+      return;
+    }
 
-  return keycloakInstance
-    .init({
-      onLoad: 'check-sso',
-      checkLoginIframe: false
-    })
-    .then((authenticated) => {
-      console.log('✅ Keycloak initialized:', authenticated);
-      return true;
-    })
-    .catch((error) => {
-      console.error('❌ Keycloak init error:', error);
-      return true; // Continue même si Keycloak échoue
+    keycloakInstance = new Keycloak({
+      url: environment.keycloak.url,
+      realm: environment.keycloak.realm,
+      clientId: environment.keycloak.clientId
     });
+
+    keycloakInstance
+      .init({
+        onLoad: 'check-sso',
+        checkLoginIframe: false
+      })
+      .then((authenticated) => {
+        console.log('✅ Keycloak initialized:', authenticated);
+        resolve(true);
+      })
+      .catch((error) => {
+        console.error('❌ Keycloak init error:', error);
+        resolve(true); // Continue même si ça échoue
+      });
+  });
 }
 
-export function getKeycloak(): Keycloak {
-  if (!keycloakInstance) {
-    throw new Error('Keycloak not initialized');
-  }
+export function getKeycloak(): Keycloak | null {
   return keycloakInstance;
+}
+
+export function isKeycloakAuthenticated(): boolean {
+  return keycloakInstance?.authenticated ?? false;
 }

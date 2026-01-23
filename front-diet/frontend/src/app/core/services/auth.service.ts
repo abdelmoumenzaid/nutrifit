@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { initializeKeycloak } from './keycloak.service';
+
 import { environment } from '../../../environments/environment';
 
 
@@ -33,21 +35,30 @@ export class AuthService {
   private readonly BACKEND_URL = `${environment.apiUrl}/public/auth`;
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    // ✅ Charger le token depuis localStorage au démarrage
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        this.tokenSubject.next(token);
-        console.log('✅ AuthService init: Token chargé depuis localStorage');
-      } else {
-        console.log('⚠️ AuthService init: Pas de token');
-      }
+  private http: HttpClient,
+  private router: Router,
+  @Inject(PLATFORM_ID) private platformId: Object
+) {
+  // ✅ Initialize Keycloak on service creation
+  initializeKeycloak().then(() => {
+    this.loadTokenFromStorage();
+  });
+}
+
+/**
+ * ✅ Load token from localStorage after Keycloak initialization
+ */
+private loadTokenFromStorage(): void {
+  if (isPlatformBrowser(this.platformId)) {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      this.tokenSubject.next(token);
+      console.log('✅ AuthService init: Token chargé depuis localStorage');
+    } else {
+      console.log('⚠️ AuthService init: Pas de token');
     }
   }
+}
 
   // ============ REGISTER ============
   registerCustom(
