@@ -1,0 +1,24 @@
+{
+  "services": {
+    "frontend": {
+      "build": {
+        "builder": "dockerfile",
+        "dockerfilePath": "front-diet/frontend/Dockerfile"
+      },
+      "deploy": {
+        "restartPolicyType": "on_failure",
+        "restartPolicyMaxRetries": 3
+      }
+    },
+    "backend": {
+      "build": {
+        "builder": "dockerfile",
+        "dockerfilePath": "back-diet/backend/demo/Dockerfile"
+      },
+      "deploy": {
+        "restartPolicyType": "on_failure",
+        "restartPolicyMaxRetries": 3
+      }
+    }
+  }
+}
