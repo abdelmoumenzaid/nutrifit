@@ -3,17 +3,20 @@ server:
   servlet:
     context-path: /api
 
+
 # =========================================
 # 🔥 DATABASE - RAILWAY POSTGRESQL
 # =========================================
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://postgres.railway.internal:5432/railway?currentSchema=public}
+    url: jdbc:postgresql://${PGHOST:postgres.railway.internal}:${PGPORT:5432}/${PGDATABASE:railway}?currentSchema=public
+    username: ${PGUSER:postgres}
+    password: ${PGPASSWORD}
     driver-class-name: org.postgresql.Driver
-
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
+
 
   jpa:
     hibernate:
@@ -21,14 +24,15 @@ spring:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         jdbc:
           batch_size: 20
 
+
   jackson:
     serialization:
       indent_output: false
+
 
   # =========================================
   # 🔥 OAUTH2 JWT - KEYCLOAK
@@ -40,11 +44,6 @@ spring:
           issuer-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master
           jwk-set-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master/protocol/openid-connect/certs
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health,info
 
 # =========================================
 # 🔥 CUSTOM PROPERTIES
@@ -55,13 +54,16 @@ keycloak:
   admin-password: ${KEYCLOAK_ADMIN_PASSWORD:admin123}
   admin-client-id: admin-cli
 
+
 ai:
   agent:
     url: ${AI_AGENT_URL:http://127.0.0.1:8000}
 
+
 calorieninjas:
   api:
     key: ${CALORIENINJAS_API_KEY:So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84}
+
 
 web:
   cors:
@@ -71,10 +73,12 @@ web:
     allow-credentials: true
     max-age: 3600
 
+
 logging:
   level:
     org.springframework.security: INFO
     root: INFO
+
 
 management:
   endpoints:
