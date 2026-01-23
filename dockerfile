@@ -1,4 +1,4 @@
-# # Stage 1: Build optimized Keycloak runtime
+# Stage 1: Build optimized Keycloak runtime
 FROM quay.io/keycloak/keycloak:23.0.7 as builder
 
 ENV KC_DB=postgres
@@ -9,7 +9,6 @@ RUN /opt/keycloak/bin/kc.sh build
 # Stage 2: Runtime image
 FROM quay.io/keycloak/keycloak:23.0.7
 
-# Copy pre-built optimized runtime from builder
 COPY --from=builder /opt/keycloak/lib /opt/keycloak/lib
 COPY --from=builder /opt/keycloak/server /opt/keycloak/server
 
