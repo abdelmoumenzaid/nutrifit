@@ -4,13 +4,13 @@ server:
     context-path: /api
 
 # =========================================
-# 🔥 KEYCLOAK CONFIGURATION
+# 🔥 DATABASE - RAILWAY POSTGRESQL
 # =========================================
 spring:
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/recipe_db}
-    username: ${DATASOURCE_USER:recipe_user}
-    password: ${DATASOURCE_PASSWORD:secret123}
+    url: jdbc:postgresql://${RAILWAY_PRIVATE_DOMAIN:localhost}:5432/railway
+    username: postgres
+    password: ${RAILWAY_POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -32,7 +32,7 @@ spring:
       indent_output: false
 
   # =========================================
-  # 🔥 OAUTH2 JWT
+  # 🔥 OAUTH2 JWT - KEYCLOAK
   # =========================================
   security:
     oauth2:
@@ -40,13 +40,15 @@ spring:
         jwt:
           issuer-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master
           jwk-set-uri: https://nutrifit-production-c4b6.up.railway.app/realms/master/protocol/openid-connect/certs
+
   management:
     endpoints:
       web:
         exposure:
           include: health,info
+
 # =========================================
-# 🔥 CUSTOM PROPERTIES (corriger les noms)
+# 🔥 CUSTOM PROPERTIES
 # =========================================
 keycloak:
   server-url: https://nutrifit-production-c4b6.up.railway.app
@@ -74,6 +76,7 @@ logging:
   level:
     org.springframework.security: INFO
     root: INFO
+
 management:
   endpoints:
     web:
