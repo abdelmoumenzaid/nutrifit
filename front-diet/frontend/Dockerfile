@@ -19,6 +19,9 @@ RUN npm run build --configuration=production
 # ---------- RUNTIME Nginx ----------
 FROM nginx:alpine
 
+# Affiche le contenu de la racine nginx
+RUN ls -la /
+
 # Générer la config nginx
 RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    listen 80;' >> /etc/nginx/conf.d/default.conf && \
@@ -37,7 +40,13 @@ RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    }' >> /etc/nginx/conf.d/default.conf && \
     echo '}' >> /etc/nginx/conf.d/default.conf
 
+# Vérifie que le config a été créée
+RUN ls -la /etc/nginx/conf.d/
+
 COPY --from=build /app/dist/app-diet/browser /usr/share/nginx/html
+
+# Vérifie les fichiers copiés
+RUN ls -la /usr/share/nginx/html/
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
