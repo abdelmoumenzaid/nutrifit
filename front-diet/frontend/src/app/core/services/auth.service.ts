@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment';
+
 
 export interface User {
   id?: string;
@@ -22,15 +24,13 @@ export class AuthService {
   private tokenSubject = new BehaviorSubject<string | null>(null);
   public token$ = this.tokenSubject.asObservable();
 
-  // private readonly KEYCLOAK_URL = 'http://localhost:8082/realms/diet-realm';
-  private readonly CLIENT_ID = 'angular-frontend';
-  private readonly CLIENT_SECRET = 'jQAK320a2V6WRWXsEh6Z84LrNRGhaoR0';
-  // private readonly FRONTEND_URL = 'http://localhost:4200';
-  // private readonly BACKEND_URL = 'http://localhost:8081/api/public/auth';
-
-  private readonly KEYCLOAK_URL = 'https://nutrifit-production-c4b6.up.railway.app/realms/master';
-  private readonly FRONTEND_URL = 'https://front-end-production-0ec7.up.railway.app';
-  private readonly BACKEND_URL = 'https://backend-production-44d4.up.railway.app/api/public/auth';
+  // ✅ Utilise l'environment
+  private readonly KEYCLOAK_URL = `${environment.keycloak.url}/realms/${environment.keycloak.realm}`;
+  private readonly CLIENT_ID = environment.keycloak.clientId;
+  private readonly FRONTEND_URL = environment.production 
+    ? 'https://app-diet-frontend-prod.up.railway.app'
+    : 'http://localhost:4200';
+  private readonly BACKEND_URL = `${environment.apiUrl}/public/auth`;
 
   constructor(
     private http: HttpClient,
@@ -102,7 +102,10 @@ export class AuthService {
    * Appelé depuis CallbackComponent après redirection Keycloak
    */
   handleCallback(code: string): Observable<any> {
-    console.log('🔄 AuthService.handleCallback() - Échange du code:', code.substring(0, 20) + '...');
+    console.log(
+      '🔄 AuthService.handleCallback() - Échange du code:',
+      code.substring(0, 20) + '...'
+    );
 
     const body = new URLSearchParams({
       grant_type: 'authorization_code',
@@ -111,9 +114,7 @@ export class AuthService {
       redirect_uri: `${this.FRONTEND_URL}/callback`
     });
 
-    if (this.CLIENT_SECRET) {
-      body.append('client_secret', this.CLIENT_SECRET);
-    }
+    // ⚠️ Pas de client_secret ici (client public dans Keycloak)
 
     const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
 
@@ -173,7 +174,6 @@ export class AuthService {
         } else {
           console.error('❌ ERREUR: Token pas trouvé après sauvegarde!');
         }
-
       } catch (error) {
         console.error('❌ ERREUR lors de la sauvegarde dans localStorage:', error);
       }
@@ -280,9 +280,7 @@ export class AuthService {
       refresh_token: refreshToken
     });
 
-    if (this.CLIENT_SECRET) {
-      body.append('client_secret', this.CLIENT_SECRET);
-    }
+    // ⚠️ Pas de client_secret ici non plus (client public)
 
     return this.http.post<{ access_token: string; refresh_token?: string }>(
       `${this.KEYCLOAK_URL}/protocol/openid-connect/token`,

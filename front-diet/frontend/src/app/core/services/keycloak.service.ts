@@ -4,12 +4,11 @@ let keycloakInstance: Keycloak | null = null;
 
 export function initializeKeycloak(): Promise<boolean> {
   keycloakInstance = new Keycloak({
-    // url: 'http://localhost:8082',
-    // realm: 'diet-realm',
-    url: 'https://nutrifit-production-c4b6.up.railway.app',
-    realm: 'master',
-    clientId: 'angular-frontend'
-  });
+  url: 'https://nutrifit-production-c4b6.up.railway.app',
+  realm: 'nutrifit',
+  clientId: 'diet-frontend'
+});
+
 
   return keycloakInstance
     .init({

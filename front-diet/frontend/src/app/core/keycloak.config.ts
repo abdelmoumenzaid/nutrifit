@@ -28,6 +28,7 @@ export function initKeycloak(): Promise<boolean> {
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
       checkLoginIframe: false,
+      redirectUri: `${window.location.origin}/`,  // ← AJOUTE ÇA
     })
     .then((authenticated: boolean) => {
       console.log('✅ Keycloak initialized:', authenticated);
@@ -35,6 +36,7 @@ export function initKeycloak(): Promise<boolean> {
     })
     .catch((error: any) => {
       console.error('❌ Keycloak init error:', error);
-      return true; // Continue même si erreur
+      return true;
     });
 }
+

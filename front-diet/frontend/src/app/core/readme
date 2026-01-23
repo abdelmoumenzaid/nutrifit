@@ -1,4 +1,0 @@
-6️⃣ src/app/app.config.ts (remplacer tout)
-7️⃣ src/app/app.routes.ts (remplacer tout)
-8️⃣ angular.json (ajouter baseHref + assets)
-9️⃣ .github/workflows/deploy.yml (créer)
