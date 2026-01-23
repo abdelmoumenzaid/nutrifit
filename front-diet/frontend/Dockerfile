@@ -21,7 +21,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist/app-diet/browser /usr/share/nginx/html
 
 # Copier la config nginx optimisée
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY config/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exposer le port
 EXPOSE 80
