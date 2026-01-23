@@ -2,7 +2,7 @@
 📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
 ================================================================================
 📁 Projet: C:\Users\ZAID\Desktop\app-diet
-📈 Fichiers analysés: 200
+📈 Fichiers analysés: 201
 🤖 Modèle: llama-3.3-70b-versatile
 
 1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
@@ -11,6 +11,7 @@
 ├── 📁 .github
 │   └── 📁 workflows
 │       └── 📄 deploy.yml (YAML - 1.0 KB)
+├── 📄 Dockerfile (Unknown - 121 bytes)
 ├── 📁 agent-scanner
 │   └── 📁 agent-scanner
 │       ├── 📄 .env (Environment - 69 bytes)
@@ -108,12 +109,11 @@
 │   │   │               ├── 📁 compile
 │   │   │               │   └── 📁 default-compile
 │   │   │               │       ├── 📄 createdFiles.lst (Unknown - 2.6 KB)
-│   │   │               │       └── 📄 inputFiles.lst (Unknown - 3.7 KB)
+│   │   │               │       └── 📄 inputFiles.lst (Unknown - 3.8 KB)
 │   │   │               └── 📁 testCompile
 │   │   │                   └── 📁 default-testCompile
 │   │   │                       ├── 📄 createdFiles.lst (Unknown - 60 bytes)
 │   │   │                       └── 📄 inputFiles.lst (Unknown - 128 bytes)
-│   │   ├── 📄 dockerfile (Unknown - 128 bytes)
 │   │   └── 📁 python-agent
 │   │       ├── 📄 .env (Environment - 127 bytes)
 │   │       ├── 📄 main.py (Python - 17.9 KB)
@@ -162,6 +162,7 @@
 │   │   │   │   │   ├── 📁 interceptors
 │   │   │   │   │   │   └── 📄 auth.interceptor.ts (TypeScript - 1.4 KB)
 │   │   │   │   │   ├── 📄 keycloak.config.ts (TypeScript - 1.1 KB)
+│   │   │   │   │   ├── 📄 readme (Unknown - 191 bytes)
 │   │   │   │   │   └── 📁 services
 │   │   │   │   │       ├── 📄 auth.service.ts (TypeScript - 12.5 KB)
 │   │   │   │   │       ├── 📄 keycloak.service.ts (TypeScript - 791 bytes)
@@ -279,7 +280,7 @@
 │   │   │   │   └── 📄 silent-check-sso.html (HTML - 202 bytes)
 │   │   │   ├── 📁 environments
 │   │   │   │   ├── 📄 environment.prod.ts (TypeScript - 224 bytes)
-│   │   │   │   └── 📄 environment.ts (TypeScript - 212 bytes)
+│   │   │   │   └── 📄 environment.ts (TypeScript - 283 bytes)
 │   │   │   ├── 📄 index.html (HTML - 624 bytes)
 │   │   │   ├── 📄 main.server.ts (TypeScript - 320 bytes)
 │   │   │   ├── 📄 main.ts (TypeScript - 428 bytes)
@@ -289,7 +290,7 @@
 │   │   ├── 📄 tsconfig.json (JSON - 990 bytes)
 │   │   └── 📄 tsconfig.spec.json (JSON - 456 bytes)
 │   └── 📄 project_analysis_CLEAN.txt (Text - 13.2 KB)
-└── 📄 project_analysis_CLEAN.txt (Text - 22.9 KB)
+└── 📄 project_analysis_CLEAN.txt (Text - 23.5 KB)
 
 2️⃣  ANALYSE DES FICHIERS IMPORTANTS
 ----------------------------------------
@@ -366,14 +367,14 @@
 
 5️⃣  STATISTIQUES
 ----------------------------------------
-Taille: 1027.4 KB
-Fichiers: 200
+Taille: 1028.4 KB
+Fichiers: 201
 Langages:
   • TypeScript: 65
   • Java: 33
   • HTML: 23
   • CSS: 21
-  • Unknown: 19
+  • Unknown: 20
   • JSON: 13
   • Text: 6
   • Python: 5
