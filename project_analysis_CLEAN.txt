@@ -2,7 +2,7 @@
 📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
 ================================================================================
 📁 Projet: C:\Users\ZAID\Desktop\app-diet
-📈 Fichiers analysés: 201
+📈 Fichiers analysés: 208
 🤖 Modèle: llama-3.3-70b-versatile
 
 1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
@@ -11,6 +11,8 @@
 ├── 📁 .github
 │   └── 📁 workflows
 │       └── 📄 deploy.yml (YAML - 1.0 KB)
+├── 📁 .vscode
+│   └── 📄 settings.json (JSON - 70 bytes)
 ├── 📄 Dockerfile (Unknown - 121 bytes)
 ├── 📁 agent-scanner
 │   └── 📁 agent-scanner
@@ -43,10 +45,11 @@
 │   │   │   ├── 📁 .mvn
 │   │   │   │   └── 📁 wrapper
 │   │   │   │       └── 📄 maven-wrapper.properties (Unknown - 168 bytes)
+│   │   │   ├── 📄 Dockerfile (Unknown - 340 bytes)
 │   │   │   ├── 📄 HELP.md (Markdown - 2.3 KB)
 │   │   │   ├── 📄 mvnw (Unknown - 11.5 KB)
 │   │   │   ├── 📄 mvnw.cmd (Unknown - 8.1 KB)
-│   │   │   ├── 📄 pom.xml (XML - 4.5 KB)
+│   │   │   ├── 📄 pom.xml (XML - 4.4 KB)
 │   │   │   ├── 📄 readme (Unknown - 132 bytes)
 │   │   │   ├── 📁 src
 │   │   │   │   ├── 📁 main
@@ -94,7 +97,8 @@
 │   │   │   │   │   │                   ├── 📄 DayWorkoutDto.java (Java - 1.5 KB)
 │   │   │   │   │   │                   └── 📄 DayWorkoutRepository.java (Java - 371 bytes)
 │   │   │   │   │   └── 📁 resources
-│   │   │   │   │       └── 📄 application.yml (YAML - 3.5 KB)
+│   │   │   │   │       ├── 📄 application-dev.yml (YAML - 3.2 KB)
+│   │   │   │   │       └── 📄 application.yml (YAML - 1.9 KB)
 │   │   │   │   └── 📁 test
 │   │   │   │       └── 📁 java
 │   │   │   │           └── 📁 com
@@ -103,7 +107,8 @@
 │   │   │   │                       └── 📄 RecipeServiceApplicationTests.java (Java - 222 bytes)
 │   │   │   └── 📁 target
 │   │   │       ├── 📁 classes
-│   │   │       │   └── 📄 application.yml (YAML - 3.5 KB)
+│   │   │       │   ├── 📄 application-dev.yml (YAML - 3.2 KB)
+│   │   │       │   └── 📄 application.yml (YAML - 1.9 KB)
 │   │   │       └── 📁 maven-status
 │   │   │           └── 📁 maven-compiler-plugin
 │   │   │               ├── 📁 compile
@@ -122,7 +127,8 @@
 │   │       ├── 📄 readme (Unknown - 150 bytes)
 │   │       └── 📄 requirements.txt (Text - 111 bytes)
 │   └── 📄 project_analysis_CLEAN.txt (Text - 9.9 KB)
-├── 📄 docker-compose.yml (YAML - 2.9 KB)
+├── 📄 docker-compose.dev.yml (YAML - 1002 bytes)
+├── 📄 docker-compose.yml (YAML - 3.7 KB)
 ├── 📁 front-diet
 │   ├── 📁 cypress
 │   │   ├── 📄 cypress.config.ts (TypeScript - 359 bytes)
@@ -138,8 +144,10 @@
 │   │   │   ├── 📄 extensions.json (JSON - 134 bytes)
 │   │   │   ├── 📄 launch.json (JSON - 490 bytes)
 │   │   │   └── 📄 tasks.json (JSON - 1020 bytes)
+│   │   ├── 📄 Dockerfile (Unknown - 310 bytes)
 │   │   ├── 📄 README.md (Markdown - 1.9 KB)
 │   │   ├── 📄 angular.json (JSON - 2.9 KB)
+│   │   ├── 📄 nginx.conf (Unknown - 1.6 KB)
 │   │   ├── 📄 package-lock.json (JSON - 380.5 KB)
 │   │   ├── 📄 package.json (JSON - 1.3 KB)
 │   │   ├── 📁 public
@@ -279,8 +287,8 @@
 │   │   │   │   │   └── 📄 theme.properties (Unknown - 44 bytes)
 │   │   │   │   └── 📄 silent-check-sso.html (HTML - 202 bytes)
 │   │   │   ├── 📁 environments
-│   │   │   │   ├── 📄 environment.prod.ts (TypeScript - 224 bytes)
-│   │   │   │   └── 📄 environment.ts (TypeScript - 283 bytes)
+│   │   │   │   ├── 📄 environment.prod.ts (TypeScript - 250 bytes)
+│   │   │   │   └── 📄 environment.ts (TypeScript - 202 bytes)
 │   │   │   ├── 📄 index.html (HTML - 624 bytes)
 │   │   │   ├── 📄 main.server.ts (TypeScript - 320 bytes)
 │   │   │   ├── 📄 main.ts (TypeScript - 428 bytes)
@@ -290,10 +298,13 @@
 │   │   ├── 📄 tsconfig.json (JSON - 990 bytes)
 │   │   └── 📄 tsconfig.spec.json (JSON - 456 bytes)
 │   └── 📄 project_analysis_CLEAN.txt (Text - 13.2 KB)
-└── 📄 project_analysis_CLEAN.txt (Text - 23.5 KB)
+└── 📄 project_analysis_CLEAN.txt (Text - 23.6 KB)
 
 2️⃣  ANALYSE DES FICHIERS IMPORTANTS
 ----------------------------------------
+
+📝 .vscode\settings.json
+[Analyse via requests - implémentation simplifiée]
 
 📝 front-diet\cypress\cypress.config.ts
 [Analyse via requests - implémentation simplifiée]
@@ -337,9 +348,6 @@
 📝 front-diet\frontend\src\main.ts
 [Analyse via requests - implémentation simplifiée]
 
-📝 front-diet\frontend\src\server.ts
-[Analyse via requests - implémentation simplifiée]
-
 3️⃣  DÉPENDANCES
 ----------------------------------------
 
@@ -367,18 +375,18 @@
 
 5️⃣  STATISTIQUES
 ----------------------------------------
-Taille: 1028.4 KB
-Fichiers: 201
+Taille: 1035.7 KB
+Fichiers: 208
 Langages:
   • TypeScript: 65
   • Java: 33
+  • Unknown: 23
   • HTML: 23
   • CSS: 21
-  • Unknown: 20
-  • JSON: 13
+  • JSON: 14
+  • YAML: 7
   • Text: 6
   • Python: 5
-  • YAML: 4
   • Git: 4
   • Environment: 3
   • Markdown: 2
