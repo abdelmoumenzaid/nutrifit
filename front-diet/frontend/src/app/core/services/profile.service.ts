@@ -14,7 +14,9 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8081/api/public/auth';
+  // private apiUrl = 'http://localhost:8081/api/public/auth';
+  private apiUrl = 'https://backend-production-44d4.up.railway.app/api/public/auth';
+
   private profileSubject = new BehaviorSubject<UserProfile | null>(null);
   public profile$ = this.profileSubject.asObservable();
   private isLoadingSubject = new BehaviorSubject<boolean>(false);

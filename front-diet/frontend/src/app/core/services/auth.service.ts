@@ -22,11 +22,15 @@ export class AuthService {
   private tokenSubject = new BehaviorSubject<string | null>(null);
   public token$ = this.tokenSubject.asObservable();
 
-  private readonly KEYCLOAK_URL = 'http://localhost:8082/realms/diet-realm';
+  // private readonly KEYCLOAK_URL = 'http://localhost:8082/realms/diet-realm';
   private readonly CLIENT_ID = 'angular-frontend';
   private readonly CLIENT_SECRET = 'jQAK320a2V6WRWXsEh6Z84LrNRGhaoR0';
-  private readonly FRONTEND_URL = 'http://localhost:4200';
-  private readonly BACKEND_URL = 'http://localhost:8081/api/public/auth';
+  // private readonly FRONTEND_URL = 'http://localhost:4200';
+  // private readonly BACKEND_URL = 'http://localhost:8081/api/public/auth';
+
+  private readonly KEYCLOAK_URL = 'https://nutrifit-production-c4b6.up.railway.app/realms/master';
+  private readonly FRONTEND_URL = 'https://front-end-production-0ec7.up.railway.app';
+  private readonly BACKEND_URL = 'https://backend-production-44d4.up.railway.app/api/public/auth';
 
   constructor(
     private http: HttpClient,
