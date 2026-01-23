@@ -8,7 +8,7 @@ server:
 # =========================================
 spring:
   datasource:
-    url: jdbc:postgresql://${RAILWAY_PRIVATE_DOMAIN:localhost}:5432/railway
+    url: jdbc:postgresql://postgres.railway.internal:5432/railway
     username: postgres
     password: ${RAILWAY_POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
