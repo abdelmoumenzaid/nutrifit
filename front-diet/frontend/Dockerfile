@@ -1,19 +1,17 @@
-# Base Node
 FROM node:20-alpine
 WORKDIR /app
 
-# Installer les dépendances
+# Copier package.json pour test
 COPY package*.json ./
+
+# Lister les fichiers pour debug
+RUN echo "===== CONTENU DU DOSSIER /app =====" && ls -la
+
+# Installer dépendances
 RUN npm install
 
-# Copier tout le projet
+# Copier le reste du projet
 COPY . .
 
-# Build Angular
-RUN npm run build --configuration=production
-
-# Exposer le port
-EXPOSE 8080
-
-# Lancer Express
-CMD ["node", "server.js"]
+# Lister le contenu après copie
+RUN echo "===== CONTENU APRES COPY =====" && ls -la
