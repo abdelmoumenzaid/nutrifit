@@ -1,24 +1,20 @@
-# Build Angular
+# ---------- BUILD ----------
 FROM node:20-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
-RUN npm run build -- --configuration=production
+RUN npm run build
 
-# Serve with Nginx
+# ---------- NGINX ----------
 FROM nginx:alpine
 
-# Supprime la config par défaut
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copie la bonne config nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# ⚠️ CHEMIN IMPORTANT
+# 🔴 ON COPIE LE DOSSIER BROWSER (PAS DIST)
 COPY --from=build /app/dist/app-diet/browser /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
