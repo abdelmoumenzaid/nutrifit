@@ -1,14 +1,14 @@
 import Keycloak from 'keycloak-js';
+import { environment } from '../../../environments/environment';
 
 let keycloakInstance: Keycloak | null = null;
 
 export function initializeKeycloak(): Promise<boolean> {
   keycloakInstance = new Keycloak({
-  url: 'https://nutrifit-production-c4b6.up.railway.app',
-  realm: 'nutrifit',
-  clientId: 'diet-frontend'
-});
-
+    url: environment.keycloak.url,           // ✅ Utilise l'environment
+    realm: environment.keycloak.realm,       // ✅ Utilise l'environment
+    clientId: environment.keycloak.clientId  // ✅ Utilise l'environment
+  });
 
   return keycloakInstance
     .init({
@@ -21,7 +21,7 @@ export function initializeKeycloak(): Promise<boolean> {
     })
     .catch((error) => {
       console.error('❌ Keycloak init error:', error);
-      return true;
+      return true; // Continue même si Keycloak échoue
     });
 }
 

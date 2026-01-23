@@ -1,9 +1,10 @@
+// src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/api',
+  apiUrl: 'https://backend-production-44d4.up.railway.app/api',
   keycloak: {
-    url: 'http://localhost:8082',
-    realm: 'diet-realm',
-    clientId: 'angular-frontend'
+    url: 'https://nutrifit-production-c4b6.up.railway.app',
+    realm: 'nutrifit',                      // ← Change de master à nutrifit
+    clientId: 'diet-frontend'               // ← Change de angular-frontend
   }
 };
