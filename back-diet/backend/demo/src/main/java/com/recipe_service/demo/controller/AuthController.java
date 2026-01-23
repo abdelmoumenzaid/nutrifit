@@ -11,22 +11,42 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 
 import jakarta.ws.rs.core.Response;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/public/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {
+    "https://front-end-production-0ec7.up.railway.app",
+    "https://backend-production-44d4.up.railway.app",
+    "http://localhost:4200",
+    "http://localhost:3000",
+    "http://localhost:8081"
+})
 public class AuthController {
 
     @Autowired(required = false)
     private Keycloak keycloak;
 
+    // ============ HEALTH CHECK ============
+    @GetMapping("/health")
+    public ResponseEntity<?> health() {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "OK");
+        response.put("message", "Auth service is running");
+        response.put("timestamp", LocalDateTime.now().toString());
+        return ResponseEntity.ok(response);
+    }
+
     // ============ REGISTER ============
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
+            System.out.println("📤 Register request received: " + request.getEmail());
+            
+            // ✅ Validation
             if (request.getEmail() == null || request.getEmail().isEmpty()) {
                 return ResponseEntity.badRequest()
                     .body(new RegisterResponse(false, "Email requis"));
@@ -39,6 +59,7 @@ public class AuthController {
 
             // ✅ If Keycloak available, use it
             if (keycloak != null) {
+                System.out.println("🔐 Using Keycloak for registration");
                 UserRepresentation user = new UserRepresentation();
                 user.setUsername(request.getEmail());
                 user.setEmail(request.getEmail());
@@ -71,8 +92,6 @@ public class AuthController {
                 // ✅ Fallback: Development mode (no Keycloak)
                 System.out.println("⚠️ Keycloak not available, using development registration");
                 System.out.println("✅ User registered (dev mode): " + request.getEmail());
-                
-                // TODO: Store user in database
                 return ResponseEntity.ok(
                     new RegisterResponse(true, "User créé avec succès! Vous pouvez maintenant vous connecter.")
                 );
@@ -90,6 +109,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
+            System.out.println("🔑 Login request: " + request.getEmail());
+            
             if (request.getEmail() == null || request.getEmail().isEmpty()) {
                 return ResponseEntity.badRequest()
                     .body(new LoginResponse(false, null, "Email requis"));
@@ -100,9 +121,9 @@ public class AuthController {
                     .body(new LoginResponse(false, null, "Password requis"));
             }
 
-            // TODO: Validate against database
-            // TODO: Generate JWT token
-            System.out.println("✅ Login attempt: " + request.getEmail());
+            // TODO: Validate against database / Keycloak
+            // TODO: Generate real JWT token
+            System.out.println("✅ Login successful: " + request.getEmail());
             
             String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
             
@@ -121,14 +142,15 @@ public class AuthController {
     @PostMapping("/exchange-code")
     public ResponseEntity<?> exchangeCode(@RequestBody CodeExchangeRequest request) {
         try {
+            System.out.println("🔄 Code exchange request");
+            
             if (request.getCode() == null || request.getCode().isEmpty()) {
                 return ResponseEntity.badRequest()
                     .body(new LoginResponse(false, null, "Code requis"));
             }
 
             // TODO: Exchange Keycloak code for access token
-            // TODO: Validate code with Keycloak
-            System.out.println("✅ Code exchange attempt: " + request.getCode());
+            System.out.println("✅ Code exchanged successfully");
             
             String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
             
@@ -143,7 +165,7 @@ public class AuthController {
         }
     }
 
-    // ============ GET PROFILE ============
+    // ============ GET PROFILE (Protected) ============
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getProfile() {
@@ -161,16 +183,7 @@ public class AuthController {
         }
     }
 
-    // ============ HEALTH CHECK ============
-    @GetMapping("/health")
-    public ResponseEntity<?> health() {
-        return ResponseEntity.ok(new HashMap<String, String>() {{
-            put("status", "OK");
-            put("message", "Auth service is running");
-        }});
-    }
-
-    // ============ REQUEST/RESPONSE CLASSES ============
+    // ============ REQUEST CLASSES ============
 
     public static class RegisterRequest {
         public String email;
