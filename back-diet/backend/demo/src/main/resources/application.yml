@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${RAILWAY_PRIVATE_DOMAIN}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://backend.railway.internal:5432/railway
+    username: postgres
+    password: nozXcxuaFafFXvTHkcKYEyMbgZXxrGRe
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -37,17 +37,17 @@ spring:
 
 keycloak:
   server-url: https://nutrifit-production-c4b6.up.railway.app
-  admin-username: ${KEYCLOAK_ADMIN:admin}
-  admin-password: ${KEYCLOAK_ADMIN_PASSWORD:admin123}
+  admin-username: admin
+  admin-password: admin123
   admin-client-id: admin-cli
 
 ai:
   agent:
-    url: ${AI_AGENT_URL:http://127.0.0.1:8000}
+    url: http://127.0.0.1:8000
 
 calorieninjas:
   api:
-    key: ${CALORIENINJAS_API_KEY:So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84}
+    key: So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84
 
 web:
   cors:
