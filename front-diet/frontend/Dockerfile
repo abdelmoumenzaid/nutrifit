@@ -4,20 +4,14 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copier depuis la racine du repo (app-diet/)
 COPY front-diet/frontend/package*.json ./
-
 RUN npm install
-
-# Copier tout le code frontend
 COPY front-diet/frontend/ ./
-
 RUN npm run build --configuration=production
 
 # ---------- RUNTIME Nginx ----------
 FROM nginx:alpine
 
-# Générer la config nginx
 RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    listen 80;' >> /etc/nginx/conf.d/default.conf && \
     echo '    server_name _;' >> /etc/nginx/conf.d/default.conf && \
