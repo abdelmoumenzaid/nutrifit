@@ -14,17 +14,15 @@ COPY frontend/ ./
 # Build Angular
 RUN npm run build --configuration=production
 
-# ---------- RUNTIME Express ----------
-FROM node:20-alpine
-WORKDIR /app
+# ---------- RUNTIME Nginx ----------
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
 
-# Copier server + build + package.json runtime
-COPY frontend/package*.json ./
-COPY frontend/server.js ./
-COPY --from=build /app/dist/app-diet/browser ./dist/app-diet/browser
+# Copier la config nginx
+COPY frontend/config/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Installer dépendances runtime
-RUN npm install --production
+# Copier les fichiers compilés Angular
+COPY --from=build /app/dist/app-diet/browser .
 
-EXPOSE 8080
-CMD ["node", "server.js"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
