@@ -1,0 +1,125 @@
+<div class="auth-container">
+  <!-- Header avec logo -->
+  <div class="auth-header">
+    <div class="logo-section">
+      <span class="logo-icon">🍲</span>
+      <h1>NutriCoach</h1>
+    </div>
+  </div>
+
+  <!-- Main Connexion Form -->
+  <div class="connexion-form">
+    <div class="form-header">
+      <h2>Se connecter</h2>
+      <p>Accédez à votre compte pour découvrir vos recettes personnalisées</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      <span>{{ error }}</span>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="success" class="success-message">
+      <span>{{ success }}</span>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="loginDirect()" class="form-content">
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email"
+          type="email" 
+          placeholder="votre@email.com"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          id="password"
+          type="password" 
+          placeholder="••••••••"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <!-- Remember & Forgot -->
+      <div class="form-options">
+        <label class="checkbox">
+          <input 
+            type="checkbox" 
+            id="remember" 
+            [(ngModel)]="rememberMe"
+            name="rememberMe"
+            [disabled]="loading"
+          />
+          <span>Se souvenir de moi</span>
+        </label>
+        <a href="#" (click)="forgotPassword()" class="forgot-link">
+          Mot de passe oublié?
+        </a>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn btn-primary btn-full"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+      </button>
+
+      <!-- Divider -->
+      <div class="form-divider">
+        <span>ou</span>
+      </div>
+
+      <!-- Google Login Button -->
+      <button 
+        type="button" 
+        class="btn btn-social"
+        (click)="loginWithKeycloak()"
+        [disabled]="loading"
+      >
+        <span class="social-icon">🔓</span>
+        Continuer avec Keycloak
+      </button>
+    </form>
+
+    <!-- Sign Up Link -->
+    <div class="form-footer">
+      <p>Pas de compte? <a href="#" (click)="goToRegister()" class="sign-up-link">Créer un compte</a></p>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="back-section">
+    <a href="#" (click)="goBackToLanding()" class="back-link">← Retour à l'accueil</a>
+  </div>
+
+  <!-- Language Selector -->
+  <div class="language-selector">
+    <div class="lang-options">
+      <span class="lang-link" (click)="setLanguage('darija')">Darija</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('fr')">FR</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('ar')">AR</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('en')">EN</span>
+    </div>
+  </div>
+</div>

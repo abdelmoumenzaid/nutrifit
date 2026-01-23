@@ -1,0 +1,156 @@
+<div class="personal-page">
+  <div class="personal-header">
+    <button class="back-link" (click)="onCancel()">← Retour</button>
+    <div class="title-block">
+      <h1>Restrictions alimentaires</h1>
+      <p class="subtitle">
+        Indique tes allergies, intolérances et préférences pour adapter les recettes.
+      </p>
+    </div>
+  </div>
+
+  <form class="form" (ngSubmit)="onSave()">
+    <!-- 1️⃣ Régime -->
+    <div class="field-group">
+      <h2>Type de régime</h2>
+
+      <div class="field">
+        <label>Mon régime alimentaire</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'standard'"
+            (click)="dietType = 'standard'"
+          >
+            Standard
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'vegetarian'"
+            (click)="dietType = 'vegetarian'"
+          >
+            Végétarien
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'vegan'"
+            (click)="dietType = 'vegan'"
+          >
+            Végan
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'keto'"
+            (click)="dietType = 'keto'"
+          >
+            Kéto
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2️⃣ Allergies courantes -->
+    <div class="field-group">
+      <h2>Allergies courantes</h2>
+
+      <div class="checkbox-grid">
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.gluten"
+            name="gluten"
+          />
+          Gluten
+        </label>
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.lactose"
+            name="lactose"
+          />
+          Lactose
+        </label>
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.nuts"
+            name="nuts"
+          />
+          Fruits à coque
+        </label>
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.shellfish"
+            name="shellfish"
+          />
+          Fruits de mer
+        </label>
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.eggs"
+            name="eggs"
+          />
+          Œufs
+        </label>
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [(ngModel)]="commonAllergies.soy"
+            name="soy"
+          />
+          Soja
+        </label>
+      </div>
+    </div>
+
+    <!-- 3️⃣ Autres restrictions -->
+    <div class="field-group">
+      <h2>Autres restrictions</h2>
+
+      <div class="field">
+        <label>Allergies / intolérances (autres)</label>
+        <input
+          type="text"
+          [(ngModel)]="allergies"
+          name="allergies"
+          placeholder="arachides, sésame, etc."
+        />
+      </div>
+
+      <div class="field">
+        <label>Aliments à éviter</label>
+        <input
+          type="text"
+          [(ngModel)]="dislikedFoods"
+          name="dislikedFoods"
+          placeholder="poisson, fromage, épinards…"
+        />
+      </div>
+
+      <div class="field">
+        <label>Conditions médicales</label>
+        <textarea
+          [(ngModel)]="medicalConditions"
+          name="medicalConditions"
+          rows="3"
+          placeholder="diabète, hypertension, etc."
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-primary">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>

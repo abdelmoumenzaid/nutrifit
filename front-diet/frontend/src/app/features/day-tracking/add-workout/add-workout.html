@@ -1,0 +1,120 @@
+<div class="add-workout-page">
+  <header class="add-workout-header">
+    <button class="back-link" (click)="onCancel()">‹ Retour</button>
+    <div class="title-block">
+      <h1>Ajouter une séance</h1>
+      <p class="subtitle">
+        {{ date | date : 'EEEE d MMMM y' : undefined : 'fr-FR' }}
+      </p>
+    </div>
+  </header>
+
+  <form class="form" (ngSubmit)="onSave()">
+    <div class="field">
+      <label>Nom de la séance</label>
+      <input
+        type="text"
+        [(ngModel)]="name"
+        name="name"
+        placeholder="Ex: Full body force"
+      />
+    </div>
+
+    <div class="field-inline">
+      <div class="field">
+        <label>Heure</label>
+        <input type="time" [(ngModel)]="time" name="time" />
+      </div>
+      <div class="field">
+        <label>Durée (min)</label>
+        <input
+          type="number"
+          [(ngModel)]="durationMin"
+          name="durationMin"
+          min="0"
+        />
+      </div>
+      <div class="field">
+        <label>Calories brûlées (optionnel)</label>
+        <input
+          type="number"
+          [(ngModel)]="caloriesBurned"
+          name="caloriesBurned"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <h2 class="section-title">Séries / exercices</h2>
+
+    <div class="sets-container">
+      <div class="set-card" *ngFor="let s of sets; let i = index">
+        <div class="set-header">
+          <span>Série {{ s.setNumber }}</span>
+          <button
+            type="button"
+            class="remove-set"
+            *ngIf="sets.length > 1"
+            (click)="removeSet(i)"
+          >
+            Supprimer
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Exercice</label>
+          <input
+            type="text"
+            [(ngModel)]="s.exerciseName"
+            name="exerciseName-{{ i }}"
+            placeholder="Ex: Squat, Développé couché..."
+          />
+        </div>
+
+        <div class="field-inline">
+          <div class="field">
+            <label>Reps</label>
+            <input
+              type="number"
+              [(ngModel)]="s.reps"
+              name="reps-{{ i }}"
+              min="0"
+            />
+          </div>
+          <div class="field">
+            <label>Poids (kg)</label>
+            <input
+              type="number"
+              [(ngModel)]="s.weightKg"
+              name="weight-{{ i }}"
+              min="0"
+              step="0.5"
+            />
+          </div>
+          <div class="field">
+            <label>Durée (sec)</label>
+            <input
+              type="number"
+              [(ngModel)]="s.durationSec"
+              name="duration-{{ i }}"
+              min="0"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-add-set" (click)="addSet()">
+      + Ajouter une série
+    </button>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-primary">
+        Enregistrer la séance
+      </button>
+    </div>
+  </form>
+</div>

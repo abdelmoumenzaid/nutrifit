@@ -1,0 +1,13 @@
+# 1. Copie modifs
+docker cp .\keycloak-extract\login 7a54e3b100a5:/opt/keycloak/themes/keycloak-theme/
+
+# 2. Restart Keycloak
+docker restart 7a54e3b100a5
+
+# 3. Vérifier
+docker exec 7a54e3b100a5 ls -la /opt/keycloak/themes/keycloak-theme/login/resources/css/
+
+echo "✅ MODIFS APPLIQUEES!"
+
+
+pour faire la maj du thème Keycloak avec les fichiers modifiés dans frontend/src/assets/keycloak-theme/login

@@ -1,0 +1,170 @@
+﻿/* NUTRICOACH KEYCLOAK THEME */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* FULLSCREEN BACKGROUND */
+html, body {
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* CACHE TOUT REALM */
+#kc-header {
+  display: none !important;
+}
+
+.kcHeader, .kc-realm-name, #kc-realm, [data-realm-name] {
+  display: none !important;
+}
+
+.kcLogoRow {
+  display: none !important;
+}
+
+/* CONTAINER CENTER */
+#kc-container, #kc-container-wrapper, .login-pf {
+  background: transparent !important;
+  min-height: 100vh !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem !important;
+}
+
+/* FORM CARD */
+#kc-form, .login-pf-page, #kc-form-wrapper {
+  max-width: 450px !important;
+  width: 100% !important;
+  background: rgba(255,255,255,0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 32px !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.08) !important;
+  padding: 4rem 3rem !important;
+}
+
+/* LOGO BOL (AVANT titre) */
+.kcFormCard::before {
+  content: '🍲';
+  display: block;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TITRE */
+#kc-page-title {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* LABELS CACHÉES */
+.kcFormGroupLabel, label {
+  display: none !important;
+}
+
+/* INPUTS */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+.kcInput {
+  height: 56px !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  padding: 0 1.25rem !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  background: rgba(255,255,255,0.9) !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  margin-bottom: 1.5rem !important;
+}
+
+input::placeholder {
+  color: #94a3b8 !important;
+  font-size: 1rem !important;
+}
+
+input:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.1) !important;
+  outline: none !important;
+}
+
+/* BOUTON */
+#kc-login,
+.btn-primary,
+.kcButtonPrimary {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 1.3rem 2.5rem !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  color: white !important;
+  width: 100% !important;
+  box-shadow: 0 12px 35px rgba(16,185,129,0.4) !important;
+  cursor: pointer !important;
+  transition: all 0.4s ease !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+}
+
+#kc-login:hover,
+.btn-primary:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 20px 45px rgba(16,185,129,0.5) !important;
+}
+
+/* OEL PASSWORD */
+.fa-eye {
+  color: #94a3b8 !important;
+}
+
+/* FOOTER */
+#kc-info,
+.kcInfo {
+  text-align: center !important;
+  color: #94a3b8 !important;
+  font-size: 0.85rem !important;
+  margin-top: 2rem !important;
+  border-top: 1px solid #e2e8f0 !important;
+  padding-top: 1.5rem !important;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  #kc-form {
+    padding: 2.5rem 2rem !important;
+    border-radius: 24px !important;
+  }
+  
+  #kc-page-title {
+    font-size: 1.7rem !important;
+  }
+}

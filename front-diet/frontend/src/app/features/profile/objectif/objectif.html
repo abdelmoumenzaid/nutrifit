@@ -1,0 +1,203 @@
+<div class="personal-page">
+  <div class="personal-header">
+    <button class="back-link" (click)="onCancel()">← Retour</button>
+    <div class="title-block">
+      <h1>Mes objectifs</h1>
+      <p class="subtitle">
+        Ces objectifs servent à ajuster ton plan de nutrition, d'entraînement et de suivi.
+      </p>
+    </div>
+  </div>
+
+  <form class="form" (ngSubmit)="onSave()">
+    <!-- 1️⃣ Objectif poids / composition -->
+    <div class="field-group">
+      <h2>Objectif principal</h2>
+
+      <div class="field">
+        <label>Type d'objectif</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'loss'"
+            (click)="goal = 'loss'"
+          >
+            Perte de poids
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'maintain'"
+            (click)="goal = 'maintain'"
+          >
+            Maintien
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'gain'"
+            (click)="goal = 'gain'"
+          >
+            Prise de masse
+          </button>
+        </div>
+      </div>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>Poids cible (kg)</label>
+          <input
+            type="number"
+            [(ngModel)]="targetWeightKg"
+            name="targetWeightKg"
+            min="30"
+            max="250"
+          />
+        </div>
+        <div class="field">
+          <label>% masse grasse cible</label>
+          <input
+            type="number"
+            [(ngModel)]="targetBodyFat"
+            name="targetBodyFat"
+            min="5"
+            max="50"
+          />
+        </div>
+        <div class="field">
+          <label>Horizon (semaines)</label>
+          <input
+            type="number"
+            [(ngModel)]="timeFrameWeeks"
+            name="timeFrameWeeks"
+            min="4"
+            max="52"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 2️⃣ Objectifs sportifs -->
+    <div class="field-group">
+      <h2>Objectifs sportifs</h2>
+
+      <div class="field">
+        <label>Ce que tu veux prioriser</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="strengthGoal"
+            (click)="strengthGoal = !strengthGoal"
+          >
+            Force / muscle
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="cardioGoal"
+            (click)="cardioGoal = !cardioGoal"
+          >
+            Cardio
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="enduranceGoal"
+            (click)="enduranceGoal = !enduranceGoal"
+          >
+            Endurance
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="mobilityGoal"
+            (click)="mobilityGoal = !mobilityGoal"
+          >
+            Mobilité / souplesse
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Autre objectif sportif (optionnel)</label>
+        <input
+          type="text"
+          [(ngModel)]="customSportGoal"
+          name="customSportGoal"
+          placeholder="Ex : passer sous les 25 min au 5 km, faire 10 tractions…"
+        />
+      </div>
+    </div>
+
+    <!-- 3️⃣ Priorités du programme -->
+    <div class="field-group">
+      <h2>Priorité du programme</h2>
+
+      <div class="field">
+        <label>Quel aspect est le plus important pour toi ?</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="focus === 'nutrition'"
+            (click)="focus = 'nutrition'"
+          >
+            Nutrition en priorité
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="focus === 'training'"
+            (click)="focus = 'training'"
+          >
+            Entraînement en priorité
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="focus === 'balanced'"
+            (click)="focus = 'balanced'"
+          >
+            Équilibre des deux
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4️⃣ Motivation & contraintes -->
+    <div class="field-group">
+      <h2>Motivation & contraintes</h2>
+
+      <div class="field">
+        <label>Pourquoi tu veux atteindre cet objectif ?</label>
+        <textarea
+          [(ngModel)]="motivation"
+          name="motivation"
+          rows="3"
+          placeholder="Ex : santé, confiance, performance sportive…"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label>Contraintes importantes à respecter</label>
+        <textarea
+          [(ngModel)]="constraints"
+          name="constraints"
+          rows="3"
+          placeholder="Planning, blessures, matériel dispo, budget, etc."
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-primary">
+        Sauvegarder mes objectifs
+      </button>
+    </div>
+  </form>
+</div>

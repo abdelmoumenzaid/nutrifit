@@ -1,0 +1,161 @@
+<!-- day-tracking.html -->
+<div class="page tracking-page">  <!-- ← Ajoute "page" ici -->
+    <!-- Header -->
+    <div class="tracking-header">
+        <div class="header-left">
+            <button class="back-link" (click)="goToToday()">← Aujourd'hui</button>
+            <div class="title-block">
+                <h1>{{ displayDate }}</h1>
+                <p class="subtitle">Suivi complet du jour</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="pill-btn" (click)="goToOffset(-1)">← Hier</button>
+            <button class="pill-btn" (click)="goToOffset(1)">Demain →</button>
+        </div>
+    </div>
+
+    <!-- Week Rings -->
+    <div class="rings-wrapper">
+        <div class="rings-row">
+            <button
+                *ngFor="let r of weekRings"
+                class="ring-card"
+                (click)="goToDate(r.date)"
+            >
+                <div
+                    class="ring"
+                    [style.--ring-progress]="getRingRotation(r) + 'deg'"
+                    [style.--ring-color]="getRingColor(r)"
+                >
+                    <div class="ring-progress" [style.background]="'conic-gradient(' + getRingColor(r) + ' ' + getRingRotation(r) + 'deg, #1f2937 0deg)'">
+                        <div class="ring-inner">
+                            <span class="ring-emoji">{{ getRingEmoji(r) }}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="ring-label">{{ r.label }}</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-state">
+        <p>Chargement des données...</p>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error && !loading" class="error-state">
+        <p>⚠️ {{ error }}</p>
+    </div>
+
+    <!-- Content protected by *ngIf="day" -->
+    <ng-container *ngIf="day && !loading && !error">
+        <!-- Summary Grid -->
+        <div class="summary-grid">
+            <div class="card">
+                <h2>Calories consommées</h2>
+                <p class="big">
+                    {{ day.caloriesIn }}
+                    <span class="unit">kcal</span>
+                </p>
+                <p class="muted">sur {{ day.caloriesTarget }} kcal</p>
+                <div class="progress-bar">
+                    <div
+                        class="progress-fill"
+                        [style.width.%]="(day.caloriesIn / day.caloriesTarget) * 100"
+                    ></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Calories brûlées</h2>
+                <p class="big">
+                    {{ day.caloriesOut }}
+                    <span class="unit">kcal</span>
+                </p>
+                <p class="muted">Entraînement</p>
+            </div>
+
+            <div class="card">
+                <h2>Entraînement</h2>
+                <p class="big">
+                    {{ day.totalWorkoutMinutes }}
+                    <span class="unit">min</span>
+                </p>
+                <p class="muted">{{ day.totalSets }} séries</p>
+            </div>
+        </div>
+
+        <!-- Meals Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Repas du jour</h2>
+                <button class="text-btn" (click)="onAddMeal()">+ Ajouter</button>
+            </div>
+
+            <div *ngIf="day.meals && day.meals.length > 0; else noMeals" class="meal-list">
+                <div *ngFor="let meal of day.meals; trackBy: trackByMealId" class="meal-item">
+                    <button class="meal-card" (click)="onEditMeal(meal)">
+                        <img [src]="meal.imageUrl" [alt]="meal.recipeName" />
+                        <div class="meal-body">
+                            <div class="meal-header">
+                                <span class="meal-label">{{ meal.label }}</span>
+                                <span class="meal-time">{{ meal.time }}</span>
+                            </div>
+                            <h3>{{ meal.recipeName }}</h3>
+                            <p class="muted">
+                                {{ meal.calories }} kcal · {{ meal.servings }} portion
+                            </p>
+                        </div>
+                    </button>
+                    <button class="delete-btn" (click)="onDeleteMeal(meal.id); $event.stopPropagation()">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+
+            <ng-template #noMeals>
+                <p class="empty">Aucun repas loggé pour ce jour.</p>
+            </ng-template>
+        </div>
+
+        <!-- Workouts Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Entraînements</h2>
+                <button class="text-btn" (click)="onAddWorkout()">+ Ajouter</button>
+            </div>
+
+            <div *ngIf="day.workouts && day.workouts.length > 0; else noWorkouts" class="workout-list">
+                <div *ngFor="let w of day.workouts" class="workout-card">
+                    <div class="workout-header">
+                        <h3>{{ w.name }}</h3>
+                        <p class="muted">
+                            {{ w.time }} · {{ w.durationMin }} min · {{ w.caloriesBurned || 0 }} kcal · {{ w.totalSets }} séries
+                        </p>
+                    </div>
+                    <div *ngIf="w.sets && w.sets.length > 0" class="sets-list">
+                        <div *ngFor="let s of w.sets" class="set-row">
+                            <span class="set-exercise">
+                                {{ s.exerciseName }} #{{ s.setNumber }}
+                            </span>
+                            <span class="set-detail">
+                                <ng-container *ngIf="s.reps">
+                                    {{ s.reps }} reps
+                                </ng-container>
+                                <ng-container *ngIf="s.weightKg">
+                                    · {{ s.weightKg }}kg
+                                </ng-container>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noWorkouts>
+                <p class="empty">Aucun entraînement loggé pour ce jour.</p>
+            </ng-template>
+        </div>
+    </ng-container>
+</div>

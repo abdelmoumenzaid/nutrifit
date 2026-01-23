@@ -1,0 +1,187 @@
+<div class="training-page">
+  <header class="page-header">
+    <h1>Entraînement & Musculation</h1>
+    <p>Des exercices adaptés à ton objectif</p>
+    <button class="primary-btn">Créer mon plan</button>
+  </header>
+
+  <!-- Séance du jour -->
+  <section class="session-card">
+    <div class="session-left">
+      <h2>Séance du jour</h2>
+      <div class="badge goal">{{ objective }}</div>
+      <p class="label">Progression</p>
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="progressPercent"
+        ></div>
+      </div>
+      <p class="session-text">
+        {{ done }} / {{ total }} exercices
+      </p>
+      <button class="outline-btn">Voir mon plan</button>
+    </div>
+    <div class="session-right">
+      🏋️‍♀️
+    </div>
+  </section>
+
+  <!-- Liste exercices -->
+  <section>
+    <h2>Exercices</h2>
+
+    <div class="exercise-grid">
+      <div class="exercise-card" *ngFor="let ex of exercises">
+        <img [src]="ex.image" [alt]="ex.name" />
+        <div class="card-body">
+          <h3>{{ ex.name }}</h3>
+          <div class="tags">
+            <span class="tag">{{ ex.muscle }}</span>
+            <span class="tag">{{ ex.level }}</span>
+          </div>
+          <button
+            class="fav-btn"
+            (click)="toggleFavorite(ex); $event.stopPropagation()"
+          >
+            ♡
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Création de plan -->
+  <section class="plan-builder">
+    <h2>Créer mon plan d'entraînement</h2>
+
+    <div class="builder-row">
+      <label>1. Mon objectif</label>
+      <div class="chips">
+        <button
+          class="chip"
+          [class.active]="objective === 'Perte de graisse'"
+          (click)="setObjective('Perte de graisse')"
+        >
+          Perte de graisse
+        </button>
+        <button
+          class="chip"
+          [class.active]="objective === 'Prise de muscle'"
+          (click)="setObjective('Prise de muscle')"
+        >
+          Prise de muscle
+        </button>
+        <button
+          class="chip"
+          [class.active]="objective === 'Maintien'"
+          (click)="setObjective('Maintien')"
+        >
+          Maintien
+        </button>
+      </div>
+    </div>
+
+    <div class="builder-row">
+      <label>2. Séances par semaine</label>
+      <div class="chips">
+        <button
+          class="chip"
+          [class.active]="sessionsPerWeek === 2"
+          (click)="setSessions(2)"
+        >
+          2 jours
+        </button>
+        <button
+          class="chip"
+          [class.active]="sessionsPerWeek === 3"
+          (click)="setSessions(3)"
+        >
+          3 jours
+        </button>
+        <button
+          class="chip"
+          [class.active]="sessionsPerWeek === 4"
+          (click)="setSessions(4)"
+        >
+          4 jours
+        </button>
+        <button
+          class="chip"
+          [class.active]="sessionsPerWeek === 5"
+          (click)="setSessions(5)"
+        >
+          5 jours
+        </button>
+        <button
+          class="chip"
+          [class.active]="sessionsPerWeek === 6"
+          (click)="setSessions(6)"
+        >
+          6 jours
+        </button>
+      </div>
+    </div>
+
+    <div class="builder-row">
+      <label>3. Type de split</label>
+      <div class="chips">
+        <button
+          class="chip"
+          [class.active]="split === 'Full body'"
+          (click)="setSplit('Full body')"
+        >
+          Full body
+        </button>
+        <button
+          class="chip"
+          [class.active]="split === 'Upper / Lower'"
+          (click)="setSplit('Upper / Lower')"
+        >
+          Upper / Lower
+        </button>
+        <button
+          class="chip"
+          [class.active]="split === 'Push Pull Legs'"
+          (click)="setSplit('Push Pull Legs')"
+        >
+          Push Pull Legs
+        </button>
+      </div>
+    </div>
+
+    <div class="builder-row">
+      <label>4. Mes exercices</label>
+      <div class="selected-box">
+        Sélectionnez des exercices ci-dessus pour les ajouter à votre plan
+        (placeholder).
+      </div>
+    </div>
+
+    <button class="primary-btn wide" (click)="generatePlan()">
+      Générer mon plan d'entraînement
+    </button>
+  </section>
+
+  <!-- Plans sauvegardés -->
+  <section class="saved-plans">
+    <h2>Mes plans sauvegardés</h2>
+    <div class="plans-grid">
+      <div
+        class="plan-card"
+        *ngFor="let plan of savedPlans"
+        (click)="openPlan(plan.id)"
+      >
+        <h3>{{ plan.name }}</h3>
+        <div class="plan-tags">
+          <span class="tag goal">{{ plan.goal }}</span>
+        </div>
+        <p class="plan-desc">
+          {{ plan.sessions }} séances / semaine<br />
+          Split: {{ plan.split }}
+        </p>
+        <button class="outline-btn small">Voir / Modifier</button>
+      </div>
+    </div>
+  </section>
+</div>

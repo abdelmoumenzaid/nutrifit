@@ -1,0 +1,129 @@
+<div class="recipes-page">
+  <h1>Toutes les recettes</h1>
+
+  <!-- 🔥 Générateur AI -->
+  <div class="ai-generator">
+    <input
+      type="text"
+      [(ngModel)]="aiPrompt"
+      placeholder="recette poulet rapide, tajine, salade..."
+      class="ai-input"
+    />
+    <button class="ai-btn" (click)="generateAIRecipe()" [disabled]="aiLoading">
+      🔥 Générer AI
+    </button>
+  </div>
+
+  <!-- Recherche -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Rechercher une recette..."
+      [(ngModel)]="search"
+      (keyup.enter)="onSearch()"
+    />
+  </div>
+
+  <!-- Filtres principaux -->
+  <div class="filters">
+    <button
+      class="chip"
+      [class.active]="activeFilter === 'all'"
+      (click)="setFilter('all')"
+    >
+      Tout
+    </button>
+
+    <button
+      class="chip"
+      [class.active]="activeFilter === 'snack'"
+      (click)="setFilter('snack')"
+    >
+      desserts
+    </button>
+
+    <!-- 🔥 Generated AI -->
+    <!-- <button
+      class="chip ai-chip"
+      [class.active]="selectedCategory === 'Generated AI'"
+      (click)="applyCategoryFilter('Generated AI')"
+    >
+      🔥 Generated AI
+    </button> -->
+      <button
+  class="chip ai-chip"
+  [class.active]="selectedCategory === 'Generated AI'"
+  (click)="applyCategoryFilter('Generated AI')"
+>
+  <span class="ai-desktop">🔥 Generated AI</span>
+  <span class="ai-mobile">🤖 IA</span>
+</button>
+
+    <button class="chip more" (click)="toggleMoreFilters()">
+      Plus de filtres ▾
+    </button>
+  </div>
+
+  <!-- Panel catégories backend -->
+  <div class="more-filters" *ngIf="showMoreFilters">
+    <p>Catégories :</p>
+    <div class="categories-list">
+      <button
+        *ngFor="let c of categories"
+        class="chip small"
+        [class.active]="selectedCategory === c"
+        (click)="applyCategoryFilter(c)"
+      >
+        {{ c }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Compteur -->
+  <div class="status">
+    <p class="count" *ngIf="!loading && !aiLoading">
+      {{ recipes.length }} recettes trouvées
+    </p>
+  </div>
+
+  <!-- Grille de recettes (limitée à visibleCount) -->
+  <div class="recipes-grid">
+    <div
+      class="recipe-card"
+      *ngFor="let recipe of recipes | slice: 0: visibleCount"
+      (click)="openRecipe(recipe)"
+    >
+      <!-- 🔥 Badge AI -->
+      <div *ngIf="recipe.source === 'AI'" class="ai-badge">🔥 AI</div>
+
+      <img
+        [src]="recipe.image"
+        [alt]="recipe.name"
+        class="card-image"
+        [class.loading]="loading"
+      />
+      <div class="card-body">
+        <h3>{{ recipe.name }}</h3>
+        <p class="desc">{{ recipe.description | slice: 0: 100 }}...</p>
+        <div class="meta">
+          <span class="pill">{{ recipe.calories }} kcal</span>
+          <span class="pill">{{ recipe.time }} min</span>
+          <span class="pill">{{ recipe.difficulty }}</span>
+        </div>
+        <button
+          class="link"
+          (click)="openRecipe(recipe); $event.stopPropagation()"
+        >
+          Voir la recette →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton Afficher plus -->
+  <div class="show-more-container" *ngIf="recipes.length > visibleCount">
+    <button class="show-more-btn" (click)="showMore()">
+      Afficher plus de recettes →
+    </button>
+  </div>
+</div>

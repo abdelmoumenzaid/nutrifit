@@ -1,0 +1,120 @@
+<!-- dashboard.html -->
+<div class="dashboard">
+
+  <!-- ============ HERO SECTION ============ -->
+  <section class="hero">
+    <div class="hero-top">
+      <h1>Bonjour {{ userName }} 👋</h1>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-item">
+        <p class="label">Objectif quotidien</p>
+        <p class="value">{{ targetCalories }} <span style="font-size: 14px;">kcal</span></p>
+      </div>
+
+      <div class="hero-progress">
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="progressPercent"
+          ></div>
+        </div>
+        <p class="consumed">{{ consumedCalories }} kcal consommées</p>
+      </div>
+
+      <div class="hero-item right">
+        <p class="label">Restant</p>
+        <p class="value">{{ remainingCalories }} <span style="font-size: 14px;">kcal</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAY PLAN SECTION ============ -->
+  <section class="day-plan">
+    <div class="day-plan-header">
+      <h2>Mon plan du jour</h2>
+      <button class="link-button" (click)="onNewPlan()">
+        🔄 Nouveau plan
+      </button>
+    </div>
+
+    <div class="meals">
+      <div class="meal-block" *ngFor="let meal of meals">
+        
+        <!-- Ligne principale (Petit-déjeuner, etc.) -->
+        <div class="meal-row" (click)="toggleMeal(meal)">
+          <div class="meal-left">
+            <div class="meal-icon">{{ meal.icon }}</div>
+            <div class="meal-info">
+              <p class="meal-label">{{ meal.label }}</p>
+              <p class="meal-sub">{{ meal.calories }} kcal</p>
+            </div>
+          </div>
+          <div class="meal-right">
+            <span class="chevron">
+              {{ meal.expanded ? '▲' : '▼' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Liste des recettes quand c'est ouvert -->
+        <div class="recipes-list" *ngIf="meal.expanded">
+          <div
+            class="recipe-card"
+            *ngFor="let recipe of meal.recipes"
+            (click)="openRecipeDetail(recipe)"
+          >
+            <div class="recipe-image">
+              <img [src]="recipe.image" [alt]="recipe.name" />
+            </div>
+
+            <div class="recipe-content">
+              <h3>{{ recipe.name }}</h3>
+              <p class="recipe-desc">{{ recipe.description }}</p>
+
+              <div class="recipe-meta">
+                <span class="badge">{{ recipe.calories }} kcal</span>
+                <span class="badge">{{ recipe.time }} min</span>
+                <span class="badge">{{ recipe.difficulty }}</span>
+                <span
+                  class="badge"
+                  *ngFor="let tag of recipe.tags"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
+
+            <div class="recipe-actions" (click)="$event.stopPropagation()">
+              <button 
+                class="icon-btn" 
+                (click)="onFavorite(recipe)"
+                [class.favorited]="recipe.isFavorite"
+                title="Ajouter aux favoris"
+              >
+                {{ recipe.isFavorite ? '♥' : '♡' }}
+              </button>
+              <button 
+                class="icon-btn" 
+                (click)="onReplace(recipe)"
+                title="Remplacer cette recette"
+              >
+                ↻
+              </button>
+              <button 
+                class="icon-btn"
+                (click)="openRecipeDetail(recipe)"
+                title="Voir les détails"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>

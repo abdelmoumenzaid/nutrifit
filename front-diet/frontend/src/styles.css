@@ -1,0 +1,81 @@
+/* styles.css - Global Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+}
+
+/* ============ APP ROOT ============ */
+
+app-root {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============ NAVBAR - TOUJOURS EN HAUT ============ */
+
+app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ============ ROUTER OUTLET ============ */
+
+router-outlet {
+  display: none;  /* ← router-outlet ne doit pas être visible */
+}
+
+/* ============ PAGES CONTENT ============ */
+
+.page {
+  margin-top: 64px;  /* ← Espace pour la navbar fixed */
+  padding: 24px;
+  background-color: #f9fafb;
+  min-height: calc(100vh - 64px);
+}
+
+/* ============ SCROLLBAR ============ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}

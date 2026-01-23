@@ -1,0 +1,40 @@
+<div class="photo-page">
+  <h1>Recette depuis mes ingrédients</h1>
+  <p class="subtitle">
+    Prends en photo ton frigo ou liste les ingrédients pour découvrir des recettes.
+  </p>
+
+  <!-- Bloc photo -->
+  <section class="card">
+    <h2>Photo de ton frigo</h2>
+
+    <label class="upload-zone">
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        hidden
+      />
+      <div class="upload-inner">
+        <div class="icon">⬆️</div>
+        <p class="title">
+          {{ selectedFileName ? selectedFileName : 'Prendre une photo ou importer une image' }}
+        </p>
+        <p class="hint">JPG, PNG jusqu'à 10MB</p>
+      </div>
+    </label>
+  </section>
+
+  <!-- Bloc texte ingrédients -->
+  <section class="card">
+    <h2>Ou liste tes ingrédients</h2>
+    <textarea
+      [(ngModel)]="ingredientsText"
+      placeholder="Écris ce que tu as dans ton frigo (ex&nbsp;: tomate, œufs, poivron...)"
+    ></textarea>
+  </section>
+
+  <button class="primary-btn" (click)="generateRecipes()">
+    ✨ Générer des recettes
+  </button>
+</div>

@@ -1,0 +1,42 @@
+<div class="personal-page">
+  <div class="personal-header">
+    <button class="back-link" (click)="onCancel()">← Retour</button>
+    <div class="title-block">
+      <h1>Langue de l’application</h1>
+      <p class="subtitle">
+        Choisis la langue utilisée pour les menus, recettes et conseils.
+      </p>
+    </div>
+  </div>
+
+  <form class="form" (ngSubmit)="onSave()">
+    <div class="field-group">
+      <h2>Langues disponibles</h2>
+
+      <div class="lang-list">
+        <button
+          type="button"
+          class="lang-row"
+          *ngFor="let lang of availableLangs"
+          [class.lang-active]="currentLang === lang.code"
+          (click)="selectLang(lang.code)"
+        >
+          <div class="lang-left">
+            <span class="lang-icon">🌐</span>
+            <span class="lang-label">{{ lang.label }}</span>
+          </div>
+          <span class="lang-check" *ngIf="currentLang === lang.code">✓</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-primary">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>

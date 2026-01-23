@@ -1,0 +1,72 @@
+<div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate">
+  <div class="hero">
+    <button class="back-btn" (click)="goBack()">←</button>
+    <img [src]="recipe.image" [alt]="recipe.name" />
+  </div>
+
+  <div class="content">
+    <h1>{{ recipe.name }}</h1>
+    <p class="description">{{ recipe.description }}</p>
+
+    <div class="meta-row">
+      <span class="pill">{{ recipe.calories }} kcal</span>
+      <span class="pill">{{ recipe.time }} min</span>
+      <span class="pill">{{ recipe.difficulty }}</span>
+    </div>
+
+    <div class="section" *ngIf="recipe.ingredients?.length">
+      <h2>Ingrédients</h2>
+      <div class="ingredients">
+        <div *ngFor="let ing of recipe.ingredients" class="ingredient-row">
+          <span class="name">{{ ing.name }}</span>
+          <span class="qty">{{ ing.quantity }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" *ngIf="recipe.steps?.length">
+      <h2>Préparation</h2>
+      <ul class="steps">
+        <li *ngFor="let step of recipe.steps; let i = index">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-text">{{ step }}</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Informations nutritionnelles</h2>
+      <div class="nutrition-grid">
+        <div class="nutri-card">
+          <div class="value">{{ recipe.nutrition.calories }}</div>
+          <div class="label">Calories</div>
+        </div>
+        <div class="nutri-card">
+          <div class="value">{{ recipe.nutrition.protein }} g</div>
+          <div class="label">Protéines</div>
+        </div>
+        <div class="nutri-card">
+          <div class="value">{{ recipe.nutrition.carbs }} g</div>
+          <div class="label">Glucides</div>
+        </div>
+        <div class="nutri-card">
+          <div class="value">{{ recipe.nutrition.fat }} g</div>
+          <div class="label">Lipides</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="primary-btn" (click)="addToPlan()">
+      Ajouter au plan →
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading-container" id="loader">
+    <div class="circle-loader"></div>
+    <p>🍽️ Recette en préparation…</p>
+  </div>
+</ng-template>

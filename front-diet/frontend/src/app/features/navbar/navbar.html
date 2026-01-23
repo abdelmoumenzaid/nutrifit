@@ -1,0 +1,54 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <img src="http://localhost:3000/api/images/logo.jpg" alt="NutriCoach" class="logo" />
+    <span class="brand">NutriCoach</span>
+  </div>
+
+  <!-- ✅ AJOUTEZ LE BOUTON HAMBURGER -->
+  <button class="menu-toggle" (click)="toggleMenu()" [class.open]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- ✅ AJOUTEZ [class.open]="menuOpen" -->
+  <nav class="navbar-right" [class.open]="menuOpen">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">🏠Plan</a>
+    <a routerLink="/recipes" routerLinkActive="active" (click)="closeMenu()">🥗Recettes</a>
+    <a routerLink="/entrainement" routerLinkActive="active" (click)="closeMenu()">💪Sport</a>
+    <!-- <a routerLink="/photo-recipe" routerLinkActive="active" (click)="closeMenu()">📸Photo</a> -->
+    <a routerLink="/chat" routerLinkActive="active" (click)="closeMenu()">🤖Chat</a>
+    <a routerLink="/calendar" routerLinkActive="active" (click)="closeMenu()">📅Agenda</a>
+    <a routerLink="/profil" routerLinkActive="active" (click)="closeMenu()">👤Profil</a>
+
+   
+
+
+  </nav>
+</header>
+
+
+
+<!-- <header class="navbar">
+  <div class="navbar-left">
+    <img src="http://localhost:3000/api/images/logo.jpg" alt="NutriCoach" class="logo" />
+    <span class="brand">NutriCoach</span>
+  </div>
+
+  <nav class="navbar-right">
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Plan
+    </a>
+    <a routerLink="/recipes" routerLinkActive="active">Recettes</a>
+    <a routerLink="/entrainement" routerLinkActive="active">Sport</a> 
+    <a routerLink="/photo-recipe" routerLinkActive="active">Photo</a> 
+    <a routerLink="/chat" routerLinkActive="active">Chat</a>
+    <a routerLink="/calendar" routerLinkActive="active">Agenda</a>
+    <a routerLink="/profil" routerLinkActive="active">Profil</a>
+    
+  </nav>
+</header> -->

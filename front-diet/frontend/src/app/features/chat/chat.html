@@ -1,0 +1,152 @@
+<!-- src/app/features/chat/chat.html -->
+<div class="chat-page">
+  <!-- Header vert -->
+  <header class="chat-header">
+
+    <div class="coach-icon-wrapper">
+    <img src="http://localhost:3000/api/images/chatbot1.png" alt="NutriCoach" class="coach-icon" />
+    </div>
+    <div class="coach-text">
+      <div class="coach-title">Coach IA</div>
+      <div class="coach-sub">Toujours disponible pour toi</div>
+    </div>
+      <button
+      type="button"
+      class="clear-btn"
+      (click)="clearChat()"
+    >
+      Effacer la conversation
+    </button>
+  </header>
+
+  <!-- Zone messages (scrollable) -->
+  <main class="chat-body">
+    <div class="messages" #chatMessages>
+      <div
+        *ngFor="let msg of messages; trackBy: trackByIndex"
+        class="msg-row"
+        [class.msg-bot]="msg.from === 'bot'"
+        [class.msg-user]="msg.from === 'user'"
+      >
+        <div class="bubble">
+          <!-- <p class="bubble-text" *ngIf="msg.text">{{ msg.text }}</p> -->
+           <p
+            class="bubble-text"
+            *ngIf="msg.text"
+            [innerHTML]="msg.htmlText || msg.text"
+          ></p>
+
+          <span class="bubble-time">{{ msg.time }}</span>
+
+          <!-- Cartes recette IA -->
+          <div *ngIf="msg.recipes?.length" class="recipes-row">
+            <div
+              class="recipe-card"
+              *ngFor="let r of msg.recipes "
+            >
+              <div class="recipe-card-image">
+                <img
+                  *ngIf="r.imageUrl"
+                  [src]="r.imageUrl"
+                  [alt]="r.title"
+                  (error)="onRecipeImageError($event)"
+                />
+              </div>
+
+              <div class="card-body">
+                <h3>{{ r.title }}</h3>
+                <p class="desc">
+                  {{ r.category }} - {{ r.area }}
+                </p>
+
+                <div class="meta">
+                  <span *ngIf="r.calories" class="pill">
+                    {{ r.calories }} kcal
+                  </span>
+                  <span *ngIf="r.readyInMinutes" class="pill">
+                    {{ r.readyInMinutes }} min
+                  </span>
+                  <span *ngIf="r.difficulty" class="pill">
+                    {{ r.difficulty }}
+                  </span>
+                </div>
+
+                <button
+                  class="recipe-btn"
+                  type="button"
+                  (click)="openRecipe(r)"
+                >
+                  Voir la recette →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions">
+      <div class="suggestions-title">Suggestions :</div>
+      <div class="suggestions-list">
+        <button
+          type="button"
+          class="suggestion-chip"
+          *ngFor="let s of suggestions"
+          (click)="useSuggestion(s)"
+        >
+          {{ s }}
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Barre de saisie FIXE en bas -->
+  <footer class="chat-input-bar">
+  <div class="input-wrapper">
+    <!-- Input texte (optionnel) -->
+    <input
+      type="text"
+      [(ngModel)]="input"
+      placeholder="Écris un message... (optionnel)"
+      (keyup)="onKeyUp($event)"
+      class="text-input"
+    />
+    
+    <!-- Bouton photo (remplace 📨) -->
+    <label for="imageUpload" class="image-btn">
+      📷
+    </label>
+    <input
+      #imageUpload
+      id="imageUpload"
+      type="file"
+      accept="image/*"
+      capture="environment"
+      multiple
+      (change)="onImageSelected($event)"
+      style="display: none;"
+    />
+    
+    <!-- Aperçu images sélectionnées -->
+    <div *ngIf="selectedImages.length" class="images-preview">
+      <img 
+        *ngFor="let img of selectedImages; let i = index"
+        [src]="img"
+        class="preview-thumb"
+        (click)="removeImage(i)"
+      />
+    </div>
+    
+    <!-- Bouton analyser (activé avec images) -->
+    <button
+      class="analyze-btn"
+      [disabled]="!selectedImages.length || loading"
+      (click)="analyzeImages()"
+    >
+      {{ loading ? '🔍 Analyse...' : 'Générer recettes' }}
+    </button>
+  </div>
+</footer>
+
+</div>

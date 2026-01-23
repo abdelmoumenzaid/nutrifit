@@ -1,0 +1,29 @@
+<div class="auth-container">
+  <!-- Icon Section -->
+  <div class="icon-wrapper">
+    <div class="icon-bg">🥗</div>
+  </div>
+
+  <!-- Main Content -->
+  <h1>Ton coach nutrition intelligent</h1>
+  <p class="tagline">Découvre des recettes saines inspirées de la cuisine marocaine et méditerranéenne</p>
+
+  <!-- Action Buttons -->
+  <div class="buttons-group">
+    <button class="btn btn-primary" (click)="goToRegister()">Créer un compte</button>
+    <button class="btn btn-secondary" (click)="goToConnexion()">Se connecter</button>
+  </div>
+
+  <!-- Language Selector -->
+  <div class="language-selector">
+    <div class="lang-options">
+      <span class="lang-link" (click)="setLanguage('darija')">Darija</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('fr')">FR</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('ar')">AR</span>
+      <span>/</span>
+      <span class="lang-link" (click)="setLanguage('en')">EN</span>
+    </div>
+  </div>
+</div>

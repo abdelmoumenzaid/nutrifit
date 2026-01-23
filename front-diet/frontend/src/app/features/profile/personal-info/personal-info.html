@@ -1,0 +1,312 @@
+<div class="personal-page">
+  <div class="personal-header">
+    <button class="back-link" (click)="onCancel()">← Retour</button>
+    <div class="title-block">
+      <h1>Profil & objectifs</h1>
+      <p class="subtitle">
+        Ces informations permettent de personnaliser ton plan nutrition & entraînement.
+      </p>
+    </div>
+  </div>
+
+  <form class="form" (ngSubmit)="onSave()">
+    <!-- 1️⃣ Données de base -->
+    <div class="field-group">
+      <h2>Données de base</h2>
+      <div class="field-inline">
+        <div class="field">
+          <label>Poids (kg)</label>
+          <input type="number" [(ngModel)]="weightKg" name="weightKg" min="30" max="250" />
+        </div>
+        <div class="field">
+          <label>Taille (cm)</label>
+          <input type="number" [(ngModel)]="heightCm" name="heightCm" min="120" max="230" />
+        </div>
+        <div class="field">
+          <label>Âge</label>
+          <input type="number" [(ngModel)]="age" name="age" min="12" max="90" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Sexe</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="gender === 'H'"
+            (click)="gender = 'H'"
+          >
+            Homme
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="gender === 'F'"
+            (click)="gender = 'F'"
+          >
+            Femme
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="gender === 'A'"
+            (click)="gender = 'A'"
+          >
+            Autre / Ne pas dire
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2️⃣ Objectifs -->
+    <div class="field-group">
+      <h2>Objectifs</h2>
+
+      <div class="field">
+        <label>Objectif principal</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'loss'"
+            (click)="goal = 'loss'"
+          >
+            Perte de poids
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'maintain'"
+            (click)="goal = 'maintain'"
+          >
+            Maintien
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="goal === 'gain'"
+            (click)="goal = 'gain'"
+          >
+            Prise de masse
+          </button>
+        </div>
+      </div>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>% masse grasse cible (optionnel)</label>
+          <input
+            type="number"
+            [(ngModel)]="targetBodyFat"
+            name="targetBodyFat"
+            min="5"
+            max="50"
+          />
+        </div>
+        <div class="field">
+          <label>Objectifs sportifs</label>
+          <input
+            type="text"
+            [(ngModel)]="sportGoals"
+            name="sportGoals"
+            placeholder="Ex : force, cardio, endurance…"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 3️⃣ Activité physique -->
+    <div class="field-group">
+      <h2>Activité physique</h2>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>Séances / semaine</label>
+          <input
+            type="number"
+            [(ngModel)]="sessionsPerWeek"
+            name="sessionsPerWeek"
+            min="0"
+            max="14"
+          />
+        </div>
+        <div class="field">
+          <label>Intensité</label>
+          <select [(ngModel)]="activityLevel" name="activityLevel">
+            <option value="low">Faible</option>
+            <option value="medium">Modérée</option>
+            <option value="high">Élevée</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Activités préférées</label>
+        <input
+          type="text"
+          [(ngModel)]="favoriteActivities"
+          name="favoriteActivities"
+          placeholder="musculation, cardio, HIIT, yoga…"
+        />
+      </div>
+    </div>
+
+    <!-- 4️⃣ Santé & restrictions -->
+    <div class="field-group">
+      <h2>Santé & restrictions</h2>
+
+      <div class="field">
+        <label>Allergies / intolérances</label>
+        <input
+          type="text"
+          [(ngModel)]="allergies"
+          name="allergies"
+          placeholder="gluten, lactose, fruits à coque…"
+        />
+      </div>
+
+      <div class="field">
+        <label>Conditions médicales / blessures</label>
+        <input
+          type="text"
+          [(ngModel)]="medicalConditions"
+          name="medicalConditions"
+          placeholder="diabète, hypertension, douleurs genou…"
+        />
+      </div>
+    </div>
+
+    <!-- 5️⃣ Préférences alimentaires -->
+    <div class="field-group">
+      <h2>Préférences alimentaires</h2>
+
+      <div class="field">
+        <label>Type de régime</label>
+        <div class="chips-row">
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'standard'"
+            (click)="dietType = 'standard'"
+          >
+            Standard
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'vegetarian'"
+            (click)="dietType = 'vegetarian'"
+          >
+            Végétarien
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'vegan'"
+            (click)="dietType = 'vegan'"
+          >
+            Végan
+          </button>
+          <button
+            type="button"
+            class="chip"
+            [class.chip-active]="dietType === 'keto'"
+            (click)="dietType = 'keto'"
+          >
+            Kéto
+          </button>
+        </div>
+      </div>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>Aliments préférés</label>
+          <input
+            type="text"
+            [(ngModel)]="likedFoods"
+            name="likedFoods"
+            placeholder="poulet, riz, légumes…"
+          />
+        </div>
+        <div class="field">
+          <label>Aliments à éviter</label>
+          <input
+            type="text"
+            [(ngModel)]="dislikedFoods"
+            name="dislikedFoods"
+            placeholder="ex : poisson, fromage…"
+          />
+        </div>
+      </div>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>Repas / jour</label>
+          <input
+            type="number"
+            [(ngModel)]="mealsPerDay"
+            name="mealsPerDay"
+            min="1"
+            max="8"
+          />
+        </div>
+        <div class="field">
+          <label>Créneaux horaires (approx.)</label>
+          <input
+            type="text"
+            [(ngModel)]="mealSchedule"
+            name="mealSchedule"
+            placeholder="ex : 8h, 13h, 20h"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 7️⃣ Style de vie -->
+    <div class="field-group">
+      <h2>Style de vie</h2>
+
+      <div class="field-inline">
+        <div class="field">
+          <label>Sommeil moyen (h / nuit)</label>
+          <input
+            type="number"
+            [(ngModel)]="sleepHours"
+            name="sleepHours"
+            min="3"
+            max="12"
+          />
+        </div>
+        <div class="field">
+          <label>Niveau de stress</label>
+          <select [(ngModel)]="stressLevel" name="stressLevel">
+            <option value="low">Faible</option>
+            <option value="medium">Modéré</option>
+            <option value="high">Élevé</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Type de travail / activité quotidienne</label>
+        <input
+          type="text"
+          [(ngModel)]="dailyActivity"
+          name="dailyActivity"
+          placeholder="bureau, debout toute la journée, mixte…"
+        />
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-primary">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>
