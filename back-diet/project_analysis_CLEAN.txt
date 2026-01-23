@@ -1,0 +1,197 @@
+================================================================================
+📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
+================================================================================
+📁 Projet: C:\Users\ZAID\Desktop\app-diet\back-diet
+📈 Fichiers analysés: 62
+🤖 Modèle: llama-3.3-70b-versatile
+
+1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
+----------------------------------------
+📦 back-diet
+├── 📁 .vscode
+│   └── 📄 tasks.json (JSON - 353 bytes)
+├── 📁 agent-scanner
+│   ├── 📄 .env (Environment - 69 bytes)
+│   ├── 📁 agent-scanner
+│   │   ├── 📄 .gitignore (Git - 71 bytes)
+│   │   └── 📄 pyvenv.cfg (Unknown - 351 bytes)
+│   ├── 📄 main.py (Python - 24.6 KB)
+│   └── 📄 requirements.txt (Text - 152 bytes)
+├── 📁 api
+│   ├── 📄 package-lock.json (JSON - 41.6 KB)
+│   ├── 📄 package.json (JSON - 237 bytes)
+│   ├── 📄 readme (Unknown - 60 bytes)
+│   └── 📄 server.js (JavaScript - 602 bytes)
+├── 📁 backend
+│   ├── 📁 demo
+│   │   ├── 📄 .gitignore (Git - 394 bytes)
+│   │   ├── 📁 .mvn
+│   │   │   └── 📁 wrapper
+│   │   │       └── 📄 maven-wrapper.properties (Unknown - 168 bytes)
+│   │   ├── 📄 HELP.md (Markdown - 2.3 KB)
+│   │   ├── 📄 mvnw (Unknown - 11.5 KB)
+│   │   ├── 📄 mvnw.cmd (Unknown - 8.1 KB)
+│   │   ├── 📄 pom.xml (XML - 3.3 KB)
+│   │   ├── 📄 readme (Unknown - 132 bytes)
+│   │   ├── 📁 src
+│   │   │   ├── 📁 main
+│   │   │   │   ├── 📁 java
+│   │   │   │   │   └── 📁 com
+│   │   │   │   │       └── 📁 recipe_service
+│   │   │   │   │           └── 📁 demo
+│   │   │   │   │               ├── 📄 RecipeServiceApplication.java (Java - 1.1 KB)
+│   │   │   │   │               ├── 📄 WebConfig.java (Java - 646 bytes)
+│   │   │   │   │               ├── 📁 admin
+│   │   │   │   │               │   └── 📄 AdminController.java (Java - 1.3 KB)
+│   │   │   │   │               ├── 📁 ai
+│   │   │   │   │               │   ├── 📄 AiTestController.java (Java - 13.7 KB)
+│   │   │   │   │               │   └── 📄 RecipeAgentClient.java (Java - 7.7 KB)
+│   │   │   │   │               ├── 📁 config
+│   │   │   │   │               │   ├── 📄 GlobalCorsConfig.java (Java - 978 bytes)
+│   │   │   │   │               │   ├── 📄 RestTemplateConfig.java (Java - 636 bytes)
+│   │   │   │   │               │   └── 📄 SecurityConfig.java (Java - 1.7 KB)
+│   │   │   │   │               ├── 📁 controller
+│   │   │   │   │               │   └── 📄 AuthController.java (Java - 9.9 KB)
+│   │   │   │   │               ├── 📁 nutrition
+│   │   │   │   │               │   └── 📄 NutritionService.java (Java - 4.2 KB)
+│   │   │   │   │               ├── 📁 recipe
+│   │   │   │   │               │   ├── 📄 Recipe.java (Java - 4.7 KB)
+│   │   │   │   │               │   ├── 📄 RecipeController.java (Java - 2.3 KB)
+│   │   │   │   │               │   ├── 📄 RecipeCreateRequest.java (Java - 3.3 KB)
+│   │   │   │   │               │   ├── 📄 RecipeImportService.java (Java - 3.0 KB)
+│   │   │   │   │               │   ├── 📄 RecipeRepository.java (Java - 766 bytes)
+│   │   │   │   │               │   ├── 📄 RecipeResponse.java (Java - 4.7 KB)
+│   │   │   │   │               │   ├── 📄 RecipeSearchCriteriaParser.java (Java - 2.0 KB)
+│   │   │   │   │               │   ├── 📄 RecipeService.java (Java - 3.6 KB)
+│   │   │   │   │               │   ├── 📄 RecipeSpecification.java (Java - 1.0 KB)
+│   │   │   │   │               │   └── 📄 TheMealDbClient.java (Java - 4.7 KB)
+│   │   │   │   │               └── 📁 tracking
+│   │   │   │   │                   ├── 📄 DayMeal.java (Java - 2.7 KB)
+│   │   │   │   │                   ├── 📄 DayMealDto.java (Java - 2.2 KB)
+│   │   │   │   │                   ├── 📄 DayMealRepository.java (Java - 362 bytes)
+│   │   │   │   │                   ├── 📄 DayTracking.java (Java - 2.2 KB)
+│   │   │   │   │                   ├── 📄 DayTrackingController.java (Java - 4.9 KB)
+│   │   │   │   │                   ├── 📄 DayTrackingDto.java (Java - 1.5 KB)
+│   │   │   │   │                   ├── 📄 DayTrackingRepository.java (Java - 422 bytes)
+│   │   │   │   │                   ├── 📄 DayTrackingService.java (Java - 9.9 KB)
+│   │   │   │   │                   ├── 📄 DayWorkout.java (Java - 1.9 KB)
+│   │   │   │   │                   ├── 📄 DayWorkoutDto.java (Java - 1.5 KB)
+│   │   │   │   │                   └── 📄 DayWorkoutRepository.java (Java - 371 bytes)
+│   │   │   │   └── 📁 resources
+│   │   │   │       └── 📄 application.yml (YAML - 3.3 KB)
+│   │   │   └── 📁 test
+│   │   │       └── 📁 java
+│   │   │           └── 📁 com
+│   │   │               └── 📁 recipe_service
+│   │   │                   └── 📁 demo
+│   │   │                       └── 📄 RecipeServiceApplicationTests.java (Java - 222 bytes)
+│   │   └── 📁 target
+│   │       ├── 📁 classes
+│   │       │   └── 📄 application.yml (YAML - 3.3 KB)
+│   │       └── 📁 maven-status
+│   │           └── 📁 maven-compiler-plugin
+│   │               ├── 📁 compile
+│   │               │   └── 📁 default-compile
+│   │               │       ├── 📄 createdFiles.lst (Unknown - 2.6 KB)
+│   │               │       └── 📄 inputFiles.lst (Unknown - 3.7 KB)
+│   │               └── 📁 testCompile
+│   │                   └── 📁 default-testCompile
+│   │                       ├── 📄 createdFiles.lst (Unknown - 60 bytes)
+│   │                       └── 📄 inputFiles.lst (Unknown - 128 bytes)
+│   ├── 📄 dockerfile (Unknown - 128 bytes)
+│   └── 📁 python-agent
+│       ├── 📄 .env (Environment - 127 bytes)
+│       ├── 📄 main.py (Python - 17.9 KB)
+│       ├── 📁 nutri-agent
+│       │   └── 📄 pyvenv.cfg (Unknown - 232 bytes)
+│       ├── 📄 readme (Unknown - 110 bytes)
+│       └── 📄 requirements.txt (Text - 111 bytes)
+└── 📄 project_analysis_CLEAN.txt (Text - 9.7 KB)
+
+2️⃣  ANALYSE DES FICHIERS IMPORTANTS
+----------------------------------------
+
+📝 .vscode\tasks.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 agent-scanner\main.py
+[Analyse via requests - implémentation simplifiée]
+
+📝 api\package-lock.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 api\package.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 api\server.js
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\HELP.md
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\python-agent\main.py
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\test\java\com\recipe_service\demo\RecipeServiceApplicationTests.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\RecipeServiceApplication.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\WebConfig.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\admin\AdminController.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\ai\AiTestController.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\ai\RecipeAgentClient.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\config\GlobalCorsConfig.java
+[Analyse via requests - implémentation simplifiée]
+
+📝 backend\demo\src\main\java\com\recipe_service\demo\config\RestTemplateConfig.java
+[Analyse via requests - implémentation simplifiée]
+
+3️⃣  DÉPENDANCES
+----------------------------------------
+
+📦 agent-scanner\requirements.txt
+[Analyse via requests - implémentation simplifiée]
+
+📦 api\package.json
+[Analyse via requests - implémentation simplifiée]
+
+📦 backend\demo\pom.xml
+[Analyse via requests - implémentation simplifiée]
+
+📦 backend\python-agent\requirements.txt
+[Analyse via requests - implémentation simplifiée]
+
+4️⃣  SUGGESTIONS D'AMÉLIORATION
+----------------------------------------
+[Analyse via requests - implémentation simplifiée]
+
+5️⃣  STATISTIQUES
+----------------------------------------
+Taille: 235.4 KB
+Fichiers: 62
+Langages:
+  • Java: 32
+  • Unknown: 13
+  • Text: 3
+  • JSON: 3
+  • Environment: 2
+  • Python: 2
+  • Git: 2
+  • YAML: 2
+  • JavaScript: 1
+  • Markdown: 1
+  • XML: 1
+
+================================================================================
+✅ Analyse PROPRE complétée!
+================================================================================

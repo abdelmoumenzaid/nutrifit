@@ -1,0 +1,4 @@
+groq==0.4.1         # Version stable compatible Python 3.14
+python-dotenv==1.0.0
+httpx==0.24.1        # Dépendance HTTP correcte
+requests==2.31.0

@@ -1,0 +1,3 @@
+(venv) PS C:\Users\ZAID\Desktop\app-diet\back-diet\backend\python-agent> uvicorn main:app --reload --port 8000
+
+.\nutri-agent\Scripts\Activate.ps1
