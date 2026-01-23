@@ -2,14 +2,14 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copier package.json + package-lock.json
-COPY package*.json ./
+# Copier package.json + package-lock.json du frontend
+COPY frontend/package*.json ./
 
 # Installer dépendances
 RUN npm install
 
-# Copier tout le reste
-COPY . .
+# Copier tout le frontend
+COPY frontend/ ./
 
 # Build Angular
 RUN npm run build --configuration=production
@@ -19,8 +19,8 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copier server + build + package.json runtime
-COPY package*.json ./
-COPY server.js ./
+COPY frontend/package*.json ./
+COPY frontend/server.js ./
 COPY --from=build /app/dist/app-diet/browser ./dist/app-diet/browser
 
 # Installer dépendances runtime
