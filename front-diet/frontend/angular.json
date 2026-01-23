@@ -12,7 +12,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/app-diet/browser",
+            "outputPath": "dist/app-diet",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -51,5 +51,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
