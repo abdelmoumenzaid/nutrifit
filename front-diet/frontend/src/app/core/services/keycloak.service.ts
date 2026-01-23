@@ -27,7 +27,7 @@ export function initializeKeycloak(): Promise<boolean> {
       })
       .catch((error) => {
         console.error('❌ Keycloak init error:', error);
-        resolve(true); // Continue même si ça échoue
+        resolve(true);
       });
   });
 }

@@ -3,10 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-import { initializeKeycloak } from './keycloak.service';
-
 import { environment } from '../../../environments/environment';
-
 
 export interface User {
   id?: string;
@@ -35,30 +32,29 @@ export class AuthService {
   private readonly BACKEND_URL = `${environment.apiUrl}/public/auth`;
 
   constructor(
-  private http: HttpClient,
-  private router: Router,
-  @Inject(PLATFORM_ID) private platformId: Object
-) {
-  // ✅ Initialize Keycloak on service creation
-  initializeKeycloak().then(() => {
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // ✅ SIMPLEMENT charger le token
     this.loadTokenFromStorage();
-  });
-}
+  }
 
-/**
- * ✅ Load token from localStorage after Keycloak initialization
- */
-private loadTokenFromStorage(): void {
-  if (isPlatformBrowser(this.platformId)) {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      this.tokenSubject.next(token);
-      console.log('✅ AuthService init: Token chargé depuis localStorage');
-    } else {
-      console.log('⚠️ AuthService init: Pas de token');
+  /**
+   * ✅ Load token from localStorage
+   * (Keycloak est déjà initialisé par APP_INITIALIZER dans app.config.ts)
+   */
+  private loadTokenFromStorage(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        this.tokenSubject.next(token);
+        console.log('✅ AuthService init: Token chargé depuis localStorage');
+      } else {
+        console.log('⚠️ AuthService init: Pas de token');
+      }
     }
   }
-}
 
   // ============ REGISTER ============
   registerCustom(
@@ -108,10 +104,6 @@ private loadTokenFromStorage(): void {
   }
 
   // ============ HANDLE CALLBACK ============
-  /**
-   * ✅ Exchange authorization code for access token
-   * Appelé depuis CallbackComponent après redirection Keycloak
-   */
   handleCallback(code: string): Observable<any> {
     console.log(
       '🔄 AuthService.handleCallback() - Échange du code:',
@@ -125,8 +117,6 @@ private loadTokenFromStorage(): void {
       redirect_uri: `${this.FRONTEND_URL}/callback`
     });
 
-    // ⚠️ Pas de client_secret ici (client public dans Keycloak)
-
     const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
 
     return this.http.post<{
@@ -137,10 +127,6 @@ private loadTokenFromStorage(): void {
   }
 
   // ============ SAVE TOKEN ============
-  /**
-   * ✅ Sauvegarder les tokens dans localStorage et BehaviorSubject
-   * C'est LA méthode critique qui doit être appelée après handleCallback
-   */
   saveToken(
     accessToken: string,
     refreshToken: string = '',
@@ -149,13 +135,11 @@ private loadTokenFromStorage(): void {
   ): void {
     console.log('💾 AuthService.saveToken() - Sauvegarde des tokens');
 
-    // ❌ Vérifier que accessToken existe
     if (!accessToken) {
       console.error('❌ ERREUR: accessToken est vide!');
       return;
     }
 
-    // ✅ Sauvegarder dans localStorage SEULEMENT en browser
     if (isPlatformBrowser(this.platformId)) {
       try {
         localStorage.setItem('access_token', accessToken);
@@ -176,7 +160,6 @@ private loadTokenFromStorage(): void {
           console.log('✅ user sauvegardé dans localStorage');
         }
 
-        // ✅ Vérification immédiate
         const saved = localStorage.getItem('access_token');
         if (saved) {
           console.log('✅ Vérification localStorage OK');
@@ -190,7 +173,6 @@ private loadTokenFromStorage(): void {
       }
     }
 
-    // ✅ Mettre à jour le BehaviorSubject (pour les services)
     this.tokenSubject.next(accessToken);
     console.log('✅ tokenSubject mis à jour');
   }
@@ -212,9 +194,6 @@ private loadTokenFromStorage(): void {
   }
 
   // ============ TOKEN MANAGEMENT ============
-  /**
-   * ✅ Get current access token
-   */
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('access_token');
@@ -225,9 +204,6 @@ private loadTokenFromStorage(): void {
     return this.tokenSubject.value;
   }
 
-  /**
-   * ✅ Check if user is authenticated
-   */
   isAuthenticated(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -235,7 +211,6 @@ private loadTokenFromStorage(): void {
       return false;
     }
 
-    // Vérifier que le token a 3 parties
     const parts = token.split('.');
     if (parts.length !== 3) {
       console.error('❌ isAuthenticated(): Token invalide (', parts.length, 'parties)');
@@ -246,9 +221,6 @@ private loadTokenFromStorage(): void {
     return true;
   }
 
-  /**
-   * ✅ Get HTTP headers with JWT token
-   */
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return token
@@ -256,9 +228,6 @@ private loadTokenFromStorage(): void {
       : new HttpHeaders();
   }
 
-  /**
-   * ✅ Check if user has specific role (from JWT token)
-   */
   hasRole(role: string): boolean {
     const token = this.getToken();
     if (!token) return false;
@@ -273,9 +242,6 @@ private loadTokenFromStorage(): void {
     }
   }
 
-  /**
-   * ✅ Refresh access token using refresh token
-   */
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
 
@@ -291,8 +257,6 @@ private loadTokenFromStorage(): void {
       refresh_token: refreshToken
     });
 
-    // ⚠️ Pas de client_secret ici non plus (client public)
-
     return this.http.post<{ access_token: string; refresh_token?: string }>(
       `${this.KEYCLOAK_URL}/protocol/openid-connect/token`,
       body,
@@ -301,16 +265,12 @@ private loadTokenFromStorage(): void {
   }
 
   // ============ USER MANAGEMENT ============
-  /**
-   * ✅ Get current user from localStorage or JWT token
-   */
   getCurrentUser(): User | null {
     if (!isPlatformBrowser(this.platformId)) {
       return null;
     }
 
     try {
-      // Option 1: Try to get user from localStorage
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         try {
@@ -322,28 +282,24 @@ private loadTokenFromStorage(): void {
         }
       }
 
-      // Option 2: Decode user from JWT token
       const token = this.getToken();
       if (!token) {
         console.warn('⚠️ getCurrentUser(): No token found');
         return null;
       }
 
-      // Validate token structure
       const parts = token.split('.');
       if (parts.length !== 3) {
         console.error('❌ getCurrentUser(): Invalid token structure');
         return null;
       }
 
-      // Decode payload
       const payload = this.decodeTokenPayload(parts[1]);
       if (!payload) {
         console.error('❌ getCurrentUser(): Could not decode token payload');
         return null;
       }
 
-      // Check if token is expired
       if (payload.exp && payload.exp * 1000 < Date.now()) {
         console.warn('⚠️ getCurrentUser(): Token is expired');
         return null;
@@ -368,20 +324,15 @@ private loadTokenFromStorage(): void {
     }
   }
 
-  /**
-   * ✅ Helper: Safely decode JWT payload
-   */
   private decodeTokenPayload(encodedPayload: string): any {
     try {
       let decoded = encodedPayload;
 
-      // Add padding if missing
       const padding = 4 - (decoded.length % 4);
       if (padding !== 4) {
         decoded += '='.repeat(padding);
       }
 
-      // Decode from base64
       const jsonPayload = atob(decoded);
       return JSON.parse(jsonPayload);
     } catch (error) {
@@ -390,9 +341,6 @@ private loadTokenFromStorage(): void {
     }
   }
 
-  /**
-   * ✅ Get user's first name (with fallback)
-   */
   getUserFirstName(): string {
     const user = this.getCurrentUser();
 
@@ -405,9 +353,6 @@ private loadTokenFromStorage(): void {
     );
   }
 
-  /**
-   * ✅ Get user's full name (with fallback)
-   */
   getUserFullName(): string {
     const user = this.getCurrentUser();
 
@@ -425,17 +370,11 @@ private loadTokenFromStorage(): void {
     return user.name || user.preferred_username || 'Utilisateur';
   }
 
-  /**
-   * ✅ Get user's email (with fallback)
-   */
   getUserEmail(): string | null {
     const user = this.getCurrentUser();
     return user?.email || null;
   }
 
-  /**
-   * ✅ Check if token is valid
-   */
   isTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
@@ -447,7 +386,6 @@ private loadTokenFromStorage(): void {
       const payload = this.decodeTokenPayload(parts[1]);
       if (!payload) return false;
 
-      // Check expiration
       if (payload.exp && payload.exp * 1000 < Date.now()) {
         return false;
       }
