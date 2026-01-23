@@ -74,7 +74,7 @@ public class AuthController {
                 password.setValue(request.getPassword());
                 user.setCredentials(Collections.singletonList(password));
 
-                RealmResource realm = keycloak.realm("diet-realm");
+                RealmResource realm = keycloak.realm("nutrifit");
                 Response response = realm.users().create(user);
 
                 if (response.getStatus() == 201) {
