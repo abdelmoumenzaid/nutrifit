@@ -1,11 +1,17 @@
-
 # syntax=docker/dockerfile:1
 
 # ---------- BUILD Angular ----------
 FROM node:20-alpine AS build
 WORKDIR /app
 
+# Affiche le contenu du contexte pour déboguer
+RUN ls -la /
+
 COPY package*.json ./
+
+# Affiche si les fichiers ont été copiés
+RUN ls -la /app/
+
 RUN npm install
 COPY . .
 RUN npm run build --configuration=production
