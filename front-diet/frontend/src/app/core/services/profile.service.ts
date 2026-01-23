@@ -1,7 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+
 
 export interface UserProfile {
   email: string;
@@ -9,6 +10,7 @@ export interface UserProfile {
   lastName: string;
   username: string;
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +21,12 @@ export class ProfileService {
 
   private profileSubject = new BehaviorSubject<UserProfile | null>(null);
   public profile$ = this.profileSubject.asObservable();
+  
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
+
+  private errorSubject = new BehaviorSubject<string | null>(null);
+  public error$ = this.errorSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -28,7 +34,7 @@ export class ProfileService {
   ) {}
 
   /**
-   * 📥 Charger le profil depuis le JWT token
+   * 📥 Charger le profil (essaie d'abord l'API, puis fallback JWT)
    */
   loadProfile(): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -41,16 +47,49 @@ export class ProfileService {
     if (!token) {
       console.warn('⚠️ No token found');
       this.profileSubject.next(null);
+      this.errorSubject.next('No authentication token');
       return;
     }
 
     this.isLoadingSubject.next(true);
-    this.loadProfileFromToken(token);
-    this.isLoadingSubject.next(false);
+    this.errorSubject.next(null);
+
+    // 🎯 Essayer de charger depuis l'API d'abord
+    this.loadProfileFromAPI(token);
   }
 
   /**
-   * 📌 Parser le JWT pour extraire les données utilisateur
+   * 🌐 Charger le profil depuis le backend API
+   */
+  private loadProfileFromAPI(token: string): void {
+    this.http.get<UserProfile>(`${this.apiUrl}/profile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).subscribe({
+      next: (profile) => {
+        console.log('✅ Profile chargé depuis l\'API:', profile);
+        this.profileSubject.next(profile);
+        this.isLoadingSubject.next(false);
+        this.errorSubject.next(null);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.warn('⚠️ Erreur API, fallback au JWT:', error.status);
+        
+        // Fallback: Charger depuis le JWT local si l'API échoue
+        this.loadProfileFromToken(token);
+        this.isLoadingSubject.next(false);
+        
+        // Mais log l'erreur
+        if (error.status === 401 || error.status === 403) {
+          this.errorSubject.next('Token invalide ou expiré');
+        }
+      }
+    });
+  }
+
+  /**
+   * 📌 Parser le JWT pour extraire les données utilisateur (Fallback)
    */
   private loadProfileFromToken(token: string): void {
     try {
@@ -59,6 +98,7 @@ export class ProfileService {
       if (parts.length !== 3) {
         console.error('❌ Invalid token structure');
         this.profileSubject.next(null);
+        this.errorSubject.next('Token invalide');
         return;
       }
 
@@ -67,6 +107,15 @@ export class ProfileService {
       if (!payload) {
         console.error('❌ Could not decode token payload');
         this.profileSubject.next(null);
+        this.errorSubject.next('Impossible de décoder le token');
+        return;
+      }
+
+      // Check token expiration
+      if (payload.exp && payload.exp * 1000 < Date.now()) {
+        console.warn('⚠️ Token expiré');
+        this.profileSubject.next(null);
+        this.errorSubject.next('Token expiré');
         return;
       }
 
@@ -82,6 +131,7 @@ export class ProfileService {
     } catch (err) {
       console.error('❌ Erreur lors du parsing du token:', err);
       this.profileSubject.next(null);
+      this.errorSubject.next('Erreur lors du chargement du profil');
     }
   }
 
@@ -120,6 +170,7 @@ export class ProfileService {
     }
     
     this.profileSubject.next(null);
+    this.errorSubject.next(null);
     console.log('✅ Tokens supprimés - Déconnexion réussie');
   }
 
@@ -136,5 +187,19 @@ export class ProfileService {
   hasProfile(): boolean {
     const profile = this.getProfile();
     return !!profile && profile.firstName !== 'User';
+  }
+
+  /**
+   * 📊 Get error message
+   */
+  getError(): string | null {
+    return this.errorSubject.value;
+  }
+
+  /**
+   * ✅ Check if loading
+   */
+  isLoading(): boolean {
+    return this.isLoadingSubject.value;
   }
 }

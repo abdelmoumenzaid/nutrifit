@@ -1,96 +1,127 @@
 <div class="profile-page">
-  <!-- 📌 Header avec avatar et infos utilisateur -->
-  <section class="profile-header">
-    <div class="avatar-circle">
-      <span class="avatar-icon">👤</span>
-    </div>
-    <h1>{{ name }}</h1>
-    <p class="email">{{ email }}</p>
-  </section>
+  <!-- ⏳ Indicateur de chargement -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>⏳ Chargement de votre profil...</p>
+  </div>
 
-  <!-- 📌 Section Compte -->
-  <section class="section">
-    <h2>Compte</h2>
-    <div
-      class="card-row"
-      *ngFor="let item of accountItems"
-      (click)="openItem(item)"
-    >
-      <div class="card-left">
-        <span class="icon-pill">{{ item.icon }}</span>
-        <div>
-          <p class="title">{{ item.title }}</p>
-          <p class="subtitle">{{ item.subtitle }}</p>
+  <!-- ❌ Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoading" class="error-banner">
+    <div class="error-content">
+      <span class="error-icon">⚠️</span>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  <!-- 📌 Contenu principal (caché pendant chargement) -->
+  <div *ngIf="!isLoading && !errorMessage" class="profile-content">
+    <!-- 📌 Header avec avatar et infos utilisateur -->
+    <section class="profile-header">
+      <div class="avatar-circle">
+        <span class="avatar-icon">👤</span>
+      </div>
+      <h1>{{ name }}</h1>
+      <p class="email">{{ email }}</p>
+    </section>
+
+    <!-- 📌 Section Compte -->
+    <section class="section">
+      <h2>Compte</h2>
+      <div
+        class="card-row"
+        *ngFor="let item of accountItems"
+        (click)="openItem(item)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="openItem(item)"
+        (keydown.space)="openItem(item)"
+      >
+        <div class="card-left">
+          <span class="icon-pill">{{ item.icon }}</span>
+          <div>
+            <p class="title">{{ item.title }}</p>
+            <p class="subtitle">{{ item.subtitle }}</p>
+          </div>
+        </div>
+        <span class="chevron">›</span>
+      </div>
+    </section>
+
+    <!-- 📌 Section Préférences -->
+    <section class="section">
+      <h2>Préférences</h2>
+      <div
+        class="card-row"
+        *ngFor="let item of preferenceItems"
+        (click)="openItem(item)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="openItem(item)"
+        (keydown.space)="openItem(item)"
+      >
+        <div class="card-left">
+          <span class="icon-pill">{{ item.icon }}</span>
+          <div>
+            <p class="title">{{ item.title }}</p>
+            <p class="subtitle">{{ item.subtitle }}</p>
+          </div>
+        </div>
+        <span class="chevron">›</span>
+      </div>
+    </section>
+
+    <!-- 📌 Section Notifications -->
+    <section class="section">
+      <h2>Notifications</h2>
+      <div class="card-row">
+        <div class="card-left">
+          <span class="icon-pill">🔔</span>
+          <div>
+            <p class="title">Rappels quotidiens</p>
+            <p class="subtitle">Notifications pour tes repas</p>
+          </div>
+        </div>
+        <label class="switch" for="notifications-toggle">
+          <input
+            id="notifications-toggle"
+            type="checkbox"
+            [checked]="notificationsEnabled"
+            (change)="toggleNotifications()"
+            aria-label="Activer ou désactiver les notifications"
+          />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 📌 Section Statistiques -->
+    <section class="section">
+      <h2>Mes statistiques</h2>
+      <div class="stats-card">
+        <div class="stat">
+          <div class="value">{{ stats.days }}</div>
+          <div class="label">Jours</div>
+        </div>
+        <div class="stat">
+          <div class="value">{{ stats.recipes }}</div>
+          <div class="label">Recettes</div>
+        </div>
+        <div class="stat">
+          <div class="value">{{ stats.goals }}%</div>
+          <div class="label">Objectifs</div>
         </div>
       </div>
-      <span class="chevron">›</span>
-    </div>
-  </section>
+    </section>
 
-  <!-- 📌 Section Préférences -->
-  <section class="section">
-    <h2>Préférences</h2>
-    <div
-      class="card-row"
-      *ngFor="let item of preferenceItems"
-      (click)="openItem(item)"
-    >
-      <div class="card-left">
-        <span class="icon-pill">{{ item.icon }}</span>
-        <div>
-          <p class="title">{{ item.title }}</p>
-          <p class="subtitle">{{ item.subtitle }}</p>
-        </div>
-      </div>
-      <span class="chevron">›</span>
-    </div>
-  </section>
-
-  <!-- 📌 Section Notifications -->
-  <section class="section">
-    <h2>Notifications</h2>
-    <div class="card-row">
-      <div class="card-left">
-        <span class="icon-pill">🔔</span>
-        <div>
-          <p class="title">Rappels quotidiens</p>
-          <p class="subtitle">Notifications pour tes repas</p>
-        </div>
-      </div>
-      <label class="switch">
-        <input
-          type="checkbox"
-          [checked]="notificationsEnabled"
-          (change)="toggleNotifications()"
-        />
-        <span class="slider"></span>
-      </label>
-    </div>
-  </section>
-
-  <!-- 📌 Section Statistiques -->
-  <section class="section">
-    <h2>Mes statistiques</h2>
-    <div class="stats-card">
-      <div class="stat">
-        <div class="value">{{ stats.days }}</div>
-        <div class="label">Jours</div>
-      </div>
-      <div class="stat">
-        <div class="value">{{ stats.recipes }}</div>
-        <div class="label">Recettes</div>
-      </div>
-      <div class="stat">
-        <div class="value">{{ stats.goals }}%</div>
-        <div class="label">Objectifs</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 📌 Section Déconnexion -->
-  <section class="section">
-    <button class="logout-btn" (click)="logout()">
-      Se déconnecter
-    </button>
-  </section>
+    <!-- 📌 Section Déconnexion -->
+    <section class="section">
+      <button 
+        class="logout-btn" 
+        (click)="logout()"
+        aria-label="Se déconnecter"
+      >
+        Se déconnecter
+      </button>
+    </section>
+  </div>
 </div>

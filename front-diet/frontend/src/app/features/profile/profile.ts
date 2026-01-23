@@ -5,12 +5,14 @@ import { ProfileService, UserProfile } from '../../core/services/profile.service
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+
 interface ProfileItem {
   key: string;
   icon: string;
   title: string;
   subtitle: string;
 }
+
 
 @Component({
   selector: 'app-profile',
@@ -27,6 +29,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   private destroy$ = new Subject<void>();
 
+
   accountItems: ProfileItem[] = [
     {
       key: 'personal-info',
@@ -41,6 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       subtitle: 'Perte, maintien ou prise de poids',
     },
   ];
+
 
   preferenceItems: ProfileItem[] = [
     {
@@ -57,6 +61,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     },
   ];
 
+
   notificationsEnabled = true;
   stats = {
     days: 28,
@@ -64,10 +69,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     goals: 89,
   };
 
+
   constructor(
     private router: Router,
     private profileService: ProfileService
   ) {}
+
 
   ngOnInit(): void {
     // 🔐 ÉTAPE 1 : Vérifier si le token existe
@@ -77,22 +84,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       console.log('📍 Current URL:', this.router.url);
       console.log('🔑 Token in localStorage:', localStorage.getItem('access_token'));
       
-      // 🚀 Redirection avec délai minimal (laisser le temps au token d'être supprimé)
-      setTimeout(() => {
-        this.router.navigate(['/auth-landing'], { replaceUrl: true })
-          .then(success => {
-            console.log('✅ Redirection réussie vers /auth-landing:', success);
-          })
-          .catch(err => {
-            console.error('❌ Erreur lors de la redirection:', err);
-            // Fallback : redirection directe du navigateur
-            window.location.href = '/auth-landing';
-          });
-      }, 50);
+      this.redirectToAuth();
       return;
     }
 
-    // 📥 ÉTAPE 2 : Charger le profil
+    // 📥 ÉTAPE 2 : Charger le profil depuis le service
     this.profileService.profile$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -104,41 +100,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.isLoading = false;
             console.log('✅ Profil affiché:', profile);
           } else {
-            // ⚠️ Vérifier si on n'est pas déjà sur la page auth-landing
+            // ⚠️ Profil null - rediriger si pas sur auth-landing
             if (this.router.url !== '/auth-landing') {
               console.warn('⚠️ Profil null - Redirection vers auth-landing');
-              
-              setTimeout(() => {
-                this.router.navigate(['/auth-landing'], { replaceUrl: true })
-                  .then(success => {
-                    console.log('✅ Redirection réussie:', success);
-                  })
-                  .catch(err => {
-                    console.error('❌ Erreur redirection:', err);
-                    window.location.href = '/auth-landing';
-                  });
-              }, 50);
+              this.redirectToAuth();
             }
           }
         },
         error: (err: any) => {
-          console.error('❌ Erreur profil:', err);
+          console.error('❌ Erreur lors du chargement du profil:', err);
           this.errorMessage = 'Impossible de charger le profil';
           this.isLoading = false;
-          
-          // Rediriger en cas d'erreur (au chargement initial seulement)
-          if (this.router.url !== '/auth-landing') {
-            setTimeout(() => {
-              this.router.navigate(['/auth-landing'], { replaceUrl: true })
-                .then(success => {
-                  console.log('✅ Redirection réussie:', success);
-                })
-                .catch(err => {
-                  console.error('❌ Erreur redirection:', err);
-                  window.location.href = '/auth-landing';
-                });
-            }, 50);
-          }
+          this.redirectToAuth();
+        }
+      });
+
+    // 🟡 ÉTAPE 2.5 : Écouter les erreurs du service
+    this.profileService.error$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((error: string | null) => {
+        if (error) {
+          this.errorMessage = error;
+          console.warn('⚠️ Erreur du ProfileService:', error);
         }
       });
 
@@ -152,6 +135,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // 🚀 ÉTAPE 4 : Déclencher le chargement du profil
     this.profileService.loadProfile();
   }
+
 
   /**
    * 🔗 Ouvrir une section du profil
@@ -173,6 +157,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+
   /**
    * 🔔 Basculer les notifications
    */
@@ -180,37 +165,54 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.notificationsEnabled = !this.notificationsEnabled;
   }
 
+
   /**
    * 🚪 SE DÉCONNECTER
    * ✅ Appelle logoutLocal() - SANS appel API
    * ✅ Redirige IMMÉDIATEMENT vers /auth-landing
    * ✅ UNE SEULE redirection (pas de double navigation)
-   * ✅ Vérification d'URL pour éviter les redirections multiples
    * ✅ replaceUrl: true pour forcer la redirection
    * ✅ Fallback window.location.href si router.navigate échoue
    */
   logout(): void {
     if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-      // ✅ APPELER logoutLocal()
+      // ✅ Nettoyer les tokens locaux
       this.profileService.logoutLocal();
-      console.log('✅ Logout réussi');
+      console.log('✅ Logout réussi - Tokens supprimés');
       
-      // 🚀 Redirection FORCÉE avec fallback
-      if (this.router.url !== '/auth-landing') {
-        setTimeout(() => {
-          this.router.navigate(['/auth-landing'], { replaceUrl: true })
-            .then(success => {
-              console.log('✅ Redirection vers /auth-landing:', success);
-            })
-            .catch(err => {
-              console.error('❌ Erreur redirection:', err);
-              // Fallback : redirection directe du navigateur
-              window.location.href = '/auth-landing';
-            });
-        }, 50);
-      }
+      // 🚀 Redirection forcée
+      this.redirectToAuth();
     }
   }
+
+
+  /**
+   * 🚀 Redirection centralisée vers /auth-landing
+   * ✅ Évite les redirections multiples
+   * ✅ replaceUrl: true pour nettoyer l'historique
+   * ✅ Fallback window.location.href si Angular router échoue
+   */
+  private redirectToAuth(): void {
+    if (this.router.url !== '/auth-landing') {
+      setTimeout(() => {
+        this.router.navigate(['/auth-landing'], { replaceUrl: true })
+          .then(success => {
+            if (success) {
+              console.log('✅ Redirection réussie vers /auth-landing');
+            } else {
+              console.warn('⚠️ Navigation échouée, fallback window.location.href');
+              window.location.href = '/auth-landing';
+            }
+          })
+          .catch(err => {
+            console.error('❌ Erreur lors de la redirection:', err);
+            // Fallback : redirection directe du navigateur
+            window.location.href = '/auth-landing';
+          });
+      }, 50);
+    }
+  }
+
 
   /**
    * 🧹 Nettoyer les subscriptions
