@@ -1,20 +1,24 @@
 {
-  "$schema": "https://railway.com/railway.schema.json",
-  "build": {
-    "builder": "DOCKERFILE",
-    "dockerfilePath": "./frontend/Dockerfile"
-  },
-  "deploy": {
-    "runtime": "V2",
-    "numReplicas": 1,
-    "sleepApplication": false,
-    "useLegacyStacker": false,
-    "multiRegionConfig": {
-      "us-west2": {
-        "numReplicas": 1
+  "services": {
+    "frontend": {
+      "build": {
+        "builder": "dockerfile",
+        "dockerfilePath": "front-diet/frontend/Dockerfile"
+      },
+      "deploy": {
+        "restartPolicyType": "on_failure",
+        "restartPolicyMaxRetries": 3
       }
     },
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
+    "backend": {
+      "build": {
+        "builder": "dockerfile",
+        "dockerfilePath": "back-diet/backend/demo/Dockerfile"
+      },
+      "deploy": {
+        "restartPolicyType": "on_failure",
+        "restartPolicyMaxRetries": 3
+      }
+    }
   }
 }
