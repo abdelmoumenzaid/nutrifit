@@ -1,0 +1,244 @@
+================================================================================
+📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
+================================================================================
+📁 Projet: C:\Users\ZAID\Desktop\app-diet\front-diet
+📈 Fichiers analysés: 122
+🤖 Modèle: llama-3.3-70b-versatile
+
+1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
+----------------------------------------
+📦 front-diet
+├── 📁 cypress
+│   ├── 📄 cypress.config.ts (TypeScript - 359 bytes)
+│   ├── 📁 e2e
+│   │   └── 📄 auth.cy.ts (TypeScript - 629 bytes)
+│   └── 📁 support
+│       ├── 📄 commands.ts (TypeScript - 163 bytes)
+│       └── 📄 e2e.ts (TypeScript - 243 bytes)
+├── 📁 frontend
+│   ├── 📄 .editorconfig (Unknown - 331 bytes)
+│   ├── 📄 .gitignore (Git - 647 bytes)
+│   ├── 📁 .vscode
+│   │   ├── 📄 extensions.json (JSON - 134 bytes)
+│   │   ├── 📄 launch.json (JSON - 490 bytes)
+│   │   └── 📄 tasks.json (JSON - 1020 bytes)
+│   ├── 📄 README.md (Markdown - 1.9 KB)
+│   ├── 📄 angular.json (JSON - 2.6 KB)
+│   ├── 📄 package-lock.json (JSON - 382.3 KB)
+│   ├── 📄 package.json (JSON - 1.3 KB)
+│   ├── 📁 public
+│   │   └── 📄 manifest.json (JSON - 392 bytes)
+│   ├── 📁 src
+│   │   ├── 📄 404.html (HTML - 174 bytes)
+│   │   ├── 📁 app
+│   │   │   ├── 📄 app.config.server.ts (TypeScript - 438 bytes)
+│   │   │   ├── 📄 app.config.ts (TypeScript - 1.3 KB)
+│   │   │   ├── 📄 app.css (CSS - 234 bytes)
+│   │   │   ├── 📄 app.html (HTML - 96 bytes)
+│   │   │   ├── 📄 app.routes.server.ts (TypeScript - 174 bytes)
+│   │   │   ├── 📄 app.routes.ts (TypeScript - 7.1 KB)
+│   │   │   ├── 📄 app.spec.ts (TypeScript - 698 bytes)
+│   │   │   ├── 📄 app.ts (TypeScript - 384 bytes)
+│   │   │   ├── 📄 callback.component.ts (TypeScript - 3.4 KB)
+│   │   │   ├── 📁 core
+│   │   │   │   ├── 📁 guards
+│   │   │   │   │   └── 📄 auth.guard.ts (TypeScript - 995 bytes)
+│   │   │   │   └── 📁 services
+│   │   │   │       ├── 📄 auth.service.ts (TypeScript - 6.6 KB)
+│   │   │   │       ├── 📄 keycloak.service.ts (TypeScript - 791 bytes)
+│   │   │   │       └── 📄 profile.service.ts (TypeScript - 2.7 KB)
+│   │   │   └── 📁 features
+│   │   │       ├── 📁 auth-connexion
+│   │   │       │   ├── 📄 auth-connexion.css (CSS - 8.4 KB)
+│   │   │       │   ├── 📄 auth-connexion.html (HTML - 3.4 KB)
+│   │   │       │   ├── 📄 auth-connexion.spec.ts (TypeScript - 604 bytes)
+│   │   │       │   └── 📄 auth-connexion.ts (TypeScript - 4.2 KB)
+│   │   │       ├── 📁 auth-landing
+│   │   │       │   ├── 📄 auth-landing.css (CSS - 4.8 KB)
+│   │   │       │   ├── 📄 auth-landing.html (HTML - 1.0 KB)
+│   │   │       │   ├── 📄 auth-landing.spec.ts (TypeScript - 633 bytes)
+│   │   │       │   └── 📄 auth-landing.ts (TypeScript - 1.2 KB)
+│   │   │       ├── 📁 auth-register
+│   │   │       │   ├── 📄 auth-register.css (CSS - 4.6 KB)
+│   │   │       │   ├── 📄 auth-register.html (HTML - 1.7 KB)
+│   │   │       │   ├── 📄 auth-register.spec.ts (TypeScript - 597 bytes)
+│   │   │       │   └── 📄 auth-register.ts (TypeScript - 3.1 KB)
+│   │   │       ├── 📁 chat
+│   │   │       │   ├── 📄 chat.css (CSS - 7.4 KB)
+│   │   │       │   ├── 📄 chat.html (HTML - 4.2 KB)
+│   │   │       │   ├── 📄 chat.service.ts (TypeScript - 2.3 KB)
+│   │   │       │   ├── 📄 chat.spec.ts (TypeScript - 540 bytes)
+│   │   │       │   └── 📄 chat.ts (TypeScript - 10.0 KB)
+│   │   │       ├── 📁 dashboard
+│   │   │       │   ├── 📄 dashboard.css (CSS - 3.5 KB)
+│   │   │       │   ├── 📄 dashboard.html (HTML - 2.9 KB)
+│   │   │       │   ├── 📄 dashboard.spec.ts (TypeScript - 575 bytes)
+│   │   │       │   └── 📄 dashboard.ts (TypeScript - 3.0 KB)
+│   │   │       ├── 📁 day-tracking
+│   │   │       │   ├── 📁 add-meal
+│   │   │       │   │   ├── 📄 add-meal.css (CSS - 1.8 KB)
+│   │   │       │   │   ├── 📄 add-meal.html (HTML - 3.2 KB)
+│   │   │       │   │   ├── 📄 add-meal.spec.ts (TypeScript - 607 bytes)
+│   │   │       │   │   └── 📄 add-meal.ts (TypeScript - 4.0 KB)
+│   │   │       │   ├── 📁 add-workout
+│   │   │       │   │   ├── 📄 add-workout.css (CSS - 2.0 KB)
+│   │   │       │   │   ├── 📄 add-workout.html (HTML - 3.2 KB)
+│   │   │       │   │   ├── 📄 add-workout.spec.ts (TypeScript - 583 bytes)
+│   │   │       │   │   └── 📄 add-workout.ts (TypeScript - 1.7 KB)
+│   │   │       │   ├── 📄 day-tracking.css (CSS - 5.8 KB)
+│   │   │       │   ├── 📄 day-tracking.html (HTML - 6.3 KB)
+│   │   │       │   ├── 📄 day-tracking.service.ts (TypeScript - 1.8 KB)
+│   │   │       │   ├── 📄 day-tracking.spec.ts (TypeScript - 688 bytes)
+│   │   │       │   └── 📄 day-tracking.ts (TypeScript - 6.6 KB)
+│   │   │       ├── 📁 entrainement
+│   │   │       │   ├── 📄 entrainement.css (CSS - 3.5 KB)
+│   │   │       │   ├── 📄 entrainement.html (HTML - 5.0 KB)
+│   │   │       │   ├── 📄 entrainement.spec.ts (TypeScript - 596 bytes)
+│   │   │       │   └── 📄 entrainement.ts (TypeScript - 3.1 KB)
+│   │   │       ├── 📁 navbar
+│   │   │       │   ├── 📄 navbar.css (CSS - 4.1 KB)
+│   │   │       │   ├── 📄 navbar.html (HTML - 2.2 KB)
+│   │   │       │   ├── 📄 navbar.spec.ts (TypeScript - 554 bytes)
+│   │   │       │   └── 📄 navbar.ts (TypeScript - 1.5 KB)
+│   │   │       ├── 📁 photo-recipe
+│   │   │       │   ├── 📄 photo-recipe.css (CSS - 1.2 KB)
+│   │   │       │   ├── 📄 photo-recipe.html (HTML - 1.1 KB)
+│   │   │       │   ├── 📄 photo-recipe.spec.ts (TypeScript - 590 bytes)
+│   │   │       │   └── 📄 photo-recipe.ts (TypeScript - 889 bytes)
+│   │   │       ├── 📁 plan-jour
+│   │   │       │   ├── 📄 plan-jour.html (HTML - 25 bytes)
+│   │   │       │   ├── 📄 plan-jour.spec.ts (TypeScript - 569 bytes)
+│   │   │       │   └── 📄 plan-jour.ts (TypeScript - 208 bytes)
+│   │   │       ├── 📁 profile
+│   │   │       │   ├── 📁 allergie
+│   │   │       │   │   ├── 📄 allergie.css (CSS - 4.1 KB)
+│   │   │       │   │   ├── 📄 allergie.html (HTML - 4.1 KB)
+│   │   │       │   │   ├── 📄 allergie.spec.ts (TypeScript - 568 bytes)
+│   │   │       │   │   └── 📄 allergie.ts (TypeScript - 1.5 KB)
+│   │   │       │   ├── 📁 language
+│   │   │       │   │   ├── 📄 language.css (CSS - 3.0 KB)
+│   │   │       │   │   ├── 📄 language.html (HTML - 1.2 KB)
+│   │   │       │   │   ├── 📄 language.spec.ts (TypeScript - 568 bytes)
+│   │   │       │   │   └── 📄 language.ts (TypeScript - 1.0 KB)
+│   │   │       │   ├── 📁 objectif
+│   │   │       │   │   ├── 📄 objectif.css (CSS - 3.5 KB)
+│   │   │       │   │   ├── 📄 objectif.html (HTML - 5.6 KB)
+│   │   │       │   │   ├── 📄 objectif.spec.ts (TypeScript - 568 bytes)
+│   │   │       │   │   └── 📄 objectif.ts (TypeScript - 1.6 KB)
+│   │   │       │   ├── 📁 personal-info
+│   │   │       │   │   ├── 📄 personal-info.css (CSS - 2.4 KB)
+│   │   │       │   │   ├── 📄 personal-info.html (HTML - 8.6 KB)
+│   │   │       │   │   ├── 📄 personal-info.spec.ts (TypeScript - 597 bytes)
+│   │   │       │   │   └── 📄 personal-info.ts (TypeScript - 2.3 KB)
+│   │   │       │   ├── 📄 profile.css (CSS - 2.7 KB)
+│   │   │       │   ├── 📄 profile.html (HTML - 2.5 KB)
+│   │   │       │   ├── 📄 profile.spec.ts (TypeScript - 561 bytes)
+│   │   │       │   └── 📄 profile.ts (TypeScript - 6.5 KB)
+│   │   │       ├── 📁 recipes
+│   │   │       │   ├── 📄 recipe-adapter.ts (TypeScript - 1.9 KB)
+│   │   │       │   ├── 📄 recipe.model.ts (TypeScript - 525 bytes)
+│   │   │       │   ├── 📄 recipe.service.ts (TypeScript - 1.3 KB)
+│   │   │       │   ├── 📄 recipes.css (CSS - 5.2 KB)
+│   │   │       │   ├── 📄 recipes.html (HTML - 3.4 KB)
+│   │   │       │   ├── 📄 recipes.spec.ts (TypeScript - 607 bytes)
+│   │   │       │   └── 📄 recipes.ts (TypeScript - 6.4 KB)
+│   │   │       └── 📁 recipes-details
+│   │   │           ├── 📄 recipes-details.css (CSS - 3.1 KB)
+│   │   │           ├── 📄 recipes-details.html (HTML - 2.3 KB)
+│   │   │           ├── 📄 recipes-details.spec.ts (TypeScript - 646 bytes)
+│   │   │           └── 📄 recipes-details.ts (TypeScript - 4.6 KB)
+│   │   ├── 📁 assets
+│   │   │   └── 📁 keycloak-theme
+│   │   │       ├── 📁 login
+│   │   │       │   ├── 📄 login.ftl (Unknown - 4.4 KB)
+│   │   │       │   ├── 📄 readme (Unknown - 414 bytes)
+│   │   │       │   ├── 📁 resources
+│   │   │       │   │   └── 📁 css
+│   │   │       │   │       └── 📄 login.css (CSS - 4.1 KB)
+│   │   │       │   └── 📄 theme.properties (Unknown - 90 bytes)
+│   │   │       └── 📄 theme.properties (Unknown - 44 bytes)
+│   │   ├── 📄 index.html (HTML - 624 bytes)
+│   │   ├── 📄 main.server.ts (TypeScript - 300 bytes)
+│   │   ├── 📄 main.ts (TypeScript - 408 bytes)
+│   │   ├── 📄 server.ts (TypeScript - 1.6 KB)
+│   │   └── 📄 styles.css (CSS - 542 bytes)
+│   ├── 📄 tsconfig.app.json (JSON - 492 bytes)
+│   ├── 📄 tsconfig.json (JSON - 990 bytes)
+│   └── 📄 tsconfig.spec.json (JSON - 456 bytes)
+└── 📄 project_analysis_CLEAN.txt (Text - 12.7 KB)
+
+2️⃣  ANALYSE DES FICHIERS IMPORTANTS
+----------------------------------------
+
+📝 cypress\cypress.config.ts
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\angular.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\package-lock.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\package.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\README.md
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\tsconfig.app.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\tsconfig.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\tsconfig.spec.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\.vscode\extensions.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\.vscode\launch.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\.vscode\tasks.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\public\manifest.json
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\src\main.server.ts
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\src\main.ts
+[Analyse via requests - implémentation simplifiée]
+
+📝 frontend\src\server.ts
+[Analyse via requests - implémentation simplifiée]
+
+3️⃣  DÉPENDANCES
+----------------------------------------
+
+📦 frontend\package.json
+[Analyse via requests - implémentation simplifiée]
+
+4️⃣  SUGGESTIONS D'AMÉLIORATION
+----------------------------------------
+[Analyse via requests - implémentation simplifiée]
+
+5️⃣  STATISTIQUES
+----------------------------------------
+Taille: 659.5 KB
+Fichiers: 122
+Langages:
+  • TypeScript: 61
+  • HTML: 22
+  • CSS: 21
+  • JSON: 10
+  • Unknown: 5
+  • Text: 1
+  • Git: 1
+  • Markdown: 1
+
+================================================================================
+✅ Analyse PROPRE complétée!
+================================================================================

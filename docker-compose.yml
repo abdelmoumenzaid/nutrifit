@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: recipe-postgres
+    environment:
+      POSTGRES_DB: recipe_db
+      POSTGRES_USER: recipe_user
+      POSTGRES_PASSWORD: secret123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recipe_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin123
+      # ✅ Realm + Client création auto
+      KEYCLOAK_REALM: diet-realm
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8082
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY: passthrough
+    command: start-dev
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+
+
+
+
+
+
+
+
+
+
+
+
+# services:
+#   postgres:
+#     image: postgres:16-alpine
+#     container_name: recipe-postgres
+#     environment:
+#       POSTGRES_DB: recipe_db
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     restart: unless-stopped
+
+#   keycloak:
+#     image: quay.io/keycloak/keycloak:23.0.7  # ✅ VERSION STABLE
+#     container_name: keycloak
+#     environment:
+#       KEYCLOAK_ADMIN: admin
+#       KEYCLOAK_ADMIN_PASSWORD: admin123
+#     command: start-dev  # ✅ SIMPLE
+#     ports:
+#       - "8082:8080"  # ✅ PORT PAR DÉFAUT (pas 8082)
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+#       start_period: 90s
+#     restart: unless-stopped
+
+#   redis:
+#     image: redis:7-alpine
+#     container_name: redis-cache
+#     ports:
+#       - "6379:6379"
+#     volumes:
+#       - redis_data:/data
+#     restart: unless-stopped
+
+# volumes:
+#   postgres_data:
+#   redis_data:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: '3.8'
+
+# services:
+#   postgres:
+#     image: postgres:16
+#     container_name: recipe-postgres
+#     environment:
+#       POSTGRES_DB: recipe_db
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     restart: unless-stopped
+
+# volumes:
+#   postgres_data:
