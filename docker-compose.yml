@@ -5,22 +5,21 @@ services:
     image: postgres:16-alpine
     container_name: postgres-db
     environment:
-      POSTGRES_DB: recipe_db
-      POSTGRES_USER: recipe_user
-      POSTGRES_PASSWORD: secret123
+      POSTGRES_DB: ${POSTGRES_DB:-recipe_db}
+      POSTGRES_USER: ${POSTGRES_USER:-recipe_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U recipe_user"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-recipe_user}"]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
     networks:
       - app-network
-
 
   redis:
     image: redis:7-alpine
@@ -33,30 +32,22 @@ services:
     networks:
       - app-network
 
-
   backend:
     build:
       context: ./back-diet/backend/demo
       dockerfile: Dockerfile
     container_name: app-backend
     environment:
-      # Local DB
-      DATASOURCE_URL: jdbc:postgresql://postgres:5432/recipe_db
-      DATASOURCE_USERNAME: recipe_user
-      DATASOURCE_PASSWORD: secret123
-      
-      # Redis
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-recipe_db}
+      DATASOURCE_USERNAME: ${POSTGRES_USER:-recipe_user}
+      DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      
-      # Keycloak (RAILWAY PROD)
-      KEYCLOAK_URL: https://nutrifit-production-c4b6.up.railway.app
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_REALM: master
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: Evafelmercedes25
-      
-      # API Key
-      CALORIENINJAS_API_KEY: So5ir8D2mEwuN7rfmh/+vg==hl1oJdDWUceFzV84
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      CALORIENINJAS_API_KEY: ${CALORIENINJAS_API_KEY}
     ports:
       - "8081:8080"
     depends_on:
@@ -68,26 +59,20 @@ services:
     networks:
       - app-network
 
-
   frontend:
     build:
       context: ./front-diet/frontend
       dockerfile: Dockerfile
     container_name: app-frontend
     environment:
-      # Backend local
       API_URL: http://backend:8080
-      
-      # Keycloak (RAILWAY PROD)
-      KEYCLOAK_URL: https://nutrifit-production-c4b6.up.railway.app
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_REALM: master
       KEYCLOAK_CLIENT_ID: diet-frontend
     ports:
       - "80:80"
     volumes:
-      # Config nginx (hot reload sans rebuild)
       - ./front-diet/frontend/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # Logs
       - nginx_logs:/var/log/nginx
     depends_on:
       - backend
