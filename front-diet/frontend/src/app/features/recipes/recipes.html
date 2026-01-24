@@ -1,77 +1,66 @@
-<div class="recipes-container">
+<div class="recipes-page">
   <!-- 🔍 Search bar -->
-  <div class="search-container">
+  <div class="search-bar">
     <input
       type="text"
-      class="search-input"
       placeholder="🔍 Chercher une recette..."
       [(ngModel)]="search"
       (keyup.enter)="onSearch()"
       [disabled]="loading"
     />
-    <button
-      class="search-btn"
-      (click)="onSearch()"
-      [disabled]="loading"
-    >
-      {{ loading ? 'Chargement...' : 'Chercher' }}
-    </button>
   </div>
 
   <!-- 🤖 AI Prompt section -->
-  <div class="ai-section">
-    <h3>✨ Générer une recette avec l'IA</h3>
-    <div class="ai-input-group">
-      <input
-        type="text"
-        class="ai-input"
-        placeholder="ex: recette poulet épicé rapide"
-        [(ngModel)]="aiPrompt"
-        [disabled]="aiLoading"
-      />
-      <button
-        class="ai-btn"
-        (click)="generateAIRecipe()"
-        [disabled]="aiLoading"
-      >
-        {{ aiLoading ? 'Génération...' : 'Générer' }}
-      </button>
-    </div>
+  <div class="ai-generator">
+    <input
+      type="text"
+      class="ai-input"
+      placeholder="ex: recette poulet épicé rapide"
+      [(ngModel)]="aiPrompt"
+      [disabled]="aiLoading"
+    />
+    <button
+      class="ai-btn"
+      (click)="generateAIRecipe()"
+      [disabled]="aiLoading"
+    >
+      {{ aiLoading ? 'Génération...' : 'Générer' }}
+    </button>
   </div>
 
   <!-- 🏷️ Filters -->
   <div class="filters">
     <!-- Chips filtrées -->
     <button
-      class="filter-chip"
+      class="chip"
       [class.active]="activeFilter === 'all'"
       (click)="setFilter('all')"
     >
       Tout
     </button>
     <button
-      class="filter-chip"
+      class="chip"
       [class.active]="activeFilter === 'breakfast'"
       (click)="setFilter('breakfast')"
     >
       Petit-déj
     </button>
     <button
-      class="filter-chip"
+      class="chip"
       [class.active]="activeFilter === 'lunch'"
       (click)="setFilter('lunch')"
     >
       Déjeuner
     </button>
     <button
-      class="filter-chip"
+      class="chip"
       [class.active]="activeFilter === 'dinner'"
       (click)="setFilter('dinner')"
     >
       Dîner
     </button>
     <button
-      class="filter-chip"
+      class="chip"
       [class.active]="activeFilter === 'snack'"
       (click)="setFilter('snack')"
     >
@@ -79,25 +68,30 @@
     </button>
 
     <!-- More filters -->
-    <button class="filter-chip more-btn" (click)="toggleMoreFilters()">
+    <button class="chip more" (click)="toggleMoreFilters()">
       + Plus de filtres
     </button>
   </div>
 
   <!-- 📂 More filters panel -->
-  <div class="more-filters-panel" *ngIf="showMoreFilters">
-    <h3>Catégories</h3>
-    <div class="category-list">
+  <div class="more-filters" *ngIf="showMoreFilters">
+    <p><strong>Catégories</strong></p>
+    <div class="categories-list">
       <button
         *ngFor="let category of categories"
-        class="category-btn"
-        [class.selected]="selectedCategory === category"
+        class="chip small"
+        [class.active]="selectedCategory === category"
         (click)="applyCategoryFilter(category)"
       >
         {{ category }}
       </button>
     </div>
   </div>
+
+  <!-- 📊 Count -->
+  <p class="count" *ngIf="!loading && recipes.length > 0">
+    {{ recipes.length }} recette{{ recipes.length > 1 ? 's' : '' }} affichée{{ recipes.length > 1 ? 's' : '' }}
+  </p>
 
   <!-- 📋 Recipes grid -->
   <div class="recipes-grid">
@@ -127,19 +121,19 @@
   </div>
 
   <!-- 📍 Loading state -->
-  <div class="loading-state" *ngIf="loading && page === 0">
+  <div class="count" *ngIf="loading && page === 0">
     <p>⏳ Chargement des recettes...</p>
   </div>
 
   <!-- ✅ Show more button -->
-  <div class="show-more-container" *ngIf="hasMore && !loading && recipes.length > 0">
+  <div class="show-more-section" *ngIf="hasMore && !loading && recipes.length > 0">
     <button class="show-more-btn" (click)="showMore()">
       Afficher plus de recettes
     </button>
   </div>
 
   <!-- 🚫 No results message -->
-  <div class="no-results" *ngIf="!loading && recipes.length === 0">
+  <div class="count" *ngIf="!loading && recipes.length === 0">
     <p>Aucune recette trouvée... Essaie une autre recherche ! 🔍</p>
   </div>
 </div>
