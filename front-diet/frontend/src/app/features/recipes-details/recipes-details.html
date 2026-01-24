@@ -1,5 +1,4 @@
-<div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate">
-<div class="recipe-detail" *ngIf="recipe">
+<div class="recipe-detail" *ngIf="!loading && recipe">
   <div class="hero">
     <button class="back-btn" (click)="goBack()">←</button>
     <img [src]="recipe.image" [alt]="recipe.name" />
@@ -10,13 +9,13 @@
     <p class="description">{{ recipe.description }}</p>
 
     <div class="meta-row">
-      <span class="pill">{{ recipe.calories }} kcal</span>
-      <span class="pill">{{ recipe.time }} min</span>
-      <span class="pill">{{ recipe.difficulty }}</span>
+      <span class="pill">⚡ {{ recipe.calories }} kcal</span>
+      <span class="pill">⏱️ {{ recipe.time }} min</span>
+      <span class="pill">📈 {{ recipe.difficulty }}</span>
     </div>
 
     <div class="section" *ngIf="recipe.ingredients?.length">
-      <h2>Ingrédients</h2>
+      <h2>🥘 Ingrédients</h2>
       <div class="ingredients">
         <div *ngFor="let ing of recipe.ingredients" class="ingredient-row">
           <span class="name">{{ ing.name }}</span>
@@ -26,17 +25,17 @@
     </div>
 
     <div class="section" *ngIf="recipe.steps?.length">
-      <h2>Préparation</h2>
-      <ul class="steps">
+      <h2>👨‍🍳 Préparation</h2>
+      <ol class="steps">
         <li *ngFor="let step of recipe.steps; let i = index">
           <div class="step-number">{{ i + 1 }}</div>
           <div class="step-text">{{ step }}</div>
         </li>
-      </ul>
+      </ol>
     </div>
 
-    <div class="section">
-      <h2>Informations nutritionnelles</h2>
+    <div class="section" *ngIf="recipe.nutrition">
+      <h2>📊 Informations nutritionnelles</h2>
       <div class="nutrition-grid">
         <div class="nutri-card">
           <div class="value">{{ recipe.nutrition.calories }}</div>
@@ -60,19 +59,21 @@
 
   <div class="bottom-bar">
     <button class="primary-btn" (click)="addToPlan()">
-      Ajouter au plan →
+      ➕ Ajouter au plan →
     </button>
   </div>
 </div>
 
-<ng-template #loadingTemplate>
-  <div class="loading-container" id="loader">
-    <div class="circle-loader"></div>
-    <p>🍽️ Recette en préparation…</p>
-  </div>
-</ng-template>
-<!-- À ajouter à la fin du fichier -->
-<div *ngIf="error && !loading" class="loading-container">
-  <p style="color: #e63946; font-size: 16px;">❌ {{ error }}</p>
-  <button (click)="goBack()">← Retour aux recettes</button>
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <div class="circle-loader"></div>
+  <p>🍽️ Recette en préparation…</p>
+</div>
+
+<!-- Error State -->
+<div class="loading-container" *ngIf="error && !loading">
+  <p style="color: #e63946; font-size: 16px; font-weight: 600;">❌ {{ error }}</p>
+  <button (click)="goBack()" style="margin-top: 20px; padding: 10px 20px; border-radius: 8px; border: none; background: #0e9859; color: white; cursor: pointer; font-weight: 600;">
+    ← Retour aux recettes
+  </button>
 </div>
