@@ -40,7 +40,7 @@ export class RecipeDetailComponent implements OnInit {
   private router = inject(Router);
   private recipeService = inject(RecipeService);
 
-  recipe?: RecipeDetail;
+  recipe!: RecipeDetail;    // ✅ ! = Non-null assertion
   loading = true;
   error: string | null = null;
 
