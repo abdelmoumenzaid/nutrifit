@@ -1,4 +1,5 @@
-<div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate">
+<!-- <div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate"> -->
+<div class="recipe-detail">
   <div class="hero">
     <button class="back-btn" (click)="goBack()">←</button>
     <img [src]="recipe.image" [alt]="recipe.name" />
@@ -64,9 +65,9 @@
   </div>
 </div>
 
-<ng-template #loadingTemplate>
+<!-- <ng-template #loadingTemplate>
   <div class="loading-container" id="loader">
     <div class="circle-loader"></div>
     <p>🍽️ Recette en préparation…</p>
   </div>
-</ng-template>
+</ng-template> -->
