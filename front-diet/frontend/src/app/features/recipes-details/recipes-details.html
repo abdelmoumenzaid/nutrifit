@@ -1,4 +1,4 @@
-<!-- <div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate"> -->
+<div class="recipe-detail" *ngIf="!loading && recipe; else loadingTemplate">
 <div class="recipe-detail" *ngIf="recipe">
   <div class="hero">
     <button class="back-btn" (click)="goBack()">←</button>
@@ -65,9 +65,14 @@
   </div>
 </div>
 
-<!-- <ng-template #loadingTemplate>
+<ng-template #loadingTemplate>
   <div class="loading-container" id="loader">
     <div class="circle-loader"></div>
     <p>🍽️ Recette en préparation…</p>
   </div>
-</ng-template> -->
+</ng-template>
+<!-- À ajouter à la fin du fichier -->
+<div *ngIf="error && !loading" class="loading-container">
+  <p style="color: #e63946; font-size: 16px;">❌ {{ error }}</p>
+  <button (click)="goBack()">← Retour aux recettes</button>
+</div>
