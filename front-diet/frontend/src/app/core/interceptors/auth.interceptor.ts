@@ -16,6 +16,9 @@ export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
+    // ✅ VÉRIFIE QUE CETTE LIGNE FONCTIONNE
+  console.log('🔍 Checking request URL:', req.url);
+  console.log('📌 environment.apiUrl:', environment.apiUrl);
   // ✅ SEULEMENT ajouter le token aux requêtes BACKEND
   if (req.url.startsWith(environment.apiUrl)) {
     const token = localStorage.getItem('access_token');
