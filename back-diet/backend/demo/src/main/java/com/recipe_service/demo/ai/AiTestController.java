@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipe_service.demo.nutrition.NutritionService;
 import com.recipe_service.demo.recipe.Recipe;
 import com.recipe_service.demo.recipe.RecipeRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/ai")
+@RequestMapping("/api/public/ai")
 @CrossOrigin(origins = "*")
 public class AiTestController {
 
@@ -24,8 +25,9 @@ public class AiTestController {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate;
 
-    // URL de ton agent Python FastAPI
-    private static final String PYTHON_AGENT_BASE_URL = "http://localhost:8000"; // adapte si besoin
+    // ✅ FIX: Injecter depuis application.yml au lieu de hardcoder
+    @Value("${ai.agent.url:http://127.0.0.1:8000}")
+    private String pythonAgentBaseUrl;
 
     public AiTestController(RecipeAgentClient recipeAgentClient,
                             RecipeRepository recipeRepository,
@@ -118,7 +120,7 @@ public class AiTestController {
         return ResponseEntity.ok(result);
     }
 
-    // ---------- Chat TEXTE : /api/ai/chat ----------
+    // ---------- Chat TEXTE : /api/public/ai/chat ----------
 
     @PostMapping("/chat")
     public ResponseEntity<ChatAgentResponse> chat(@RequestBody Map<String, Object> body) {
@@ -157,7 +159,7 @@ public class AiTestController {
             HttpEntity<ChatRequestToAgent> entity = new HttpEntity<>(req, headers);
 
             ResponseEntity<ChatAgentResponse> resp = restTemplate.postForEntity(
-                    PYTHON_AGENT_BASE_URL + "/api/chat", entity, ChatAgentResponse.class
+                    pythonAgentBaseUrl + "/api/chat", entity, ChatAgentResponse.class
             );
 
             if (resp.getStatusCode().is2xxSuccessful() && resp.getBody() != null) {
@@ -175,7 +177,7 @@ public class AiTestController {
         }
     }
 
-    // ---------- Chat RECETTES : /api/ai/chat/recipes ----------
+    // ---------- Chat RECETTES : /api/public/ai/chat/recipes ----------
 
     @PostMapping("/chat/recipes")
     public ResponseEntity<ChatRecipeResponse> chatRecipes(@RequestBody ChatRecipePrompt req) {
@@ -230,7 +232,7 @@ public class AiTestController {
         return ResponseEntity.ok(resp);
     }
 
-    // ---------- Chat IMAGES : /api/ai/chat/images ----------
+    // ---------- Chat IMAGES : /api/public/ai/chat/images ----------
 
     @PostMapping("/chat/images")
     public ResponseEntity<ChatRecipeResponse> chatImages(
@@ -251,7 +253,7 @@ public class AiTestController {
         return ResponseEntity.ok(response);
     }
 
-    // ---------- Génération + sauvegarde recette : /api/ai/generate-and-save ----------
+    // ---------- Génération + sauvegarde recette : /api/public/ai/generate-and-save ----------
 
     @PostMapping("/generate-and-save")
     public ResponseEntity<Recipe> generateAndSave(@RequestParam String prompt) {
