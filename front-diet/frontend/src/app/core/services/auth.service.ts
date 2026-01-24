@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 
+
 export interface User {
   id?: string;
   firstName?: string;
@@ -16,6 +17,7 @@ export interface User {
   family_name?: string;
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,13 +25,13 @@ export class AuthService {
   private tokenSubject = new BehaviorSubject<string | null>(null);
   public token$ = this.tokenSubject.asObservable();
 
-  // ✅ Utilise l'environment
+
+  // ✅ CORRECTED: Utilise environment pour les URLs
   private readonly KEYCLOAK_URL = `${environment.keycloak.url}/realms/${environment.keycloak.realm}`;
   private readonly CLIENT_ID = environment.keycloak.clientId;
-  private readonly FRONTEND_URL = environment.production 
-    ? 'https://app-diet-frontend-prod.up.railway.app'
-    : 'http://localhost:4200';
-  private readonly BACKEND_URL = `${environment.apiUrl}/public/auth`;
+  private readonly FRONTEND_URL = environment.frontendUrl;  // ✅ FIX: utilise environment
+  private readonly BACKEND_URL = `${environment.apiUrl}auth`;  // ✅ FIX: utilise environment
+
 
   constructor(
     private http: HttpClient,
@@ -39,6 +41,7 @@ export class AuthService {
     // ✅ SIMPLEMENT charger le token
     this.loadTokenFromStorage();
   }
+
 
   /**
    * ✅ Load token from localStorage
@@ -56,6 +59,7 @@ export class AuthService {
     }
   }
 
+
   // ============ REGISTER ============
   registerCustom(
     email: string,
@@ -70,13 +74,16 @@ export class AuthService {
       password
     };
 
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
+
     console.log('📤 Sending registration request:', body);
     return this.http.post(`${this.BACKEND_URL}/register`, body, { headers });
   }
+
 
   // ============ LOGIN KEYCLOAK ============
   login() {
@@ -87,21 +94,26 @@ export class AuthService {
       scope: 'openid profile email'
     });
 
+
     console.log('🔐 Redirection vers Keycloak...');
     window.location.href = `${this.KEYCLOAK_URL}/protocol/openid-connect/auth?${params}`;
   }
+
 
   // ============ LOGIN DIRECT ============
   loginDirect(email: string, password: string): Observable<any> {
     const body = { email, password };
 
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
+
     console.log('📤 Sending login request:', body);
     return this.http.post(`${this.BACKEND_URL}/login`, body, { headers });
   }
+
 
   // ============ HANDLE CALLBACK ============
   handleCallback(code: string): Observable<any> {
@@ -110,6 +122,7 @@ export class AuthService {
       code.substring(0, 20) + '...'
     );
 
+
     const body = new URLSearchParams({
       grant_type: 'authorization_code',
       client_id: this.CLIENT_ID,
@@ -117,7 +130,9 @@ export class AuthService {
       redirect_uri: `${this.FRONTEND_URL}/callback`
     });
 
+
     const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+
 
     return this.http.post<{
       access_token: string;
@@ -125,6 +140,7 @@ export class AuthService {
       id_token?: string;
     }>(`${this.KEYCLOAK_URL}/protocol/openid-connect/token`, body, { headers });
   }
+
 
   // ============ SAVE TOKEN ============
   saveToken(
@@ -135,30 +151,36 @@ export class AuthService {
   ): void {
     console.log('💾 AuthService.saveToken() - Sauvegarde des tokens');
 
+
     if (!accessToken) {
       console.error('❌ ERREUR: accessToken est vide!');
       return;
     }
+
 
     if (isPlatformBrowser(this.platformId)) {
       try {
         localStorage.setItem('access_token', accessToken);
         console.log('✅ access_token sauvegardé dans localStorage');
 
+
         if (refreshToken) {
           localStorage.setItem('refresh_token', refreshToken);
           console.log('✅ refresh_token sauvegardé dans localStorage');
         }
+
 
         if (idToken) {
           localStorage.setItem('id_token', idToken);
           console.log('✅ id_token sauvegardé dans localStorage');
         }
 
+
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
           console.log('✅ user sauvegardé dans localStorage');
         }
+
 
         const saved = localStorage.getItem('access_token');
         if (saved) {
@@ -173,13 +195,16 @@ export class AuthService {
       }
     }
 
+
     this.tokenSubject.next(accessToken);
     console.log('✅ tokenSubject mis à jour');
   }
 
+
   // ============ LOGOUT ============
   logout() {
     console.log('🚪 AuthService.logout()');
+
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('access_token');
@@ -189,9 +214,11 @@ export class AuthService {
       console.log('✅ Tokens supprimés de localStorage');
     }
 
+
     this.tokenSubject.next(null);
     this.router.navigate(['/auth-landing']);
   }
+
 
   // ============ TOKEN MANAGEMENT ============
   getToken(): string | null {
@@ -204,6 +231,7 @@ export class AuthService {
     return this.tokenSubject.value;
   }
 
+
   isAuthenticated(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -211,15 +239,18 @@ export class AuthService {
       return false;
     }
 
+
     const parts = token.split('.');
     if (parts.length !== 3) {
       console.error('❌ isAuthenticated(): Token invalide (', parts.length, 'parties)');
       return false;
     }
 
+
     console.log('✅ isAuthenticated(): OUI');
     return true;
   }
+
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
@@ -228,9 +259,11 @@ export class AuthService {
       : new HttpHeaders();
   }
 
+
   hasRole(role: string): boolean {
     const token = this.getToken();
     if (!token) return false;
+
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
@@ -242,8 +275,10 @@ export class AuthService {
     }
   }
 
+
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
+
 
     if (!refreshToken) {
       return new Observable((observer) => {
@@ -251,11 +286,13 @@ export class AuthService {
       });
     }
 
+
     const body = new URLSearchParams({
       grant_type: 'refresh_token',
       client_id: this.CLIENT_ID,
       refresh_token: refreshToken
     });
+
 
     return this.http.post<{ access_token: string; refresh_token?: string }>(
       `${this.KEYCLOAK_URL}/protocol/openid-connect/token`,
@@ -264,11 +301,13 @@ export class AuthService {
     );
   }
 
+
   // ============ USER MANAGEMENT ============
   getCurrentUser(): User | null {
     if (!isPlatformBrowser(this.platformId)) {
       return null;
     }
+
 
     try {
       const storedUser = localStorage.getItem('user');
@@ -282,11 +321,13 @@ export class AuthService {
         }
       }
 
+
       const token = this.getToken();
       if (!token) {
         console.warn('⚠️ getCurrentUser(): No token found');
         return null;
       }
+
 
       const parts = token.split('.');
       if (parts.length !== 3) {
@@ -294,16 +335,19 @@ export class AuthService {
         return null;
       }
 
+
       const payload = this.decodeTokenPayload(parts[1]);
       if (!payload) {
         console.error('❌ getCurrentUser(): Could not decode token payload');
         return null;
       }
 
+
       if (payload.exp && payload.exp * 1000 < Date.now()) {
         console.warn('⚠️ getCurrentUser(): Token is expired');
         return null;
       }
+
 
       const user: User = {
         id: payload.sub,
@@ -316,6 +360,7 @@ export class AuthService {
         family_name: payload.family_name
       };
 
+
       console.log('👤 User from JWT token:', user);
       return user;
     } catch (error) {
@@ -324,14 +369,17 @@ export class AuthService {
     }
   }
 
+
   private decodeTokenPayload(encodedPayload: string): any {
     try {
       let decoded = encodedPayload;
+
 
       const padding = 4 - (decoded.length % 4);
       if (padding !== 4) {
         decoded += '='.repeat(padding);
       }
+
 
       const jsonPayload = atob(decoded);
       return JSON.parse(jsonPayload);
@@ -341,8 +389,10 @@ export class AuthService {
     }
   }
 
+
   getUserFirstName(): string {
     const user = this.getCurrentUser();
+
 
     return (
       user?.firstName ||
@@ -353,42 +403,53 @@ export class AuthService {
     );
   }
 
+
   getUserFullName(): string {
     const user = this.getCurrentUser();
+
 
     if (!user) {
       return 'Utilisateur';
     }
 
+
     const firstName = user.firstName || user.given_name || '';
     const lastName = user.lastName || user.family_name || '';
+
 
     if (firstName && lastName) {
       return `${firstName} ${lastName}`;
     }
 
+
     return user.name || user.preferred_username || 'Utilisateur';
   }
+
 
   getUserEmail(): string | null {
     const user = this.getCurrentUser();
     return user?.email || null;
   }
 
+
   isTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
+
 
     try {
       const parts = token.split('.');
       if (parts.length !== 3) return false;
 
+
       const payload = this.decodeTokenPayload(parts[1]);
       if (!payload) return false;
+
 
       if (payload.exp && payload.exp * 1000 < Date.now()) {
         return false;
       }
+
 
       return true;
     } catch {

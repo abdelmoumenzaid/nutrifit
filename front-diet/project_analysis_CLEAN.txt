@@ -2,7 +2,7 @@
 📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
 ================================================================================
 📁 Projet: C:\Users\ZAID\Desktop\app-diet\front-diet
-📈 Fichiers analysés: 131
+📈 Fichiers analysés: 127
 🤖 Modèle: llama-3.3-70b-versatile
 
 1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
@@ -22,21 +22,20 @@
 │   │   ├── 📄 extensions.json (JSON - 134 bytes)
 │   │   ├── 📄 launch.json (JSON - 490 bytes)
 │   │   └── 📄 tasks.json (JSON - 1020 bytes)
-│   ├── 📄 Dockerfile (Unknown - 1.5 KB)
+│   ├── 📄 Dockerfile (Unknown - 3.4 KB)
 │   ├── 📄 README.md (Markdown - 1.9 KB)
-│   ├── 📄 angular.json (JSON - 1.6 KB)
+│   ├── 📄 angular.json (JSON - 1.0 KB)
 │   ├── 📁 config
-│   │   └── 📄 nginx.conf (Unknown - 550 bytes)
+│   │   └── 📄 nginx.conf (Unknown - 386 bytes)
 │   ├── 📄 package-lock.json (JSON - 395.0 KB)
 │   ├── 📄 package.json (JSON - 1.4 KB)
 │   ├── 📁 public
 │   │   └── 📄 manifest.json (JSON - 392 bytes)
-│   ├── 📄 server.js (JavaScript - 724 bytes)
+│   ├── 📄 server.js (JavaScript - 491 bytes)
 │   ├── 📁 src
 │   │   ├── 📄 404.html (HTML - 174 bytes)
 │   │   ├── 📁 app
-│   │   │   ├── 📄 app.config.server.ts (TypeScript - 438 bytes)
-│   │   │   ├── 📄 app.config.ts (TypeScript - 1.9 KB)
+│   │   │   ├── 📄 app.config.ts (TypeScript - 2.3 KB)
 │   │   │   ├── 📄 app.css (CSS - 615 bytes)
 │   │   │   ├── 📄 app.html (HTML - 96 bytes)
 │   │   │   ├── 📄 app.routes.server.ts (TypeScript - 174 bytes)
@@ -49,12 +48,11 @@
 │   │   │   │   │   └── 📄 auth.guard.ts (TypeScript - 1.9 KB)
 │   │   │   │   ├── 📁 interceptors
 │   │   │   │   │   └── 📄 auth.interceptor.ts (TypeScript - 1.4 KB)
-│   │   │   │   ├── 📄 keycloak.config.ts (TypeScript - 1.1 KB)
-│   │   │   │   ├── 📄 readme (Unknown - 191 bytes)
+│   │   │   │   ├── 📄 keycloak.config.ts (TypeScript - 1.2 KB)
 │   │   │   │   └── 📁 services
-│   │   │   │       ├── 📄 auth.service.ts (TypeScript - 12.8 KB)
-│   │   │   │       ├── 📄 keycloak.service.ts (TypeScript - 880 bytes)
-│   │   │   │       └── 📄 profile.service.ts (TypeScript - 3.9 KB)
+│   │   │   │       ├── 📄 auth.service.ts (TypeScript - 11.2 KB)
+│   │   │   │       ├── 📄 keycloak.service.ts (TypeScript - 1.1 KB)
+│   │   │   │       └── 📄 profile.service.ts (TypeScript - 5.9 KB)
 │   │   │   └── 📁 features
 │   │   │       ├── 📁 auth-connexion
 │   │   │       │   ├── 📄 auth-connexion.css (CSS - 8.4 KB)
@@ -139,9 +137,9 @@
 │   │   │       │   │   ├── 📄 personal-info.spec.ts (TypeScript - 597 bytes)
 │   │   │       │   │   └── 📄 personal-info.ts (TypeScript - 2.3 KB)
 │   │   │       │   ├── 📄 profile.css (CSS - 2.7 KB)
-│   │   │       │   ├── 📄 profile.html (HTML - 2.6 KB)
-│   │   │       │   ├── 📄 profile.spec.ts (TypeScript - 561 bytes)
-│   │   │       │   └── 📄 profile.ts (TypeScript - 9.3 KB)
+│   │   │       │   ├── 📄 profile.html (HTML - 3.8 KB)
+│   │   │       │   ├── 📄 profile.spec.ts (TypeScript - 613 bytes)
+│   │   │       │   └── 📄 profile.ts (TypeScript - 8.6 KB)
 │   │   │       ├── 📁 recipes
 │   │   │       │   ├── 📄 recipe-adapter.ts (TypeScript - 1.9 KB)
 │   │   │       │   ├── 📄 recipe.model.ts (TypeScript - 525 bytes)
@@ -167,17 +165,15 @@
 │   │   │   │   └── 📄 theme.properties (Unknown - 44 bytes)
 │   │   │   └── 📄 silent-check-sso.html (HTML - 202 bytes)
 │   │   ├── 📁 environments
-│   │   │   ├── 📄 environment.prod.ts (TypeScript - 254 bytes)
-│   │   │   └── 📄 environment.ts (TypeScript - 257 bytes)
+│   │   │   ├── 📄 environment.prod.ts (TypeScript - 256 bytes)
+│   │   │   └── 📄 environment.ts (TypeScript - 398 bytes)
 │   │   ├── 📄 index.html (HTML - 624 bytes)
-│   │   ├── 📄 main.server.ts (TypeScript - 320 bytes)
-│   │   ├── 📄 main.ts (TypeScript - 428 bytes)
-│   │   ├── 📄 server.ts (TypeScript - 1.6 KB)
+│   │   ├── 📄 main.ts (TypeScript - 244 bytes)
 │   │   └── 📄 styles.css (CSS - 1.4 KB)
 │   ├── 📄 tsconfig.app.json (JSON - 492 bytes)
 │   ├── 📄 tsconfig.json (JSON - 990 bytes)
 │   └── 📄 tsconfig.spec.json (JSON - 456 bytes)
-└── 📄 project_analysis_CLEAN.txt (Text - 13.2 KB)
+└── 📄 project_analysis_CLEAN.txt (Text - 13.9 KB)
 
 2️⃣  ANALYSE DES FICHIERS IMPORTANTS
 ----------------------------------------
@@ -221,10 +217,10 @@
 📝 frontend\public\manifest.json
 [Analyse via requests - implémentation simplifiée]
 
-📝 frontend\src\main.server.ts
+📝 frontend\src\main.ts
 [Analyse via requests - implémentation simplifiée]
 
-📝 frontend\src\main.ts
+📝 frontend\src\app\app.config.ts
 [Analyse via requests - implémentation simplifiée]
 
 3️⃣  DÉPENDANCES
@@ -239,14 +235,14 @@
 
 5️⃣  STATISTIQUES
 ----------------------------------------
-Taille: 708.5 KB
-Fichiers: 131
+Taille: 709.2 KB
+Fichiers: 127
 Langages:
-  • TypeScript: 65
+  • TypeScript: 62
   • HTML: 23
   • CSS: 21
   • JSON: 10
-  • Unknown: 8
+  • Unknown: 7
   • Text: 1
   • Git: 1
   • Markdown: 1
