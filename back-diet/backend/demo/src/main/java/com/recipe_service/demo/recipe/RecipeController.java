@@ -1,6 +1,9 @@
 package com.recipe_service.demo.recipe;
 
 import com.recipe_service.demo.ai.AiTestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,20 +25,26 @@ public class RecipeController {
 
     private final RecipeService service;
     private final RecipeImportService importService;
-    private final AiTestController aiTestController;  // ✅ AJOUTER
+    private final AiTestController aiTestController;
 
     public RecipeController(RecipeService service,
                             RecipeImportService importService,
-                            AiTestController aiTestController) {  // ✅ AJOUTER
+                            AiTestController aiTestController) {
         this.service = service;
         this.importService = importService;
-        this.aiTestController = aiTestController;  // ✅ AJOUTER
+        this.aiTestController = aiTestController;
     }
 
     // ===== GET Endpoints =====
+    
+    // ✅ AVEC PAGINATION
     @GetMapping
-    public ResponseEntity<List<RecipeResponse>> getAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<RecipeResponse>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<RecipeResponse> pageResult = service.findAll(pageable);
+        return ResponseEntity.ok(pageResult.getContent());
     }
 
     @GetMapping("/categories")
@@ -48,13 +57,19 @@ public class RecipeController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    // ✅ AVEC PAGINATION
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponse>> search(
-            @RequestParam(name = "search", required = false) String searchQuery) {
-        return ResponseEntity.ok(service.search(searchQuery));
+            @RequestParam(name = "search", required = false) String searchQuery,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<RecipeResponse> pageResult = service.search(searchQuery, pageable);
+        return ResponseEntity.ok(pageResult.getContent());
     }
 
     // ===== POST Endpoints =====
+    
     @PostMapping
     public ResponseEntity<RecipeResponse> create(@RequestBody RecipeCreateRequest request) {
         RecipeResponse created = service.create(request);
@@ -68,10 +83,10 @@ public class RecipeController {
     }
 
     // ===== AI Generation =====
+    
     @PostMapping("/ai/generate-and-save")
     public ResponseEntity<Recipe> generateAIRecipe(@RequestParam String prompt) {
         try {
-            // ✅ APPELER AiTestController.generateAndSave()
             return aiTestController.generateAndSave(prompt);
         } catch (Exception e) {
             e.printStackTrace();

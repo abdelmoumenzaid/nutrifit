@@ -1,110 +1,116 @@
-<div class="recipes-page">
-  <h1>Toutes les recettes</h1>
-
-  <!-- 🔥 Générateur AI -->
-  <div class="ai-generator">
+<div class="recipes-container">
+  <!-- 🔍 Search bar -->
+  <div class="search-container">
     <input
       type="text"
-      [(ngModel)]="aiPrompt"
-      placeholder="recette poulet rapide, tajine, salade..."
-      class="ai-input"
+      class="search-input"
+      placeholder="🔍 Chercher une recette..."
+      [(ngModel)]="search"
+      (keyup.enter)="onSearch()"
+      [disabled]="loading"
     />
-    <button class="ai-btn" (click)="generateAIRecipe()" [disabled]="aiLoading">
-      🔥 Générer AI
+    <button
+      class="search-btn"
+      (click)="onSearch()"
+      [disabled]="loading"
+    >
+      {{ loading ? 'Chargement...' : 'Chercher' }}
     </button>
   </div>
 
-  <!-- Recherche -->
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Rechercher une recette..."
-      [(ngModel)]="search"
-      (keyup.enter)="onSearch()"
-    />
+  <!-- 🤖 AI Prompt section -->
+  <div class="ai-section">
+    <h3>✨ Générer une recette avec l'IA</h3>
+    <div class="ai-input-group">
+      <input
+        type="text"
+        class="ai-input"
+        placeholder="ex: recette poulet épicé rapide"
+        [(ngModel)]="aiPrompt"
+        [disabled]="aiLoading"
+      />
+      <button
+        class="ai-btn"
+        (click)="generateAIRecipe()"
+        [disabled]="aiLoading"
+      >
+        {{ aiLoading ? 'Génération...' : 'Générer' }}
+      </button>
+    </div>
   </div>
 
-  <!-- Filtres principaux -->
+  <!-- 🏷️ Filters -->
   <div class="filters">
+    <!-- Chips filtrées -->
     <button
-      class="chip"
+      class="filter-chip"
       [class.active]="activeFilter === 'all'"
       (click)="setFilter('all')"
     >
       Tout
     </button>
-
     <button
-      class="chip"
+      class="filter-chip"
+      [class.active]="activeFilter === 'breakfast'"
+      (click)="setFilter('breakfast')"
+    >
+      Petit-déj
+    </button>
+    <button
+      class="filter-chip"
+      [class.active]="activeFilter === 'lunch'"
+      (click)="setFilter('lunch')"
+    >
+      Déjeuner
+    </button>
+    <button
+      class="filter-chip"
+      [class.active]="activeFilter === 'dinner'"
+      (click)="setFilter('dinner')"
+    >
+      Dîner
+    </button>
+    <button
+      class="filter-chip"
       [class.active]="activeFilter === 'snack'"
       (click)="setFilter('snack')"
     >
-      desserts
+      Collation
     </button>
 
-    <!-- 🔥 Generated AI -->
-    <!-- <button
-      class="chip ai-chip"
-      [class.active]="selectedCategory === 'Generated AI'"
-      (click)="applyCategoryFilter('Generated AI')"
-    >
-      🔥 Generated AI
-    </button> -->
-      <button
-  class="chip ai-chip"
-  [class.active]="selectedCategory === 'Generated AI'"
-  (click)="applyCategoryFilter('Generated AI')"
->
-  <span class="ai-desktop">🔥 Generated AI</span>
-  <span class="ai-mobile">🤖 IA</span>
-</button>
-
-    <button class="chip more" (click)="toggleMoreFilters()">
-      Plus de filtres ▾
+    <!-- More filters -->
+    <button class="filter-chip more-btn" (click)="toggleMoreFilters()">
+      + Plus de filtres
     </button>
   </div>
 
-  <!-- Panel catégories backend -->
-  <div class="more-filters" *ngIf="showMoreFilters">
-    <p>Catégories :</p>
-    <div class="categories-list">
+  <!-- 📂 More filters panel -->
+  <div class="more-filters-panel" *ngIf="showMoreFilters">
+    <h3>Catégories</h3>
+    <div class="category-list">
       <button
-        *ngFor="let c of categories"
-        class="chip small"
-        [class.active]="selectedCategory === c"
-        (click)="applyCategoryFilter(c)"
+        *ngFor="let category of categories"
+        class="category-btn"
+        [class.selected]="selectedCategory === category"
+        (click)="applyCategoryFilter(category)"
       >
-        {{ c }}
+        {{ category }}
       </button>
     </div>
   </div>
 
-  <!-- Compteur -->
-  <div class="status">
-    <p class="count" *ngIf="!loading && !aiLoading">
-      {{ recipes.length }} recettes trouvées
-    </p>
-  </div>
-
-  <!-- Grille de recettes (limitée à visibleCount) -->
+  <!-- 📋 Recipes grid -->
   <div class="recipes-grid">
     <div
       class="recipe-card"
-      *ngFor="let recipe of recipes | slice: 0: visibleCount"
+      *ngFor="let recipe of recipes"
       (click)="openRecipe(recipe)"
     >
-      <!-- 🔥 Badge AI -->
-      <div *ngIf="recipe.source === 'AI'" class="ai-badge">🔥 AI</div>
-
-      <img
-        [src]="recipe.image"
-        [alt]="recipe.name"
-        class="card-image"
-        [class.loading]="loading"
-      />
+      <div *ngIf="recipe.source === 'AI'" class="ai-badge">AI</div>
+      <img [src]="recipe.image" [alt]="recipe.name" class="card-image" />
       <div class="card-body">
         <h3>{{ recipe.name }}</h3>
-        <p class="desc">{{ recipe.description | slice: 0: 100 }}...</p>
+        <p class="desc">{{ recipe.description | slice : 0 : 100 }}...</p>
         <div class="meta">
           <span class="pill">{{ recipe.calories }} kcal</span>
           <span class="pill">{{ recipe.time }} min</span>
@@ -114,16 +120,26 @@
           class="link"
           (click)="openRecipe(recipe); $event.stopPropagation()"
         >
-          Voir la recette →
+          Voir la recette
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Bouton Afficher plus -->
-  <div class="show-more-container" *ngIf="recipes.length > visibleCount">
+  <!-- 📍 Loading state -->
+  <div class="loading-state" *ngIf="loading && page === 0">
+    <p>⏳ Chargement des recettes...</p>
+  </div>
+
+  <!-- ✅ Show more button -->
+  <div class="show-more-container" *ngIf="hasMore && !loading && recipes.length > 0">
     <button class="show-more-btn" (click)="showMore()">
-      Afficher plus de recettes →
+      Afficher plus de recettes
     </button>
+  </div>
+
+  <!-- 🚫 No results message -->
+  <div class="no-results" *ngIf="!loading && recipes.length === 0">
+    <p>Aucune recette trouvée... Essaie une autre recherche ! 🔍</p>
   </div>
 </div>

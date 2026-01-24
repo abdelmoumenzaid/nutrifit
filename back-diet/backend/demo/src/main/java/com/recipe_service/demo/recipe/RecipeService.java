@@ -1,8 +1,9 @@
 package com.recipe_service.demo.recipe;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -16,11 +17,18 @@ public class RecipeService {
         this.repository = repository;
     }
 
+    // ✅ ANCIEN - Retourne TOUTES les recettes (pour compatibilité)
     public List<RecipeResponse> findAll() {
         return repository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // ✅ NOUVEAU - Avec pagination
+    public Page<RecipeResponse> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(this::toResponse);
     }
 
     public RecipeResponse findById(UUID id) {
@@ -65,46 +73,57 @@ public class RecipeService {
     public RecipeResponse create(RecipeCreateRequest req) {
         return create(req, null);
     }
+
     // --- obtenir la liste des catégories distinctes ---
     public List<String> getAllCategories() {
         return repository.findDistinctCategories();
     }
-    // --- recherche dynamique avec query language : search=title:poulet,category:Vegetarian,calories<700 ---
+
+    // ✅ ANCIEN - Recherche TOUTES les recettes (pour compatibilité)
     public List<RecipeResponse> search(String searchQuery) {
         Specification<Recipe> spec = RecipeSearchCriteriaParser.parse(searchQuery);
-
         List<Recipe> recipes;
         if (spec == null) {
             recipes = repository.findAll();
         } else {
             recipes = repository.findAll(spec);
         }
-
         return recipes.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
-    private RecipeResponse toResponse(Recipe r) {
-    return new RecipeResponse(
-        r.getId(),
-        r.getTitle(),
-        r.getShortDescription(),
-        r.getImageUrl(),
-        r.getSource(),
-        r.getServings(),
-        r.getCalories(),
-        r.getPrepMinutes(),
-        r.getCookMinutes(),
-        r.getProteinG(),
-        r.getCarbsG(),
-        r.getFatG(),
-        r.getCategory(),
-        r.getArea(),
-        r.getTags(),
-        r.getInstructions(),
-        r.getIngredientsJson()
-    );
-}
+    // ✅ NOUVEAU - Recherche avec pagination
+    public Page<RecipeResponse> search(String searchQuery, Pageable pageable) {
+        Specification<Recipe> spec = RecipeSearchCriteriaParser.parse(searchQuery);
+        Page<Recipe> recipes;
+        if (spec == null) {
+            recipes = repository.findAll(pageable);
+        } else {
+            recipes = repository.findAll(spec, pageable);
+        }
+        return recipes.map(this::toResponse);
+    }
 
+    private RecipeResponse toResponse(Recipe r) {
+        return new RecipeResponse(
+                r.getId(),
+                r.getTitle(),
+                r.getShortDescription(),
+                r.getImageUrl(),
+                r.getSource(),
+                r.getServings(),
+                r.getCalories(),
+                r.getPrepMinutes(),
+                r.getCookMinutes(),
+                r.getProteinG(),
+                r.getCarbsG(),
+                r.getFatG(),
+                r.getCategory(),
+                r.getArea(),
+                r.getTags(),
+                r.getInstructions(),
+                r.getIngredientsJson()
+        );
+    }
 }

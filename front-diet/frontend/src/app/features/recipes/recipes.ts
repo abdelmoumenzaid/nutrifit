@@ -1,4 +1,5 @@
 // src/app/features/recipes/recipes.ts
+
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -24,9 +25,9 @@ interface RecipeCard {
 const MEALTYPE_TO_CATEGORY: Record<MealType, string | null> = {
   all: null,
   breakfast: 'Breakfast', // Petit-déj
-  lunch: 'Main',          // Déjeuner -> plats principaux
-  dinner: 'Main',         // Dîner -> aussi Main
-  snack: 'Dessert',       // Collation -> Dessert par ex.
+  lunch: 'Main', // Déjeuner -> plats principaux
+  dinner: 'Main', // Dîner -> aussi Main
+  snack: 'Dessert', // Collation -> Dessert par ex.
 };
 
 @Component({
@@ -45,28 +46,28 @@ export class RecipesComponent implements OnInit {
 
   search = '';
   activeFilter: MealType = 'all';
-
   categories: string[] = [];
   selectedCategory = '';
   showMoreFilters = false;
-
   loading = false;
   aiLoading = false; // 🔥
-  aiPrompt = '';     // 🔥
+  aiPrompt = ''; // 🔥
 
+  // ✅ État de pagination
   recipes: RecipeCard[] = [];
-
-  // 🔥 pagination simple pour la grille
-  visibleCount = 8; // 2 lignes si tu as 4 colonnes
+  page = 0; // page courante
+  pageSize = 8; // combien par page
+  hasMore = true; // y a-t-il plus de recettes ?
 
   ngOnInit(): void {
     console.log('🟢 RecipesComponent initialized');
+    this.page = 0;
     this.loadRecipes();
     this.loadCategories();
   }
 
-  loadRecipes(): void {
-    console.log('loadRecipes called, search=', this.search, 'filter=', this.activeFilter);
+  private loadRecipes(): void {
+    console.log('loadRecipes called, page =', this.page, 'search=', this.search);
     this.loading = true;
 
     const searchParts: string[] = [];
@@ -77,7 +78,7 @@ export class RecipesComponent implements OnInit {
     }
 
     // filtre chips
-    const mappedCategory = MEALTYPE_TO_CATEGORY[this.activeFilter]; // -> null pour 'all'
+    const mappedCategory = MEALTYPE_TO_CATEGORY[this.activeFilter];
     if (mappedCategory) {
       searchParts.push(`category:${mappedCategory}`);
     }
@@ -90,17 +91,25 @@ export class RecipesComponent implements OnInit {
     const searchQuery = searchParts.join(',');
     console.log('searchQuery =', searchQuery);
 
+    // ✅ On appelle le service avec page et pageSize
     const obs = searchQuery
-      ? this.recipeService.search(searchQuery) // seulement si texte de recherche
-      : this.recipeService.getAll();          // ✅ aucun critère -> TOUTE la BD
+      ? this.recipeService.search(searchQuery, this.page, this.pageSize)
+      : this.recipeService.getAll(this.page, this.pageSize);
 
     obs.subscribe({
       next: (recipes: Recipe[]) => {
-        console.log('API returned', recipes.length, 'recipes');
-        this.recipes = this.mapToRecipeCard(recipes);
-        console.log('recipes after mapping =', this.recipes.length);
+        console.log('API returned', recipes.length, 'recipes for page', this.page);
+        const mapped = this.mapToRecipeCard(recipes);
+
+        // ✅ Si page 0 on remplace, sinon on concatène
+        this.recipes = this.page === 0 ? mapped : [...this.recipes, ...mapped];
+
+        console.log('recipes total after mapping =', this.recipes.length);
+
+        // ✅ Y a-t-il plus ? Si on a reçu moins que pageSize, c'est la dernière page
+        this.hasMore = mapped.length === this.pageSize;
+
         this.loading = false;
-        this.visibleCount = 8;      // reset à 2 lignes à chaque chargement
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -111,11 +120,9 @@ export class RecipesComponent implements OnInit {
     });
   }
 
-  loadCategories(): void {
+  private loadCategories(): void {
     this.recipeService.getCategories().subscribe({
       next: (categories) => {
-        // avant : this.categories = ['Generated AI', ...categories];
-        // après : on laisse les catégories de la DB
         this.categories = categories;
       },
       error: (err) => console.error('Erreur catégories', err),
@@ -133,7 +140,7 @@ export class RecipesComponent implements OnInit {
       time: (r.prepMinutes || 0) + (r.cookMinutes || 0),
       difficulty: this.getDifficulty(r.calories || 0),
       mealType: 'lunch', // pour l'instant, fixe
-      source: r.source,  // 🔥 badge AI
+      source: r.source, // 🔥 badge AI
     }));
   }
 
@@ -143,14 +150,18 @@ export class RecipesComponent implements OnInit {
     return 'Difficile';
   }
 
+  // ✅ Réinitialise page à 0 quand on cherche/filtre
   onSearch(): void {
+    this.page = 0;
     this.loadRecipes();
   }
 
+  // ✅ Réinitialise page à 0 quand on change de filtre
   setFilter(filter: MealType): void {
     this.activeFilter = filter;
     this.selectedCategory = '';
     this.search = '';
+    this.page = 0;
     this.loadRecipes();
   }
 
@@ -158,12 +169,14 @@ export class RecipesComponent implements OnInit {
     this.showMoreFilters = !this.showMoreFilters;
   }
 
+  // ✅ Réinitialise page à 0 quand on sélectionne une catégorie
   applyCategoryFilter(category: string): void {
     this.selectedCategory = category;
-    this.showMoreFilters = false; // ferme le panneau
-    this.activeFilter = 'all';    // revient sur "Tout" visuel
-    this.search = '';             // nettoie la barre de recherche
-    this.loadRecipes();           // applique directement le filtre
+    this.showMoreFilters = false;
+    this.activeFilter = 'all';
+    this.search = '';
+    this.page = 0;
+    this.loadRecipes();
   }
 
   openRecipe(recipe: RecipeCard): void {
@@ -179,7 +192,6 @@ export class RecipesComponent implements OnInit {
     }
 
     this.aiLoading = true;
-
     this.recipeService.generateAIRecipe(this.aiPrompt).subscribe({
       next: (recipe: Recipe) => {
         const recipeCard: RecipeCard = {
@@ -211,8 +223,10 @@ export class RecipesComponent implements OnInit {
     });
   }
 
-  // 🔥 bouton "Afficher plus"
+  // ✅ Charge la page suivante
   showMore(): void {
-    this.visibleCount += 8; // charge 2 lignes de plus
+    if (!this.hasMore || this.loading) return;
+    this.page++;
+    this.loadRecipes();
   }
 }
