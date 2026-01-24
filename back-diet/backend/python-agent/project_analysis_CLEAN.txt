@@ -1,0 +1,46 @@
+================================================================================
+📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
+================================================================================
+📁 Projet: C:\Users\ZAID\Desktop\app-diet\back-diet\backend\python-agent
+📈 Fichiers analysés: 5
+🤖 Modèle: llama-3.3-70b-versatile
+
+1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
+----------------------------------------
+📦 python-agent
+├── 📄 .env (Environment - 127 bytes)
+├── 📄 main.py (Python - 17.9 KB)
+├── 📁 nutri-agent
+│   └── 📄 pyvenv.cfg (Unknown - 232 bytes)
+├── 📄 readme (Unknown - 150 bytes)
+└── 📄 requirements.txt (Text - 111 bytes)
+
+2️⃣  ANALYSE DES FICHIERS IMPORTANTS
+----------------------------------------
+
+📝 main.py
+[Analyse via requests - implémentation simplifiée]
+
+3️⃣  DÉPENDANCES
+----------------------------------------
+
+📦 requirements.txt
+[Analyse via requests - implémentation simplifiée]
+
+4️⃣  SUGGESTIONS D'AMÉLIORATION
+----------------------------------------
+[Analyse via requests - implémentation simplifiée]
+
+5️⃣  STATISTIQUES
+----------------------------------------
+Taille: 18.5 KB
+Fichiers: 5
+Langages:
+  • Unknown: 2
+  • Environment: 1
+  • Python: 1
+  • Text: 1
+
+================================================================================
+✅ Analyse PROPRE complétée!
+================================================================================

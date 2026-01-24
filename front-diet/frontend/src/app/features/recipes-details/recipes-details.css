@@ -175,14 +175,16 @@
   cursor: pointer;
 }
 .loading-container {
-  min-height: 60vh;
+  position: fixed;           /* ✅ Par-dessus toute la page */
+  inset: 0;                  /* top: 0; right: 0; bottom: 0; left: 0; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: transparent; /* ou #f9fafb */
-  z-index: 1;
+  background: transparent;   /* ✅ Pas d'arrière-plan */
+  z-index: 9999;             /* ✅ Au-dessus de tout */
 }
+
 
 
 .circle-loader {
