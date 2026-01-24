@@ -1,6 +1,8 @@
 .recipe-detail {
   background-color: #f9fafb;
   min-height: 100vh;
+  padding: 80px 16px 32px;  /* ✅ Augmenté pour laisser la place à la navbar */
+
 }
 
 .hero {
