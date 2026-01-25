@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/api/public/',
+  apiUrl: 'https://backend-production-44d4.up.railway.app/api/public/',  // ← Railway au lieu de localhost
   keycloak: {
     url: 'http://localhost:8080',
     realm: 'nutrifit',

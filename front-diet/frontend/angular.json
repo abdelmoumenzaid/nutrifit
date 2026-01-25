@@ -18,10 +18,17 @@
             "ssr": false,
             "assets": [
               "src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
+              },
+              "src/manifest.json",      
               "src/assets",
               "src/404.html",
               "src/silent-check-sso.html"
             ],
+
             "styles": ["src/styles.css"]
           },
           "configurations": {

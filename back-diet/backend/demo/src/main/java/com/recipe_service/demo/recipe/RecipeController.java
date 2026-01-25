@@ -20,7 +20,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/public/recipes")
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*")
+@CrossOrigin(origins = {
+    "https://front-end-production-0ec7.up.railway.app",
+    "https://backend-production-44d4.up.railway.app",
+    "http://localhost:4200",
+    "http://localhost:3000",
+    "http://localhost:8081"
+})
+
 public class RecipeController {
 
     private final RecipeService service;
