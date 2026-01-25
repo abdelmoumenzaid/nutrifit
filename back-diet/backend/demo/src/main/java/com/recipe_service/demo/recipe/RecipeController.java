@@ -26,6 +26,7 @@ import java.util.UUID;
     "https://backend-production-44d4.up.railway.app",
     "http://localhost:4200",
     "http://localhost:3000",
+    "http://localhost:39876",
     "http://localhost:8081"
 })
 
