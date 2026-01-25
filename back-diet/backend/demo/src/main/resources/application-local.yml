@@ -1,0 +1,70 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recipe_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+
+  # Désactiver la sécurité pour dev
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+
+  jackson:
+    serialization:
+      indent_output: false
+
+# ✅ ACTUATOR CONFIG (Ajoute ça)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info   # Expose ces endpoints
+      base-path: /actuator      # Path racine
+  endpoint:
+    health:
+      show-details: always       # Affiche les détails
+
+keycloak:
+  server-url: http://localhost:8888
+  admin-username: admin
+  admin-password: admin123
+  admin-client-id: admin-cli
+
+ai:
+  agent:
+    url: http://127.0.0.1:8000
+
+calorieninjas:
+  api:
+    key: test-key
+
+web:
+  cors:
+    allowed-origins: http://localhost:4200,http://localhost:39876,http://localhost:3000
+    allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+    allowed-headers: '*'
+    allow-credentials: true
+    max-age: 3600
+
+logging:
+  level:
+    org.springframework.security: INFO
+    root: DEBUG
+

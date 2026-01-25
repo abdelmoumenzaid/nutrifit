@@ -1,4 +1,4 @@
-<div class="recipe-detail" *ngIf="!loading && recipe">
+<div class="recipe-detail" *ngIf="recipe">
   <div class="hero">
     <button class="back-btn" (click)="goBack()">←</button>
     <img [src]="recipe.image" [alt]="recipe.name" />

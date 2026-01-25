@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipes/recipe.service';
@@ -18,8 +18,8 @@ interface RecipeDetail {
   time: number;
   difficulty: string;
   tags: string[];
-  ingredients: Ingredient[] | undefined;
-  steps: string[] | undefined;
+  ingredients?: Ingredient[];
+  steps?: string[];
   nutrition: {
     calories: number;
     protein: number;
@@ -39,8 +39,9 @@ export class RecipeDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private recipeService = inject(RecipeService);
+  private cdr = inject(ChangeDetectorRef);  // ✅ AJOUTE CETTE LIGNE
 
-  recipe!: RecipeDetail;    // ✅ ! = Non-null assertion
+  recipe: RecipeDetail | null = null;
   loading = true;
   error: string | null = null;
 
@@ -91,11 +92,14 @@ export class RecipeDetailComponent implements OnInit {
 
         console.log('✅ Recipe mapped:', this.recipe.name);
         this.loading = false;
+        this.cdr.markForCheck();  // ✅ FORCE LE RENDU
+        console.log('✅ Page is ready to display');
       },
       error: (err) => {
         console.error('❌ Error loading recipe:', err);
         this.error = 'Erreur chargement recette';
         this.loading = false;
+        this.cdr.markForCheck();  // ✅ FORCE LE RENDU
       },
     });
   }
@@ -108,8 +112,8 @@ export class RecipeDetailComponent implements OnInit {
   // ✅ FONCTION: Ajouter au plan
   addToPlan(): void {
     if (this.recipe) {
-      console.log('❤️ Added to plan:', this.recipe.id);
-      alert(`${this.recipe.name} ajouté au plan!`);
+      console.log('Added to plan:', this.recipe.id);
+      alert(this.recipe.name + ' ajouté au plan!');
     }
   }
 
