@@ -29,17 +29,41 @@
               "baseHref": "/",
               "outputHashing": "all",
               "sourceMap": false,
+              "optimization": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "app-diet:build:development"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "app-diet:build:production"
+            },
+            "development": {
+              "buildTarget": "app-diet:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
