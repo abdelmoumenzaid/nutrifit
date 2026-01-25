@@ -22,8 +22,11 @@ import java.util.Map;
     "https://front-end-production-0ec7.up.railway.app",
     "https://backend-production-44d4.up.railway.app",
     "http://localhost:4200",
+    "http://localhost:39876",   // ← AJOUT
     "http://localhost:3000",
     "http://localhost:8081"
+    
+    
 })
 public class AuthController {
 
