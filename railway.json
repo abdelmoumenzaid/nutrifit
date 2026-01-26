@@ -20,7 +20,8 @@
     "agent-ia": {
       "build": {
         "builder": "dockerfile",
-        "dockerfilePath": "back-diet/backend/python-agent/Dockerfile"
+        "dockerfilePath": "back-diet/backend/python-agent/Dockerfile",
+        "context": "back-diet/backend/python-agent"
       },
       "deploy": {
         "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
