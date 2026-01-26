@@ -1,9 +1,19 @@
 {
   "services": {
+    "keycloak": {
+      "build": {
+        "builder": "dockerfile",
+        "dockerfilePath": "Dockerfile"
+      },
+      "deploy": {
+        "restartPolicyType": "on_failure",
+        "restartPolicyMaxRetries": 3
+      }
+    },
     "frontend": {
       "build": {
         "builder": "dockerfile",
-        "dockerfilePath": "Dockerfile",
+        "dockerfilePath": "front-diet/frontend/Dockerfile",
         "context": "front-diet/frontend"
       },
       "deploy": {
