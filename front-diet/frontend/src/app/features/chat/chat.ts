@@ -5,6 +5,7 @@ import {
   NgZone,
   OnInit,
   AfterViewInit,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import {
   ChatRecipeResponse,
   RecipeCard as ChatRecipeCard,
 } from './chat.service';
+import { ImageService } from '../../core/services/image.service';
 
 interface Message {
   from: 'bot' | 'user';
@@ -48,19 +50,21 @@ export class ChatComponent implements OnInit, AfterViewInit {
   loading = false;
   private sessionId = '';
 
-  // ✅ propriétés nécessaires pour les images
+  // ✅ Propriétés pour les images
   selectedImages: string[] = [];
   imageFiles: File[] = [];
+  chatbotImageUrl = '';
+  chatbotImageLoading = true;
 
-  constructor(
-    private chatService: ChatService,
-    private zone: NgZone,
-    private router: Router
-  ) {}
+  private chatService = inject(ChatService);
+  private imageService = inject(ImageService);
+  private zone = inject(NgZone);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.sessionId = this.getOrCreateSessionId();
     this.restoreMessages();
+    this.loadChatbotImage(); // ✅ Chargez l'image du chatbot
 
     if (this.messages.length === 0) {
       const text =
@@ -77,6 +81,24 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.scrollToBottom();
+  }
+
+  // ✅ Chargez l'image du chatbot depuis R2
+  private loadChatbotImage(): void {
+    this.imageService.getChatbotImage().subscribe(
+      (response) => {
+        this.chatbotImageUrl = response.url;
+        this.chatbotImageLoading = false;
+        console.log('✅ Chatbot image loaded:', this.chatbotImageUrl);
+      },
+      (error) => {
+        console.error('❌ Error loading chatbot image:', error);
+        this.chatbotImageLoading = false;
+        // Fallback URL
+        this.chatbotImageUrl =
+          'https://a92262e7c6362aa064b3345772b0e86b.r2.cloudflarestorage.com/nutrifit-image/chatbot1.png';
+      }
+    );
   }
 
   // ---- Helpers navigateur / localStorage ----
@@ -122,7 +144,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // ---- Construction de l’historique pour le backend ----
+  // ---- Construction de l'historique pour le backend ----
 
   private buildHistoryForBackend(): { role: 'user' | 'assistant'; content: string }[] {
     return this.messages

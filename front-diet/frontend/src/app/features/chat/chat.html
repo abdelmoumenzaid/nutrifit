@@ -3,9 +3,16 @@
   <!-- Header vert -->
   <header class="chat-header">
 
+    <!-- ✅ APRÈS -->
     <div class="coach-icon-wrapper">
-    <img src="http://localhost:3000/api/images/chatbot1.png" alt="NutriCoach" class="coach-icon" />
+      <img 
+        *ngIf="!chatbotImageLoading"
+        [src]="chatbotImageUrl" 
+        alt="NutriCoach" 
+        class="coach-icon" 
+      />
     </div>
+
     <div class="coach-text">
       <div class="coach-title">Coach IA</div>
       <div class="coach-sub">Toujours disponible pour toi</div>

@@ -3,3 +3,6 @@ S C:\Users\ZAID\Desktop\app-diet\back-diet\backend\demo> mvn spring-boot:run
 
 
 clientsecret = TW9WUnCyUWQ3rLYydY3xfDDTsXizGMtn
+
+
+PS C:\Users\ZAID\Desktop\app-diet\back-diet\backend\demo> mvn spring-boot:run "-Dspring-boot.run.arguments=--spring.profiles.active=local"

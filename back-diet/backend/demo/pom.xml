@@ -87,6 +87,14 @@
             <artifactId>jersey-hk2</artifactId>
             <version>3.1.1</version>
         </dependency>
+        <!-- MinIO -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.2</version>
+        </dependency>
+
+
 
         <!-- Jersey Media JSON (serialization) -->
         <dependency>

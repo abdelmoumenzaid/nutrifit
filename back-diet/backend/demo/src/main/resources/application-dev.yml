@@ -1,7 +1,9 @@
 server:
   port: 8080
-  # servlet:
-  #   context-path: /api
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 
 spring:
   datasource:
@@ -69,3 +71,8 @@ management:
   endpoint:
     health:
       show-details: always
+r2:
+  endpoint: https://a92262e7c6362aa064b3345772b0e86b.r2.cloudflarestorage.com
+  accessKey: cf1ca939dfbacc8146581cd4d3731675
+  secretKey: e377b09e42c0dd393e1fd4853ee6cc889e4f8dd3f0049f1211f4b61c97509266
+  bucketName: nutrifit-image
