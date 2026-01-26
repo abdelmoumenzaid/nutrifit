@@ -2,8 +2,8 @@ FROM python:3.10-slim AS builder
 
 WORKDIR /app
 
-# Copier requirements et installer les dépendances
-COPY requirements.txt .
+# Copier requirements depuis le chemin complet (contexte = racine du repo)
+COPY back-diet/backend/python-agent/requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Stage final
@@ -23,9 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copier les dépendances du builder
 COPY --from=builder /root/.local /root/.local
 
-# Copier le code
-COPY main.py .
-COPY .env* .
+# Copier le code (chemin complet depuis la racine du repo)
+COPY back-diet/backend/python-agent/main.py .
+
+# (optionnel) copier un .env si tu veux
+# COPY back-diet/backend/python-agent/.env . 
 
 EXPOSE 8000
 
