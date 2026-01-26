@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/**").permitAll()
                 
                 // Protected endpoints - require authentication
+                // .requestMatchers("/api/public/auth/profile").authenticated()
                 .requestMatchers("/api/protected/**").authenticated()
                 .requestMatchers("/api/*/profile").authenticated()
                 
@@ -65,7 +66,8 @@ public class SecurityConfig {
             // 💻 DEVELOPMENT
             "http://localhost:4200",
             "http://localhost:3000",
-            "http://localhost:8081"
+            "http://localhost:8081",
+            "http://localhost:39876"
         ));
         
         // ✅ Allow specific methods
