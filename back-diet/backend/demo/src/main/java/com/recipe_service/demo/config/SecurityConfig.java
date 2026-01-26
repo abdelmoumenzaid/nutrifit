@@ -2,6 +2,7 @@ package com.recipe_service.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,84 +14,126 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+/**
+ * 🔐 SecurityConfig - Configuration Spring Security
+ * ✅ CORS configuré
+ * ✅ JWT Authentication
+ * ✅ /api/public/** = Sans authentification (mais JWT peut être présent)
+ * ✅ /api/recipes/** = Avec authentification JWT
+ */
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)  // ✅ Enable @PreAuthorize
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            // ✅ Disable CSRF for API (stateless)
-            .csrf(csrf -> csrf.disable())
-            
-            // ✅ Enable CORS
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            
-            // ✅ Stateless session (JWT doesn't need sessions)
-            .sessionManagement(session -> 
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            
-            // ✅ Authorization rules
-            .authorizeHttpRequests(auth -> auth
-                // Public endpoints - no auth required
-                .requestMatchers("/api/public/auth/register").permitAll()
-                .requestMatchers("/api/public/auth/login").permitAll()
-                .requestMatchers("/api/public/auth/exchange-code").permitAll()
-                .requestMatchers("/api/public/auth/health").permitAll()
-                .requestMatchers("/actuator/**").permitAll()
-                
-                // Protected endpoints - require authentication
-                // .requestMatchers("/api/public/auth/profile").authenticated()
-                .requestMatchers("/api/protected/**").authenticated()
-                .requestMatchers("/api/*/profile").authenticated()
-                
-                // Everything else - allow for now (dev mode)
-                .anyRequest().permitAll()
-            );
-        
-        return http.build();
-    }
-
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
         
-        // ✅ Frontend URLs - PRODUCTION + DEVELOPMENT
-        config.setAllowedOrigins(Arrays.asList(
-            // 🚀 PRODUCTION
+        configuration.setAllowedOrigins(Arrays.asList(
             "https://front-end-production-0ec7.up.railway.app",
             "https://backend-production-44d4.up.railway.app",
-            
-            // 💻 DEVELOPMENT
             "http://localhost:4200",
+            "http://localhost:39876",
             "http://localhost:3000",
             "http://localhost:8081",
-            "http://localhost:39876"
+            "http://localhost:8080"
         ));
         
-        // ✅ Allow specific methods
-        config.setAllowedMethods(Arrays.asList(
+        configuration.setAllowedMethods(Arrays.asList(
             "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
         ));
         
-        // ✅ Allow specific headers
-        config.setAllowedHeaders(Arrays.asList(
+        configuration.setAllowedHeaders(Arrays.asList(
             "Content-Type",
             "Authorization",
+            "X-Requested-With",
             "Accept",
-            "Origin"
+            "Origin",
+            "Cache-Control",
+            "Accept-Encoding",
+            "Accept-Language",
+            "Connection",
+            "Host"
         ));
         
-        // ✅ Allow credentials (for cookies if needed)
-        config.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList(
+            "Authorization",
+            "Content-Type",
+            "Content-Length",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
         
-        // ✅ Cache CORS preflight for 1 hour
-        config.setMaxAge(3600L);
-
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
+        
         return source;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            
+            // 🔐 Authorization Rules
+            .authorizeHttpRequests(auth -> auth
+                // ✅ PUBLIC endpoints (pas d'authentification requise)
+                .requestMatchers(
+                    "/api/public/auth/login",
+                    "/api/public/auth/register",
+                    "/api/public/auth/refresh",
+                    "/api/public/auth/exchange-code",
+                    "/api/public/auth/health",
+                    "/api/public/health",
+                    "/api/images/url/**",
+                    "/static/**",
+                    "/favicon.ico",
+                    "/health"
+                ).permitAll()
+                
+                // 🔑 PROTECTED endpoints (authentification JWT requise)
+                .requestMatchers(
+                    "/api/public/auth/profile",
+                    "/api/public/auth/logout"
+                ).authenticated()
+                
+                .requestMatchers(
+                    "/api/recipes/**",
+                    "/api/tracking/**",
+                    "/api/admin/**"
+                ).authenticated()
+                
+                // Par défaut: authentification requise
+                .anyRequest().authenticated()
+            )
+            
+            // 🔐 OAuth2 Resource Server (JWT validation)
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults())
+            )
+            
+            // 🔐 Exception Handling
+            .exceptionHandling(handling -> handling
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(401);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"error\": \"Non authentifié\", \"message\": \"" + authException.getMessage() + "\"}");
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setStatus(403);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"error\": \"Accès refusé\", \"message\": \"" + accessDeniedException.getMessage() + "\"}");
+                })
+            );
+
+        return http.build();
     }
 }
