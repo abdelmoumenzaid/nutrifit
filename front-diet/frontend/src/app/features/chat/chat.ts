@@ -1,12 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  NgZone,
-  OnInit,
-  AfterViewInit,
-  inject,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +26,7 @@ interface Message {
   imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './chat.html',
   styleUrls: ['./chat.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush, // ✅ OnPush pour la performance
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('chatMessages') chatMessages!: ElementRef<HTMLDivElement>;
@@ -60,11 +53,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
   private imageService = inject(ImageService);
   private zone = inject(NgZone);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef); // ✅ IMPORTANT
 
   ngOnInit(): void {
     this.sessionId = this.getOrCreateSessionId();
     this.restoreMessages();
-    this.loadChatbotImage(); // ✅ Chargez l'image du chatbot
+    this.loadChatbotImage();
 
     if (this.messages.length === 0) {
       const text =
@@ -76,6 +70,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
         time: this.nowTime(),
       });
       this.saveMessages();
+      this.cdr.markForCheck(); // ✅ Marquez pour vérification
     }
   }
 
@@ -90,13 +85,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
         this.chatbotImageUrl = response.url;
         this.chatbotImageLoading = false;
         console.log('✅ Chatbot image loaded:', this.chatbotImageUrl);
+        this.cdr.markForCheck(); // ✅ TRÈS IMPORTANT !
       },
       (error) => {
         console.error('❌ Error loading chatbot image:', error);
         this.chatbotImageLoading = false;
-        // Fallback URL
         this.chatbotImageUrl =
           'https://a92262e7c6362aa064b3345772b0e86b.r2.cloudflarestorage.com/nutrifit-image/chatbot1.png';
+        this.cdr.markForCheck(); // ✅ TRÈS IMPORTANT !
       }
     );
   }
@@ -186,6 +182,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.input = '';
     this.loading = true;
     this.scrollToBottom();
+    this.cdr.markForCheck();
 
     const lower = text.toLowerCase();
 
@@ -214,6 +211,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
             });
             this.saveMessages();
             this.scrollToBottom();
+            this.cdr.markForCheck(); // ✅
           });
         },
         error: () => {
@@ -229,6 +227,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
             });
             this.saveMessages();
             this.scrollToBottom();
+            this.cdr.markForCheck(); // ✅
           });
         },
       });
@@ -254,11 +253,13 @@ export class ChatComponent implements OnInit, AfterViewInit {
           });
           this.saveMessages();
           this.scrollToBottom();
+          this.cdr.markForCheck(); // ✅
         });
       },
       error: () => {
         this.zone.run(() => {
           this.loading = false;
+          this.cdr.markForCheck(); // ✅
         });
       },
     });
@@ -273,12 +274,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
       this.selectedImages = this.imageFiles.map((file: File) =>
         URL.createObjectURL(file)
       );
+      this.cdr.markForCheck(); // ✅
     }
   }
 
   removeImage(index: number): void {
     this.selectedImages.splice(index, 1);
     this.imageFiles.splice(index, 1);
+    this.cdr.markForCheck(); // ✅
   }
 
   analyzeImages(): void {
@@ -294,6 +297,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     if (this.input.trim()) {
       formData.append('prompt', this.input.trim());
     }
+
+    this.cdr.markForCheck(); // ✅
 
     this.chatService.analyzeImages(formData).subscribe({
       next: (resp: ChatRecipeResponse) => {
@@ -314,6 +319,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
           this.selectedImages = [];
           this.imageFiles = [];
           this.input = '';
+          this.cdr.markForCheck(); // ✅
         });
       },
       error: () => {
@@ -325,6 +331,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
             time: this.nowTime(),
           });
           this.scrollToBottom();
+          this.cdr.markForCheck(); // ✅
         });
       },
     });
@@ -345,6 +352,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
     const prompt = `Crée une recette détaillée pour : ${r.title}`;
     this.loading = true;
+    this.cdr.markForCheck(); // ✅
 
     this.chatService.materializeRecipeFromPrompt(prompt).subscribe({
       next: (recipe: any) => {
@@ -355,12 +363,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
           } else {
             console.error('Réponse generate-and-save sans id', recipe);
           }
+          this.cdr.markForCheck(); // ✅
         });
       },
       error: (err) => {
         this.zone.run(() => {
           this.loading = false;
           console.error('Erreur materializeRecipeFromPrompt', err);
+          this.cdr.markForCheck(); // ✅
         });
       },
     });
@@ -384,6 +394,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     });
     this.saveMessages();
     this.scrollToBottom();
+    this.cdr.markForCheck(); // ✅
   }
 
   useSuggestion(s: string): void {
