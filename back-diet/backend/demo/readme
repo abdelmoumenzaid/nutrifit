@@ -6,3 +6,15 @@ clientsecret = TW9WUnCyUWQ3rLYydY3xfDDTsXizGMtn
 
 
 PS C:\Users\ZAID\Desktop\app-diet\back-diet\backend\demo> mvn spring-boot:run "-Dspring-boot.run.arguments=--spring.profiles.active=local"
+
+
+
+$env:KEYCLOAK_SERVER_URL = "https://nutrifit-production-c4b6.up.railway.app"
+$env:KEYCLOAK_REALM = "nutrifit"
+$env:KEYCLOAK_CLIENT_ID = "diet-frontend"      # le même que dans environment.ts
+# si tu as un client admin :
+$env:KEYCLOAK_ADMIN_CLIENT_ID = "spring-admin"
+$env:KEYCLOAK_ADMIN_CLIENT_SECRET = "<secret-du-client-admin>"
+$env:JWT_SECRET = ""                           # pour ne pas utiliser HS256 local
+
+mvn spring-boot:run

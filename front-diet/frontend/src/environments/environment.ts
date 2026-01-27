@@ -1,12 +1,16 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://backend-production-44d4.up.railway.app/api/public/',  // ← Railway au lieu de localhost
+
+  // 👉 Backend Spring local
+  apiUrl: 'http://localhost:8080/api/public/',
+
+  // 👉 Ton SEUL Keycloak (celui déployé sur Railway)
   keycloak: {
-    url: 'http://localhost:8080',
+    url: 'https://nutrifit-production-c4b6.up.railway.app',
     realm: 'nutrifit',
-    clientId: 'diet-frontend',
+    clientId: 'diet-frontend',   // le client front défini dans ce realm
   },
-  // ✅ AJOUTE CES LIGNES:
+
   frontendUrl: 'http://localhost:4200',
   callbackUrl: 'http://localhost:4200/callback',
 };
