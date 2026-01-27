@@ -5,14 +5,12 @@ import { ProfileService, UserProfile } from '../../core/services/profile.service
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-
 interface ProfileItem {
   key: string;
   icon: string;
   title: string;
   subtitle: string;
 }
-
 
 @Component({
   selector: 'app-profile',
@@ -25,10 +23,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   name: string = '';
   email: string = '';
   userProfile: UserProfile | null = null;
-  isLoading: boolean = true;
   errorMessage: string = '';
-  private destroy$ = new Subject<void>();
 
+  private destroy$ = new Subject<void>();
 
   accountItems: ProfileItem[] = [
     {
@@ -45,7 +42,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     },
   ];
 
-
   preferenceItems: ProfileItem[] = [
     {
       key: 'diet',
@@ -61,7 +57,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     },
   ];
 
-
   notificationsEnabled = true;
   stats = {
     days: 28,
@@ -69,26 +64,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
     goals: 89,
   };
 
-
   constructor(
     private router: Router,
     private profileService: ProfileService
   ) {}
 
-
   ngOnInit(): void {
-    // 🔐 ÉTAPE 1 : Vérifier si le token existe
+    // 1️⃣ Vérifier s'il y a un token, sinon rediriger
     const token = localStorage.getItem('access_token');
     if (!token) {
       console.warn('⚠️ No token found - Redirection vers auth-landing');
-      console.log('📍 Current URL:', this.router.url);
-      console.log('🔑 Token in localStorage:', localStorage.getItem('access_token'));
-      
       this.redirectToAuth();
       return;
     }
 
-    // 📥 ÉTAPE 2 : Charger le profil depuis le service
+    // 2️⃣ S'abonner au profil
     this.profileService.profile$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -97,49 +87,36 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.userProfile = profile;
             this.name = `${profile.firstName} ${profile.lastName}`;
             this.email = profile.email;
-            this.isLoading = false;
+            this.errorMessage = ''; // effacer toute erreur
             console.log('✅ Profil affiché:', profile);
           } else {
-            // ⚠️ Profil null - rediriger si pas sur auth-landing
-            if (this.router.url !== '/auth-landing') {
-              console.warn('⚠️ Profil null - Redirection vers auth-landing');
-              this.redirectToAuth();
-            }
+            this.userProfile = null;
+            // On ne met pas d'erreur ici, error$ s'en charge
+            console.warn('⚠️ Profil null (initial ou effacé)');
           }
         },
         error: (err: any) => {
           console.error('❌ Erreur lors du chargement du profil:', err);
           this.errorMessage = 'Impossible de charger le profil';
-          this.isLoading = false;
-          this.redirectToAuth();
         }
       });
 
-    // 🟡 ÉTAPE 2.5 : Écouter les erreurs du service
+    // 3️⃣ S'abonner aux erreurs
     this.profileService.error$
       .pipe(takeUntil(this.destroy$))
       .subscribe((error: string | null) => {
         if (error) {
           this.errorMessage = error;
           console.warn('⚠️ Erreur du ProfileService:', error);
+        } else {
+          this.errorMessage = '';
         }
       });
 
-    // 🔄 ÉTAPE 3 : Suivre l'état de chargement
-    this.profileService.isLoading$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((loading: boolean) => {
-        this.isLoading = loading;
-      });
-
-    // 🚀 ÉTAPE 4 : Déclencher le chargement du profil
+    // 4️⃣ Déclencher le chargement
     this.profileService.loadProfile();
   }
 
-
-  /**
-   * 🔗 Ouvrir une section du profil
-   */
   openItem(item: ProfileItem): void {
     switch (item.key) {
       case 'personal-info':
@@ -157,172 +134,36 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  /**
-   * 🔔 Basculer les notifications
-   */
   toggleNotifications(): void {
     this.notificationsEnabled = !this.notificationsEnabled;
   }
 
-
-  /**
-   * 🚪 SE DÉCONNECTER
-   * ✅ Appelle logoutLocal() - SANS appel API
-   * ✅ Redirige IMMÉDIATEMENT vers /auth-landing
-   * ✅ UNE SEULE redirection (pas de double navigation)
-   * ✅ replaceUrl: true pour forcer la redirection
-   * ✅ Fallback window.location.href si router.navigate échoue
-   */
   logout(): void {
     if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-      // ✅ Nettoyer les tokens locaux
       this.profileService.logoutLocal();
       console.log('✅ Logout réussi - Tokens supprimés');
-      
-      // 🚀 Redirection forcée
       this.redirectToAuth();
     }
   }
 
-
-  /**
-   * 🚀 Redirection centralisée vers /auth-landing
-   * ✅ Évite les redirections multiples
-   * ✅ replaceUrl: true pour nettoyer l'historique
-   * ✅ Fallback window.location.href si Angular router échoue
-   */
   private redirectToAuth(): void {
     if (this.router.url !== '/auth-landing') {
       setTimeout(() => {
         this.router.navigate(['/auth-landing'], { replaceUrl: true })
           .then(success => {
-            if (success) {
-              console.log('✅ Redirection réussie vers /auth-landing');
-            } else {
-              console.warn('⚠️ Navigation échouée, fallback window.location.href');
+            if (!success) {
               window.location.href = '/auth-landing';
             }
           })
-          .catch(err => {
-            console.error('❌ Erreur lors de la redirection:', err);
-            // Fallback : redirection directe du navigateur
+          .catch(() => {
             window.location.href = '/auth-landing';
           });
       }, 50);
     }
   }
 
-
-  /**
-   * 🧹 Nettoyer les subscriptions
-   */
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-// // src/app/features/profile/profile.ts
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { Router, RouterModule } from '@angular/router';
-
-// interface ProfileItem {
-//   key: string;
-//   icon: string;
-//   title: string;
-//   subtitle: string;
-// }
-
-// @Component({
-//   selector: 'app-profile',
-//   standalone: true,
-//   imports: [CommonModule, RouterModule],
-//   templateUrl: './profile.html',
-//   styleUrl: './profile.css',
-// })
-// export class ProfileComponent {
-//   name = 'zaid';
-//   email = 'zaid@example.com';
-
-//   accountItems: ProfileItem[] = [
-//     {
-//       key: 'personal-info',
-//       icon: '👤',
-//       title: 'Informations personnelles',
-//       subtitle: 'Nom, âge, taille, poids',
-//     },
-//     {
-//       key: 'goal',
-//       icon: '🎯',
-//       title: 'Mon objectif',
-//       subtitle: 'Perte, maintien ou prise de poids',
-//     },
-//   ];
-
-//   preferenceItems: ProfileItem[] = [
-//     {
-//       key: 'diet',
-//       icon: '🥗',
-//       title: 'Restrictions alimentaires',
-//       subtitle: 'Halal, végétarien, allergies...',
-//     },
-//     {
-//       key: 'language',
-//       icon: '🌐',
-//       title: 'Langue',
-//       subtitle: 'Darija, FR, AR, EN',
-//     },
-//   ];
-
-//   notificationsEnabled = true;
-
-//   stats = {
-//     days: 28,
-//     recipes: 142,
-//     goals: 89,
-//   };
-
-//   constructor(private router: Router) {}
-
-//   openItem(item: ProfileItem): void {
-//     switch (item.key) {
-//       case 'personal-info':
-//         this.router.navigate(['/profil/personal-info']);
-//         break;
-//       case 'goal':
-//         this.router.navigate(['/profil/objectif']);
-//         console.log('Ouvrir objectif');
-//         break;
-//       case 'diet':
-//         this.router.navigate(['/profil/allergie']);
-//         console.log('Ouvrir restrictions alimentaires');
-//         break;
-//       case 'language':
-//         this.router.navigate(['/profil/langue']);
-//         console.log('Ouvrir langue');
-//         break;
-//       default:
-//         console.log('Ouvrir section', item.title);
-//     }
-//   }
-
-//   toggleNotifications(): void {
-//     this.notificationsEnabled = !this.notificationsEnabled;
-//   }
-
-//   logout(): void {
-//     console.log('Se déconnecter');
-//   }
-// }

@@ -233,23 +233,29 @@ export class AuthService {
 
 
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (!token) {
-      console.log('❌ isAuthenticated(): Pas de token');
-      return false;
-    }
+  const token = this.getToken();
 
-
-    const parts = token.split('.');
-    if (parts.length !== 3) {
-      console.error('❌ isAuthenticated(): Token invalide (', parts.length, 'parties)');
-      return false;
-    }
-
-
-    console.log('✅ isAuthenticated(): OUI');
-    return true;
+  if (!token) {
+    console.log('❌ isAuthenticated(): Pas de token');
+    return false;
   }
+
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    console.error('❌ isAuthenticated(): Token invalide (', parts.length, ' parties)');
+    return false;
+  }
+
+  // 🔍 Vérifier l'expiration via la logique déjà existante
+  if (!this.isTokenValid()) {
+    console.warn('⚠️ isAuthenticated(): Token invalide ou expiré');
+    return false;
+  }
+
+  console.log('✅ isAuthenticated(): OUI (token valide)');
+  return true;
+}
+
 
 
   getAuthHeaders(): HttpHeaders {

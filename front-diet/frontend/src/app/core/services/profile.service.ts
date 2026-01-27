@@ -2,6 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment';  // 👈 ajoute ça
 
 
 export interface UserProfile {
@@ -17,7 +18,7 @@ export interface UserProfile {
 })
 export class ProfileService {
   // private apiUrl = 'http://localhost:8081/api/public/auth';
-  private apiUrl = 'https://backend-production-44d4.up.railway.app/api/public/auth';
+  private apiUrl = environment.apiUrl + 'auth';
 
   private profileSubject = new BehaviorSubject<UserProfile | null>(null);
   public profile$ = this.profileSubject.asObservable();
@@ -75,16 +76,19 @@ export class ProfileService {
       },
       error: (error: HttpErrorResponse) => {
         console.warn('⚠️ Erreur API, fallback au JWT:', error.status);
-        
+
         // Fallback: Charger depuis le JWT local si l'API échoue
         this.loadProfileFromToken(token);
+
         this.isLoadingSubject.next(false);
-        
-        // Mais log l'erreur
-        if (error.status === 401 || error.status === 403) {
-          this.errorSubject.next('Token invalide ou expiré');
+
+        // Ne mettre le message "Token invalide ou expiré"
+        // que si on est vraiment dans ce cas
+        if (error.status !== 401 && error.status !== 403) {
+          this.errorSubject.next('Erreur lors du chargement du profil');
         }
       }
+
     });
   }
 
@@ -128,6 +132,8 @@ export class ProfileService {
       
       console.log('✅ Profile extrait du JWT:', profile);
       this.profileSubject.next(profile);
+      this.errorSubject.next(null);
+
     } catch (err) {
       console.error('❌ Erreur lors du parsing du token:', err);
       this.profileSubject.next(null);

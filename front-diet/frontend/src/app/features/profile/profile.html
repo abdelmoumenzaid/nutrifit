@@ -1,27 +1,21 @@
 <div class="profile-page">
-  <!-- ⏳ Indicateur de chargement -->
-  <div *ngIf="isLoading" class="loading-container">
-    <div class="spinner"></div>
-    <p>⏳ Chargement de votre profil...</p>
-  </div>
-
-  <!-- ❌ Message d'erreur -->
-  <div *ngIf="errorMessage && !isLoading" class="error-banner">
+  <!-- ❌ Message d'erreur (optionnel) -->
+  <div *ngIf="errorMessage" class="error-banner">
     <div class="error-content">
       <span class="error-icon">⚠️</span>
       <p>{{ errorMessage }}</p>
     </div>
   </div>
 
-  <!-- 📌 Contenu principal (caché pendant chargement) -->
-  <div *ngIf="!isLoading && !errorMessage" class="profile-content">
+  <!-- 📌 Contenu principal (toujours affiché, les valeurs se rempliront quand userProfile arrive) -->
+  <div class="profile-content">
     <!-- 📌 Header avec avatar et infos utilisateur -->
     <section class="profile-header">
       <div class="avatar-circle">
         <span class="avatar-icon">👤</span>
       </div>
-      <h1>{{ name }}</h1>
-      <p class="email">{{ email }}</p>
+      <h1>{{ name || 'Profil' }}</h1>
+      <p class="email">{{ email || ' ' }}</p>
     </section>
 
     <!-- 📌 Section Compte -->
@@ -115,11 +109,10 @@
 
     <!-- 📌 Section Déconnexion -->
     <section class="section">
-      <button 
-        class="logout-btn" 
-        (click)="logout()"
-        aria-label="Se déconnecter"
-      >
+      <button
+        class="logout-btn"
+        (click)="logout()
+      ">
         Se déconnecter
       </button>
     </section>
