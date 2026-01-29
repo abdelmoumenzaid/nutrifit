@@ -2,7 +2,7 @@
 📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
 ================================================================================
 📁 Projet: C:\Users\ZAID\Desktop\app-diet
-📈 Fichiers analysés: 209
+📈 Fichiers analysés: 219
 🤖 Modèle: llama-3.3-70b-versatile
 
 1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
@@ -43,14 +43,14 @@
 │   │   │   ├── 📄 mvnw (Unknown - 11.5 KB)
 │   │   │   ├── 📄 mvnw.cmd (Unknown - 8.1 KB)
 │   │   │   ├── 📄 pom.xml (XML - 4.6 KB)
-│   │   │   ├── 📄 readme (Unknown - 132 bytes)
+│   │   │   ├── 📄 readme (Unknown - 727 bytes)
 │   │   │   ├── 📁 src
 │   │   │   │   ├── 📁 main
 │   │   │   │   │   ├── 📁 java
 │   │   │   │   │   │   └── 📁 com
 │   │   │   │   │   │       └── 📁 recipe_service
 │   │   │   │   │   │           └── 📁 demo
-│   │   │   │   │   │               ├── 📄 RecipeServiceApplication.java (Java - 1.1 KB)
+│   │   │   │   │   │               ├── 📄 RecipeServiceApplication.java (Java - 1.2 KB)
 │   │   │   │   │   │               ├── 📄 WebConfig.java (Java - 646 bytes)
 │   │   │   │   │   │               ├── 📁 admin
 │   │   │   │   │   │               │   └── 📄 AdminController.java (Java - 1.3 KB)
@@ -59,10 +59,15 @@
 │   │   │   │   │   │               │   └── 📄 RecipeAgentClient.java (Java - 7.7 KB)
 │   │   │   │   │   │               ├── 📁 config
 │   │   │   │   │   │               │   ├── 📄 KeycloakConfig.java (Java - 3.7 KB)
+│   │   │   │   │   │               │   ├── 📄 R2Config.java (Java - 698 bytes)
 │   │   │   │   │   │               │   ├── 📄 RestTemplateConfig.java (Java - 636 bytes)
 │   │   │   │   │   │               │   └── 📄 SecurityConfig.java (Java - 3.7 KB)
 │   │   │   │   │   │               ├── 📁 controller
 │   │   │   │   │   │               │   └── 📄 AuthController.java (Java - 10.5 KB)
+│   │   │   │   │   │               ├── 📁 image
+│   │   │   │   │   │               │   ├── 📄 ImageController.java (Java - 2.9 KB)
+│   │   │   │   │   │               │   ├── 📄 ImageResponse.java (Java - 1021 bytes)
+│   │   │   │   │   │               │   └── 📄 ImageService.java (Java - 2.3 KB)
 │   │   │   │   │   │               ├── 📁 nutrition
 │   │   │   │   │   │               │   └── 📄 NutritionService.java (Java - 4.2 KB)
 │   │   │   │   │   │               ├── 📁 recipe
@@ -89,9 +94,11 @@
 │   │   │   │   │   │                   ├── 📄 DayWorkoutDto.java (Java - 1.5 KB)
 │   │   │   │   │   │                   └── 📄 DayWorkoutRepository.java (Java - 371 bytes)
 │   │   │   │   │   └── 📁 resources
-│   │   │   │   │       ├── 📄 application-dev.yml (YAML - 1.4 KB)
-│   │   │   │   │       ├── 📄 application-local.yml (YAML - 1.4 KB)
-│   │   │   │   │       └── 📄 application.yml (YAML - 1.6 KB)
+│   │   │   │   │       ├── 📄 application-dev.yml (YAML - 1.6 KB)
+│   │   │   │   │       ├── 📄 application-local.yml (YAML - 1.8 KB)
+│   │   │   │   │       ├── 📄 application.yml (YAML - 2.0 KB)
+│   │   │   │   │       └── 📁 static
+│   │   │   │   │           └── 📄 upload-test.html (HTML - 4.7 KB)
 │   │   │   │   └── 📁 test
 │   │   │   │       └── 📁 java
 │   │   │   │           └── 📁 com
@@ -100,22 +107,28 @@
 │   │   │   │                       └── 📄 RecipeServiceApplicationTests.java (Java - 222 bytes)
 │   │   │   └── 📁 target
 │   │   │       ├── 📁 classes
-│   │   │       │   ├── 📄 application-dev.yml (YAML - 1.4 KB)
-│   │   │       │   ├── 📄 application-local.yml (YAML - 1.4 KB)
-│   │   │       │   └── 📄 application.yml (YAML - 1.6 KB)
+│   │   │       │   ├── 📄 application-dev.yml (YAML - 1.6 KB)
+│   │   │       │   ├── 📄 application-local.yml (YAML - 1.8 KB)
+│   │   │       │   ├── 📄 application.yml (YAML - 2.0 KB)
+│   │   │       │   └── 📁 static
+│   │   │       │       └── 📄 upload-test.html (HTML - 4.7 KB)
 │   │   │       ├── 📁 maven-archiver
 │   │   │       │   └── 📄 pom.properties (Unknown - 79 bytes)
 │   │   │       ├── 📁 maven-status
 │   │   │       │   └── 📁 maven-compiler-plugin
 │   │   │       │       ├── 📁 compile
 │   │   │       │       │   └── 📁 default-compile
-│   │   │       │       │       ├── 📄 createdFiles.lst (Unknown - 2.8 KB)
-│   │   │       │       │       └── 📄 inputFiles.lst (Unknown - 3.7 KB)
+│   │   │       │       │       ├── 📄 createdFiles.lst (Unknown - 3.0 KB)
+│   │   │       │       │       └── 📄 inputFiles.lst (Unknown - 4.1 KB)
 │   │   │       │       └── 📁 testCompile
 │   │   │       │           └── 📁 default-testCompile
 │   │   │       │               ├── 📄 createdFiles.lst (Unknown - 60 bytes)
 │   │   │       │               └── 📄 inputFiles.lst (Unknown - 128 bytes)
-│   │   │       └── 📄 recipe-service-0.0.1-SNAPSHOT.jar.original (Unknown - 80.3 KB)
+│   │   │       ├── 📄 recipe-service-0.0.1-SNAPSHOT.jar.original (Unknown - 87.5 KB)
+│   │   │       └── 📁 surefire-reports
+│   │   │           ├── 📄 TEST-com.recipe_service.demo.RecipeServiceApplicationTests.xml (XML - 50.9 KB)
+│   │   │           └── 📄 com.recipe_service.demo.RecipeServiceApplicationTests.txt (Text - 360 bytes)
+│   │   ├── 📄 project_analysis_CLEAN.txt (Text - 10.2 KB)
 │   │   └── 📁 python-agent
 │   │       ├── 📄 .env (Environment - 127 bytes)
 │   │       ├── 📄 Dockerfile (Unknown - 1.0 KB)
@@ -172,9 +185,10 @@
 │   │   │   │   │   │   └── 📄 auth.interceptor.ts (TypeScript - 1.3 KB)
 │   │   │   │   │   ├── 📄 keycloak.config.ts (TypeScript - 1.2 KB)
 │   │   │   │   │   └── 📁 services
-│   │   │   │   │       ├── 📄 auth.service.ts (TypeScript - 11.3 KB)
+│   │   │   │   │       ├── 📄 auth.service.ts (TypeScript - 11.5 KB)
+│   │   │   │   │       ├── 📄 image.service.ts (TypeScript - 895 bytes)
 │   │   │   │   │       ├── 📄 keycloak.service.ts (TypeScript - 1.1 KB)
-│   │   │   │   │       └── 📄 profile.service.ts (TypeScript - 5.9 KB)
+│   │   │   │   │       └── 📄 profile.service.ts (TypeScript - 6.0 KB)
 │   │   │   │   └── 📁 features
 │   │   │   │       ├── 📁 auth-connexion
 │   │   │   │       │   ├── 📄 auth-connexion.css (CSS - 8.4 KB)
@@ -193,10 +207,10 @@
 │   │   │   │       │   └── 📄 auth-register.ts (TypeScript - 3.1 KB)
 │   │   │   │       ├── 📁 chat
 │   │   │   │       │   ├── 📄 chat.css (CSS - 7.4 KB)
-│   │   │   │       │   ├── 📄 chat.html (HTML - 4.2 KB)
+│   │   │   │       │   ├── 📄 chat.html (HTML - 4.3 KB)
 │   │   │   │       │   ├── 📄 chat.service.ts (TypeScript - 2.3 KB)
 │   │   │   │       │   ├── 📄 chat.spec.ts (TypeScript - 540 bytes)
-│   │   │   │       │   └── 📄 chat.ts (TypeScript - 10.0 KB)
+│   │   │   │       │   └── 📄 chat.ts (TypeScript - 11.7 KB)
 │   │   │   │       ├── 📁 dashboard
 │   │   │   │       │   ├── 📄 dashboard.css (CSS - 6.5 KB)
 │   │   │   │       │   ├── 📄 dashboard.html (HTML - 3.7 KB)
@@ -227,7 +241,7 @@
 │   │   │   │       │   ├── 📄 navbar.css (CSS - 4.4 KB)
 │   │   │   │       │   ├── 📄 navbar.html (HTML - 2.0 KB)
 │   │   │   │       │   ├── 📄 navbar.spec.ts (TypeScript - 554 bytes)
-│   │   │   │       │   └── 📄 navbar.ts (TypeScript - 1.3 KB)
+│   │   │   │       │   └── 📄 navbar.ts (TypeScript - 1.5 KB)
 │   │   │   │       ├── 📁 photo-recipe
 │   │   │   │       │   ├── 📄 photo-recipe.css (CSS - 1.2 KB)
 │   │   │   │       │   ├── 📄 photo-recipe.html (HTML - 1.1 KB)
@@ -239,7 +253,7 @@
 │   │   │   │       │   └── 📄 plan-jour.ts (TypeScript - 208 bytes)
 │   │   │   │       ├── 📁 profile
 │   │   │   │       │   ├── 📁 allergie
-│   │   │   │       │   │   ├── 📄 allergie.css (CSS - 4.1 KB)
+│   │   │   │       │   │   ├── 📄 allergie.css (CSS - 4.2 KB)
 │   │   │   │       │   │   ├── 📄 allergie.html (HTML - 4.1 KB)
 │   │   │   │       │   │   ├── 📄 allergie.spec.ts (TypeScript - 568 bytes)
 │   │   │   │       │   │   └── 📄 allergie.ts (TypeScript - 1.5 KB)
@@ -254,14 +268,14 @@
 │   │   │   │       │   │   ├── 📄 objectif.spec.ts (TypeScript - 568 bytes)
 │   │   │   │       │   │   └── 📄 objectif.ts (TypeScript - 1.6 KB)
 │   │   │   │       │   ├── 📁 personal-info
-│   │   │   │       │   │   ├── 📄 personal-info.css (CSS - 2.4 KB)
+│   │   │   │       │   │   ├── 📄 personal-info.css (CSS - 2.5 KB)
 │   │   │   │       │   │   ├── 📄 personal-info.html (HTML - 8.6 KB)
 │   │   │   │       │   │   ├── 📄 personal-info.spec.ts (TypeScript - 597 bytes)
 │   │   │   │       │   │   └── 📄 personal-info.ts (TypeScript - 2.3 KB)
 │   │   │   │       │   ├── 📄 profile.css (CSS - 2.7 KB)
-│   │   │   │       │   ├── 📄 profile.html (HTML - 3.8 KB)
+│   │   │   │       │   ├── 📄 profile.html (HTML - 3.6 KB)
 │   │   │   │       │   ├── 📄 profile.spec.ts (TypeScript - 613 bytes)
-│   │   │   │       │   └── 📄 profile.ts (TypeScript - 8.6 KB)
+│   │   │   │       │   └── 📄 profile.ts (TypeScript - 4.5 KB)
 │   │   │   │       ├── 📁 recipes
 │   │   │   │       │   ├── 📄 recipe-adapter.ts (TypeScript - 1.9 KB)
 │   │   │   │       │   ├── 📄 recipe.model.ts (TypeScript - 525 bytes)
@@ -288,7 +302,7 @@
 │   │   │   │   └── 📄 silent-check-sso.html (HTML - 202 bytes)
 │   │   │   ├── 📁 environments
 │   │   │   │   ├── 📄 environment.prod.ts (TypeScript - 440 bytes)
-│   │   │   │   └── 📄 environment.ts (TypeScript - 398 bytes)
+│   │   │   │   └── 📄 environment.ts (TypeScript - 473 bytes)
 │   │   │   ├── 📄 index.html (HTML - 624 bytes)
 │   │   │   ├── 📄 main.ts (TypeScript - 501 bytes)
 │   │   │   └── 📄 styles.css (CSS - 1.4 KB)
@@ -300,7 +314,7 @@
 │   └── 📄 Dockerfile (Unknown - 88 bytes)
 ├── 📁 nginx
 │   └── 📄 nginx.conf (Unknown - 1.3 KB)
-├── 📄 project_analysis_CLEAN.txt (Text - 23.8 KB)
+├── 📄 project_analysis_CLEAN.txt (Text - 24.0 KB)
 └── 📄 railway.json (JSON - 1.0 KB)
 
 2️⃣  ANALYSE DES FICHIERS IMPORTANTS
@@ -375,23 +389,23 @@
 
 5️⃣  STATISTIQUES
 ----------------------------------------
-Taille: 1316.5 KB
-Fichiers: 209
+Taille: 1403.9 KB
+Fichiers: 219
 Langages:
-  • TypeScript: 62
-  • Java: 32
+  • TypeScript: 63
+  • Java: 36
   • Unknown: 26
-  • HTML: 23
+  • HTML: 25
   • CSS: 21
   • JSON: 16
   • YAML: 9
-  • Text: 6
+  • Text: 8
   • Python: 4
   • Git: 3
   • Markdown: 2
   • JavaScript: 2
+  • XML: 2
   • Environment: 2
-  • XML: 1
 
 ================================================================================
 ✅ Analyse PROPRE complétée!

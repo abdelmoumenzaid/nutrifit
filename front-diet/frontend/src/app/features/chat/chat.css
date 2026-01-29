@@ -381,13 +381,80 @@
 }
 
 /* Mobile */
+/* Mobile */
 @media (max-width: 768px) {
   .input-wrapper {
-    flex-direction: column;
-    gap: 12px;
+    flex-wrap: nowrap; /* ✅ Reste sur une ligne */
+    gap: 6px; /* Réduit l'espacement */
+    padding: 6px 10px;
+    border-radius: 8px;
   }
-  
+
+  .input-wrapper input {
+    font-size: 14px;
+  }
+
+  .text-input {
+    min-width: 0; /* ✅ Permet au flex: 1 de vraiment shrink */
+  }
+
+  .send-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .image-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .analyze-btn {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+  }
+
   #imageUpload {
-    width: 100%;
+    display: none;
+  }
+
+  /* ✅ Suggestions: rester sur une ligne */
+  .suggestions-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .suggestion-chip {
+    padding: 6px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .recipe-card {
+    flex: 0 0 calc(100% / 2 - 6px);
+    min-width: calc(100% / 2 - 6px);
+    max-width: calc(100% / 2 - 6px);
+  }
+
+  .messages {
+    padding-right: 0;
+  }
+
+  .bubble {
+    max-width: 85%;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+
+  .bubble-text {
+    font-size: 16px;
+  }
+
+  .chat-page {
+    inset: 50px 0 0 0;
   }
 }

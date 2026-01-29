@@ -79,3 +79,64 @@ html {
   scrollbar-width: thin;
   scrollbar-color: #d1d5db transparent;
 }
+/* Mobile */
+@media (max-width: 768px) {
+  /* ✅ Réduire TOUT le texte en mobile */
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    font-size: 13px;
+  }
+
+  .bubble-text {
+    font-size: 15px;
+  }
+
+  .suggestions-title {
+    font-size: 12px;
+  }
+
+  .suggestion-chip {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .recipe-card h4,
+  .card-body h3 {
+    font-size: 12px;
+  }
+
+  .recipe-card p,
+  .card-body .desc {
+    font-size: 12px;
+  }
+
+  .recipe-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .coach-title {
+    font-size: 16px;
+  }
+
+  .coach-sub {
+    font-size: 11px;
+  }
+
+  .bubble-time {
+    font-size: 11px;
+  }
+
+  /* Puis le reste de tes règles mobiles... */
+  .input-wrapper {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  
+  /* ... etc */
+}
