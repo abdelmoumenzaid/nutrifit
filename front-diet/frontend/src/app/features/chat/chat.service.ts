@@ -1,7 +1,79 @@
+// import { Injectable } from '@angular/core';
+// import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+// import { Observable, throwError } from 'rxjs';
+// import { tap, catchError } from 'rxjs/operators';
+// import { environment } from '../../../environments/environment';
+
+
+// export interface ChatResponse {
+//   answer: string;
+//   provider: string;
+// }
+
+// export interface RecipeCard {
+//   id?: string;
+//   title: string;
+//   imageUrl?: string;
+//   category?: string;
+//   area?: string;
+//   calories?: number;
+//   readyInMinutes?: number;
+//   difficulty?: string;
+//   description?: string;
+// }
+
+// export interface ChatRecipeResponse {
+//   intro: string;
+//   recipes: RecipeCard[];
+// }
+
+// @Injectable({ providedIn: 'root' })
+// export class ChatService {
+//   // ✅ IMPORTANT: Appelle SPRING au lieu de l'agent Python !
+//   // Le frontend ne peut pas appeler l'agent Python directement
+//   // (problème CORS + localhost:8000 n'existe pas en production)
+  
+//   // 🔵 LOCAL (développement)
+//   private readonly baseUrl = 'http://localhost:8080/api/public/ai';
+  
+//   // 🟢 PRODUCTION - Décommente et change si besoin :
+//   // private readonly baseUrl = 'https://ton-backend-prod.com/api/public/ai';
+
+//   constructor(private http: HttpClient) {
+//     console.log('✅ ChatService initialisé avec URL:', this.baseUrl);
+//   }
+
+//   // ✅ Version avec historique
+//   sendMessage(
+//     text: string,
+//     sessionId: string,
+//     history: { role: 'user' | 'assistant'; content: string }[]
+//   ): Observable<ChatResponse> {
+//     const payload = {
+//       message: text,
+//       session_id: sessionId,  // ✅ Clé correcte
+//       history,
+//     };
+
+//     console.log('🔵 [CHAT] Envoi du message');
+//     console.log('  - URL:', `${this.baseUrl}/chat`);
+//     console.log('  - Payload:', payload);
+
+//     return this.http.post<ChatResponse>(`${this.baseUrl}/chat`, payload).pipe(
+//       tap(response => {
+//         console.log('✅ [CHAT] Réponse reçue:', response);
+//       }),
+//       catchError(error => {
+//         console.error('❌ [CHAT] Erreur:', error);
+//         return this.handleError(error, 'sendMessage');
+//       })
+//     );
+//   }
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface ChatResponse {
   answer: string;
@@ -31,11 +103,8 @@ export class ChatService {
   // Le frontend ne peut pas appeler l'agent Python directement
   // (problème CORS + localhost:8000 n'existe pas en production)
   
-  // 🔵 LOCAL (développement)
-  private readonly baseUrl = 'http://localhost:8080/api/public/ai';
-  
-  // 🟢 PRODUCTION - Décommente et change si besoin :
-  // private readonly baseUrl = 'https://ton-backend-prod.com/api/public/ai';
+  // ✅ USA l'environnement pour changer automatiquement selon le contexte
+  private readonly baseUrl = environment.aiChatUrl;
 
   constructor(private http: HttpClient) {
     console.log('✅ ChatService initialisé avec URL:', this.baseUrl);

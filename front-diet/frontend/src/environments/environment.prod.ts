@@ -1,6 +1,11 @@
 export const environment = {
   production: true,
   apiUrl: 'https://backend-production-44d4.up.railway.app/api/public/',
+   aiChatUrl: 'https://backend-production-44d4.up.railway.app/api/public/ai',
+   
+  // 👉 URL SPÉCIFIQUE pour Recettes
+  recipeUrl: 'https://backend-production-44d4.up.railway.app/api/public/recipe',
+
   // ✅ Agent IA production
   agentUrl: 'https://agent-ia-production-7fb0.up.railway.app/api',
   keycloak: {
