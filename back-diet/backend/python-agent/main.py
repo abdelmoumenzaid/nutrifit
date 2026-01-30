@@ -24,12 +24,19 @@ app = FastAPI(title="NutriCoach AI Agent")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://front-end-production-0ec7.up.railway.app",  # Remplace xxx par ton URL
+        "https://front-end-production-0ec7.up.railway.app",
+        "https://backend-production-44d4.up.railway.app",
+        "http://localhost:4200",
+        "http://localhost:3000",
+        "http://localhost:8081",
+        "*",  # ✅ Allow all (pour dev)
     ],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_headers=["*"],  # ✅ Allow all headers
+    max_age=3600,
 )
+
 
 
 PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
