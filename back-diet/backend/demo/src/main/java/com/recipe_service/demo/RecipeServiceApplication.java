@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "com.recipe_service.demo.admin",       // ✅ Admin
     "com.recipe_service.demo.config",       // ✅ CORS, RestTemplate
     "com.recipe_service.demo.translation", // ✅ Translations
-    "com.recipe_service.demo.image",        // ✅ Image Handling
+    "com.recipe_service.demo.image",        // ✅ Image Handling"
 })
 @EnableJpaRepositories(basePackages = {
     "com.recipe_service.demo.tracking",
