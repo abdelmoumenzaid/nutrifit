@@ -29,6 +29,7 @@ app.add_middleware(
         "http://localhost:4200",
         "http://localhost:3000",
         "http://localhost:8081",
+        "https://agent-ia-production-7fb0.up.railway.app",  # Add production agent URL if needed
         "*",  # Allow all for dev
     ],
     allow_credentials=True,
