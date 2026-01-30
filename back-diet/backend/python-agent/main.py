@@ -29,15 +29,18 @@ app.add_middleware(
         "http://localhost:4200",
         "http://localhost:3000",
         "http://localhost:8081",
-        "*",  # ✅ Allow all (pour dev)
+        "*",  # Allow all for dev
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["*"],  # ✅ Allow all headers
+    allow_headers=["*"],
     max_age=3600,
 )
 
-
+# ✅ AJOUTE AUSSI CET ENDPOINT POUR TESTER CORS
+@app.options("/{full_path:path}")
+async def preflight_handler(full_path: str):
+    return {"message": "OK"}
 
 PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
