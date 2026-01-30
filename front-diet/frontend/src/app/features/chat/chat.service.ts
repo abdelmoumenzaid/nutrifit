@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 export interface ChatResponse {
   answer: string;
   provider: string;
 }
+
 
 export interface RecipeCard {
   id?: string;
@@ -19,61 +21,55 @@ export interface RecipeCard {
   description?: string;
 }
 
+
 export interface ChatRecipeResponse {
   intro: string;
   recipes: RecipeCard[];
 }
 
+
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private readonly baseUrl = 'http://localhost:8081/api/ai';
+  // ✅ CHANGÉ: URL Railway au lieu de localhost
+  private readonly baseUrl = 'https://agent-ia-production-7fb0.up.railway.app/api';
+
 
   constructor(private http: HttpClient) {}
 
-  // chat « texte »
-//   sendMessage(message: string, sessionId: string): Observable<any> {
-//     return this.http.post(`${this.baseUrl}/chat`, {
-//       message,
-//       sessionId,
-//     });
-//   }
-// Modif pour historique
-    // ✅ Version à utiliser
-    sendMessage(
+
+  // ✅ Version avec historique
+  sendMessage(
     text: string,
     sessionId: string,
     history: { role: 'user' | 'assistant'; content: string }[]
-    ): Observable<ChatResponse> {
+  ): Observable<ChatResponse> {
     return this.http.post<ChatResponse>(`${this.baseUrl}/chat`, {
-        message: text,
-        sessionId,
-        history, // ou supprime si tu ne l’utilises pas encore côté Java
+      message: text,
+      session_id: sessionId,  // ✅ Corrigé: session_id (pas sessionId)
+      history,
     });
-    }
-  // analyse d’images (upload)
-    analyzeImages(formData: FormData): Observable<ChatRecipeResponse> {
+  }
+
+  // ✅ Analyse d'images
+  analyzeImages(formData: FormData): Observable<ChatRecipeResponse> {
     return this.http.post<ChatRecipeResponse>(
-      `${this.baseUrl}/chat/images`,
-      formData,
-      { headers: { 'Accept': 'application/json' } } // Pas de Content-Type pour FormData
+      `${this.baseUrl}/chat/recipes-from-images`,  // ✅ Chemin corrigé
+      formData
     );
   }
 
-  // chat « recettes »
+  // ✅ Chat recettes
   sendRecipePrompt(prompt: string, sessionId: string): Observable<ChatRecipeResponse> {
-    return this.http.post<ChatRecipeResponse>(`${this.baseUrl}/chat/recipes`, {
-      prompt,
-      sessionId,
+    return this.http.post<ChatRecipeResponse>(`${this.baseUrl}/recipes/suggest`, {
+      message: prompt,  // ✅ Field correct pour l'endpoint
     });
   }
 
-  // 🔥 crée une vraie Recipe en BD à partir d'un prompt et renvoie la Recipe avec id
+  // ✅ Générer et sauvegarder recette
   materializeRecipeFromPrompt(prompt: string): Observable<any> {
-    const params = new HttpParams().set('prompt', prompt);
     return this.http.post(
-      'http://localhost:8081/api/ai/generate-and-save',
-      params,
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      `${this.baseUrl}/recipes/generate`,
+      { prompt }  // ✅ Format JSON au lieu de form-urlencoded
     );
   }
 }
