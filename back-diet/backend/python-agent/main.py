@@ -6,6 +6,8 @@ import re
 
 from fastapi import Form, UploadFile, File
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  # ✅ AJOUTE
+
 from pydantic import BaseModel, Field
 from groq import Groq
 from dotenv import load_dotenv
@@ -17,6 +19,18 @@ from pydantic import BaseModel
 load_dotenv()
 
 app = FastAPI(title="NutriCoach AI Agent")
+
+# ✅ CONFIGURE CORS - AJOUTE CECI JUSTE APRÈS app = FastAPI(...)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://front-end-production-0ec7.up.railway.app",  # Remplace xxx par ton URL
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+)
+
 
 PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
