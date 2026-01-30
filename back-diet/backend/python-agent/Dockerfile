@@ -2,8 +2,8 @@ FROM python:3.10-slim AS builder
 
 WORKDIR /app
 
-# Copier requirements depuis le chemin complet (contexte = racine du repo)
-COPY back-diet/backend/python-agent/requirements.txt .
+# Avec context = back-diet/backend/python-agent, les chemins sont relatifs au dossier
+COPY requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Stage final
@@ -23,11 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copier les dépendances du builder
 COPY --from=builder /root/.local /root/.local
 
-# Copier le code (chemin complet depuis la racine du repo)
-COPY back-diet/backend/python-agent/main.py .
-
-# (optionnel) copier un .env si tu veux
-# COPY back-diet/backend/python-agent/.env . 
+# Copier le code - chemin SIMPLE car context = dossier courant
+COPY main.py .
 
 EXPOSE 8000
 

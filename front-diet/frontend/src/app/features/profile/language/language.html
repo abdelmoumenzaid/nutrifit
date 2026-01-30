@@ -1,41 +1,75 @@
 <div class="personal-page">
+  <!-- En-tête avec bouton retour et titre -->
   <div class="personal-header">
-    <button class="back-link" (click)="onCancel()">← Retour</button>
+    <button 
+      class="back-link" 
+      (click)="onCancel()"
+      type="button"
+      aria-label="Retour au profil"
+    >
+      ← Retour
+    </button>
     <div class="title-block">
-      <h1>Langue de l’application</h1>
-      <p class="subtitle">
-        Choisis la langue utilisée pour les menus, recettes et conseils.
-      </p>
+      <h1>{{ i18n.t('profile.language', 'Langue') }}</h1>
+      <p class="subtitle">{{ i18n.t('profile.preferences', 'Choisissez votre langue préférée') }}</p>
     </div>
   </div>
 
-  <form class="form" (ngSubmit)="onSave()">
+  <!-- Formulaire principal -->
+  <form class="form">
+    <!-- Groupe : Sélection de langue -->
     <div class="field-group">
       <h2>Langues disponibles</h2>
-
+      
       <div class="lang-list">
         <button
-          type="button"
-          class="lang-row"
           *ngFor="let lang of availableLangs"
-          [class.lang-active]="currentLang === lang.code"
           (click)="selectLang(lang.code)"
+          [class.lang-active]="currentLang === lang.code"
+          class="lang-row"
+          [disabled]="isLoading"
+          type="button"
         >
           <div class="lang-left">
-            <span class="lang-icon">🌐</span>
-            <span class="lang-label">{{ lang.label }}</span>
+            <div class="lang-icon">🌐</div>
+            <div>
+              <div class="lang-label">{{ lang.nativeName }}</div>
+              <div style="font-size: 13px; color: #9ca3af;">{{ lang.name }}</div>
+            </div>
           </div>
-          <span class="lang-check" *ngIf="currentLang === lang.code">✓</span>
+          <div class="lang-check" *ngIf="currentLang === lang.code">✓</div>
         </button>
       </div>
     </div>
 
+    <!-- Message de succès -->
+    <div *ngIf="message" style="padding: 12px 16px; background: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; color: #059669; font-size: 14px;">
+      {{ message }}
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="error" style="padding: 12px 16px; background: #fee2e2; border: 1px solid #f87171; border-radius: 8px; color: #dc2626; font-size: 14px;">
+      {{ error }}
+    </div>
+
+    <!-- Actions (boutons) -->
     <div class="actions">
-      <button type="button" class="btn-secondary" (click)="onCancel()">
-        Annuler
+      <button 
+        (click)="onCancel()" 
+        class="btn-secondary" 
+        [disabled]="isLoading"
+        type="button"
+      >
+        {{ i18n.t('common.cancel', 'Annuler') }}
       </button>
-      <button type="submit" class="btn-primary">
-        Sauvegarder
+      <button 
+        (click)="onSave()" 
+        class="btn-primary" 
+        [disabled]="isLoading"
+        type="button"
+      >
+        <span *ngIf="!isLoading">{{ i18n.t('common.save', 'Enregistrer') }}</span>
+        <span *ngIf="isLoading">Chargement...</span>
       </button>
     </div>
   </form>

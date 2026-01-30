@@ -2,7 +2,7 @@
 📊 RAPPORT D'ANALYSE DE PROJET - Agent IA Groq (PROPRE)
 ================================================================================
 📁 Projet: C:\Users\ZAID\Desktop\app-diet\back-diet\backend
-📈 Fichiers analysés: 68
+📈 Fichiers analysés: 80
 🤖 Modèle: llama-3.3-70b-versatile
 
 1️⃣  ARBRE VISUEL (PROPRE - Cache filtré)
@@ -17,8 +17,8 @@
 │   ├── 📄 HELP.md (Markdown - 2.3 KB)
 │   ├── 📄 mvnw (Unknown - 11.5 KB)
 │   ├── 📄 mvnw.cmd (Unknown - 8.1 KB)
-│   ├── 📄 pom.xml (XML - 4.6 KB)
-│   ├── 📄 readme (Unknown - 276 bytes)
+│   ├── 📄 pom.xml (XML - 5.2 KB)
+│   ├── 📄 readme (Unknown - 727 bytes)
 │   ├── 📁 src
 │   │   ├── 📁 main
 │   │   │   ├── 📁 java
@@ -36,9 +36,9 @@
 │   │   │   │               │   ├── 📄 KeycloakConfig.java (Java - 3.7 KB)
 │   │   │   │               │   ├── 📄 R2Config.java (Java - 698 bytes)
 │   │   │   │               │   ├── 📄 RestTemplateConfig.java (Java - 636 bytes)
-│   │   │   │               │   └── 📄 SecurityConfig.java (Java - 4.5 KB)
+│   │   │   │               │   └── 📄 SecurityConfig.java (Java - 3.7 KB)
 │   │   │   │               ├── 📁 controller
-│   │   │   │               │   └── 📄 AuthController.java (Java - 27.2 KB)
+│   │   │   │               │   └── 📄 AuthController.java (Java - 10.5 KB)
 │   │   │   │               ├── 📁 image
 │   │   │   │               │   ├── 📄 ImageController.java (Java - 2.9 KB)
 │   │   │   │               │   ├── 📄 ImageResponse.java (Java - 1021 bytes)
@@ -56,22 +56,34 @@
 │   │   │   │               │   ├── 📄 RecipeService.java (Java - 4.5 KB)
 │   │   │   │               │   ├── 📄 RecipeSpecification.java (Java - 1.0 KB)
 │   │   │   │               │   └── 📄 TheMealDbClient.java (Java - 4.7 KB)
-│   │   │   │               └── 📁 tracking
-│   │   │   │                   ├── 📄 DayMeal.java (Java - 2.7 KB)
-│   │   │   │                   ├── 📄 DayMealDto.java (Java - 2.2 KB)
-│   │   │   │                   ├── 📄 DayMealRepository.java (Java - 362 bytes)
-│   │   │   │                   ├── 📄 DayTracking.java (Java - 2.2 KB)
-│   │   │   │                   ├── 📄 DayTrackingController.java (Java - 4.9 KB)
-│   │   │   │                   ├── 📄 DayTrackingDto.java (Java - 1.5 KB)
-│   │   │   │                   ├── 📄 DayTrackingRepository.java (Java - 422 bytes)
-│   │   │   │                   ├── 📄 DayTrackingService.java (Java - 9.9 KB)
-│   │   │   │                   ├── 📄 DayWorkout.java (Java - 1.9 KB)
-│   │   │   │                   ├── 📄 DayWorkoutDto.java (Java - 1.5 KB)
-│   │   │   │                   └── 📄 DayWorkoutRepository.java (Java - 371 bytes)
+│   │   │   │               ├── 📁 tracking
+│   │   │   │               │   ├── 📄 DayMeal.java (Java - 2.7 KB)
+│   │   │   │               │   ├── 📄 DayMealDto.java (Java - 2.2 KB)
+│   │   │   │               │   ├── 📄 DayMealRepository.java (Java - 362 bytes)
+│   │   │   │               │   ├── 📄 DayTracking.java (Java - 2.2 KB)
+│   │   │   │               │   ├── 📄 DayTrackingController.java (Java - 4.9 KB)
+│   │   │   │               │   ├── 📄 DayTrackingDto.java (Java - 1.5 KB)
+│   │   │   │               │   ├── 📄 DayTrackingRepository.java (Java - 422 bytes)
+│   │   │   │               │   ├── 📄 DayTrackingService.java (Java - 9.9 KB)
+│   │   │   │               │   ├── 📄 DayWorkout.java (Java - 1.9 KB)
+│   │   │   │               │   ├── 📄 DayWorkoutDto.java (Java - 1.5 KB)
+│   │   │   │               │   └── 📄 DayWorkoutRepository.java (Java - 371 bytes)
+│   │   │   │               └── 📁 translation
+│   │   │   │                   ├── 📄 Language.java (Java - 1.5 KB)
+│   │   │   │                   ├── 📄 LanguageRepository.java (Java - 427 bytes)
+│   │   │   │                   ├── 📄 Translation.java (Java - 1.3 KB)
+│   │   │   │                   ├── 📄 TranslationController.java (Java - 4.1 KB)
+│   │   │   │                   ├── 📄 TranslationDataInitializer.java (Java - 8.3 KB)
+│   │   │   │                   ├── 📄 TranslationRepository.java (Java - 593 bytes)
+│   │   │   │                   └── 📄 TranslationService.java (Java - 5.2 KB)
 │   │   │   └── 📁 resources
 │   │   │       ├── 📄 application-dev.yml (YAML - 1.6 KB)
+│   │   │       ├── 📄 application-flyway-updated.yml (YAML - 2.1 KB)
 │   │   │       ├── 📄 application-local.yml (YAML - 1.8 KB)
-│   │   │       ├── 📄 application.yml (YAML - 2.0 KB)
+│   │   │       ├── 📄 application.yml (YAML - 4.3 KB)
+│   │   │       ├── 📁 db
+│   │   │       │   └── 📁 migration
+│   │   │       │       └── 📄 V1__Init_Languages_and_Translations.sql (Unknown - 22.2 KB)
 │   │   │       └── 📁 static
 │   │   │           └── 📄 upload-test.html (HTML - 4.7 KB)
 │   │   └── 📁 test
@@ -83,8 +95,12 @@
 │   └── 📁 target
 │       ├── 📁 classes
 │       │   ├── 📄 application-dev.yml (YAML - 1.6 KB)
+│       │   ├── 📄 application-flyway-updated.yml (YAML - 2.1 KB)
 │       │   ├── 📄 application-local.yml (YAML - 1.8 KB)
-│       │   ├── 📄 application.yml (YAML - 2.0 KB)
+│       │   ├── 📄 application.yml (YAML - 4.3 KB)
+│       │   ├── 📁 db
+│       │   │   └── 📁 migration
+│       │   │       └── 📄 V1__Init_Languages_and_Translations.sql (Unknown - 22.2 KB)
 │       │   └── 📁 static
 │       │       └── 📄 upload-test.html (HTML - 4.7 KB)
 │       ├── 📁 maven-archiver
@@ -93,8 +109,8 @@
 │       │   └── 📁 maven-compiler-plugin
 │       │       ├── 📁 compile
 │       │       │   └── 📁 default-compile
-│       │       │       ├── 📄 createdFiles.lst (Unknown - 3.0 KB)
-│       │       │       └── 📄 inputFiles.lst (Unknown - 4.1 KB)
+│       │       │       ├── 📄 createdFiles.lst (Unknown - 3.4 KB)
+│       │       │       └── 📄 inputFiles.lst (Unknown - 4.9 KB)
 │       │       └── 📁 testCompile
 │       │           └── 📁 default-testCompile
 │       │               ├── 📄 createdFiles.lst (Unknown - 60 bytes)
@@ -103,6 +119,7 @@
 │       └── 📁 surefire-reports
 │           ├── 📄 TEST-com.recipe_service.demo.RecipeServiceApplicationTests.xml (XML - 50.9 KB)
 │           └── 📄 com.recipe_service.demo.RecipeServiceApplicationTests.txt (Text - 360 bytes)
+├── 📄 project_analysis_CLEAN.txt (Text - 10.2 KB)
 └── 📁 python-agent
     ├── 📄 .env (Environment - 127 bytes)
     ├── 📄 Dockerfile (Unknown - 1.0 KB)
@@ -177,13 +194,13 @@
 
 5️⃣  STATISTIQUES
 ----------------------------------------
-Taille: 348.1 KB
-Fichiers: 68
+Taille: 417.7 KB
+Fichiers: 80
 Langages:
-  • Java: 36
-  • Unknown: 14
-  • YAML: 6
-  • Text: 3
+  • Java: 43
+  • Unknown: 16
+  • YAML: 8
+  • Text: 4
   • XML: 2
   • HTML: 2
   • Git: 1

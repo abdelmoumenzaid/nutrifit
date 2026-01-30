@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/public/auth/health").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 
+                
                 // Protected endpoints - require authentication
                 .requestMatchers("/api/protected/**").authenticated()
                 .requestMatchers("/api/*/profile").authenticated()
